@@ -551,14 +551,57 @@
     padding: 12px 16px;
     background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
     border-radius: 10px;
-    flex-wrap: wrap;
     min-height: 60px;
+    overflow-x: auto;
+    /* Allow scrolling if many signatures */
 }
 
 .sigPicker>span {
     font-size: 12px;
     color: #1565C0;
     font-weight: 500;
+    white-space: nowrap;
+}
+
+.sigPickerList {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.sigPickerItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sigPickerItem:hover {
+    background: white;
+    transform: translateY(-1px);
+}
+
+.sigPickerItem.active {
+    background: white;
+    border-color: #4CAF50;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.sigPickerItem img {
+    height: 28px;
+    width: auto;
+    max-width: 80px;
+    object-fit: contain;
+}
+
+.sigPickerCheck {
+    margin-left: 6px;
+    color: #4CAF50;
 }
 
 /* Active Signature Preview */
@@ -619,8 +662,8 @@
     border-radius: 12px;
     background: #f5f5f5;
     padding: 24px;
-    padding-bottom: 100px;
-    /* Space for fixed footer */
+    padding-bottom: 80px;
+    /* Space for floating zoom controls */
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -628,59 +671,46 @@
     position: relative;
 }
 
-/* Workspace Footer */
-.workspaceFooter {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: white;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    z-index: 50;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-}
-
-/* Updated Zoom Controls (inside footer) */
+/* Floating Zoom Controls */
 .zoomControls {
     display: flex;
     align-items: center;
-    background: var(--bg-secondary);
+    background: white;
     border-radius: 20px;
-    padding: 4px;
+    padding: 6px 12px;
     gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .zoomControls button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: none;
-    background: white;
+    background: transparent;
     cursor: pointer;
     color: var(--text-primary);
     border-radius: 50%;
     transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .zoomControls button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: var(--bg-secondary);
+    color: var(--primary-dark);
 }
 
 .zoomControls span {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    min-width: 45px;
+    min-width: 40px;
     text-align: center;
     color: var(--text-primary);
 }

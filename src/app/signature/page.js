@@ -491,6 +491,19 @@ export default function SignaturePage() {
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
+    const truncateFilename = (name, maxLength = 25) => {
+        if (name.length <= maxLength) return name
+        const extIndex = name.lastIndexOf('.')
+        if (extIndex === -1) return name.substring(0, maxLength) + '...'
+
+        const ext = name.substring(extIndex)
+        const nameWithoutExt = name.substring(0, extIndex)
+
+        if (nameWithoutExt.length + ext.length <= maxLength) return name
+
+        return nameWithoutExt.substring(0, maxLength - ext.length - 3) + '...' + ext
+    }
+
     return (
         <>
             <Navbar onDonateClick={() => setIsDonationOpen(true)} />
@@ -618,6 +631,7 @@ export default function SignaturePage() {
                             className={styles.uploadArea}
                             onClick={() => fileInputRef.current?.click()}
                         >
+                            {/* ... upload UI content ... */}
                             {isLoadingPdf ? (
                                 <div className={styles.loading}>
                                     <div className={styles.spinner}></div>
@@ -652,7 +666,7 @@ export default function SignaturePage() {
                             <div className={styles.workspaceHeader}>
                                 <div className={styles.docInfo}>
                                     <FileText size={16} />
-                                    <span>{documentName} ({documentPages.length} halaman)</span>
+                                    <span>{truncateFilename(documentName)} ({documentPages.length} halaman)</span>
                                 </div>
                                 <div className={styles.docActions}>
                                     <button onClick={clearDocument} className={styles.btnReset}>
@@ -664,15 +678,27 @@ export default function SignaturePage() {
                             {savedSignatures.length > 0 && (
                                 <div className={styles.sigPicker}>
                                     <span>Tanda Tangan Aktif:</span>
-                                    {activeSignatureId ? (
-                                        <div className={styles.activeSigPreview}>
-                                            <img src={savedSignatures.find(s => s.id === activeSignatureId)?.dataUrl} alt="Active Signature" />
-                                        </div>
-                                    ) : (
-                                        <span className={styles.noActiveSig}>Belum ada tanda tangan dipilih</span>
-                                    )}
+                                    <div className={styles.sigPickerList}>
+                                        {savedSignatures.map((sig) => (
+                                            <div
+                                                key={sig.id}
+                                                className={`${styles.sigPickerItem} ${activeSignatureId === sig.id ? styles.active : ''}`}
+                                                onClick={() => setActiveSignatureId(sig.id)}
+                                            >
+                                                <img src={sig.dataUrl} alt="Signature" />
+                                                {activeSignatureId === sig.id && <Check size={12} className={styles.sigPickerCheck} />}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
+
+                            {/* Floating Zoom Controls - inside relative workspace (restored) */}
+                            <div className={styles.zoomControls}>
+                                <button onClick={handleZoomOut} title="Zoom Out"><ZoomOut size={16} /></button>
+                                <span>{Math.round(zoomLevel * 100)}%</span>
+                                <button onClick={handleZoomIn} title="Zoom In"><ZoomIn size={16} /></button>
+                            </div>
 
                             {/* Scrollable Document Pages */}
                             <div ref={docScrollRef} className={styles.docScroll}>
@@ -772,18 +798,12 @@ export default function SignaturePage() {
                                 ))}
                             </div>
 
-                            {/* Workspace Footer: Zoom & Main Download */}
-                            <div className={styles.workspaceFooter}>
-                                <div className={styles.zoomControls}>
-                                    <button onClick={handleZoomOut} title="Zoom Out"><ZoomOut size={16} /></button>
-                                    <span>{Math.round(zoomLevel * 100)}%</span>
-                                    <button onClick={handleZoomIn} title="Zoom In"><ZoomIn size={16} /></button>
-                                </div>
+                            <div className={styles.downloadActions}>
                                 <button
                                     className={styles.btnPrimary}
                                     onClick={downloadDocumentAsPDF}
                                 >
-                                    <Download size={18} /> Download PDF
+                                    <Download size={18} /> Download Semua Halaman (PDF)
                                 </button>
                             </div>
                         </div>
