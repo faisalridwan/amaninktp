@@ -184,7 +184,7 @@ export default function AboutPage() {
                     <p>Gratis, aman, dan mudah digunakan. Tidak perlu daftar.</p>
                     <div className={styles.ctaButtons}>
                         <Link href="/" className={styles.ctaBtn}>
-                            <Shield size={18} /> Watermark KTP
+                            <Shield size={18} /> Watermark Dokumen
                         </Link>
                         <Link href="/signature" className={styles.ctaBtnAlt}>
                             <PenTool size={18} /> Tanda Tangan

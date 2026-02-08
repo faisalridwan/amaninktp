@@ -13,55 +13,67 @@ export default function GuidePage() {
     // Using an array of objects for steps to ensure control over rendering
     const watermarkSteps = [
         {
-            title: 'Buka Aplikasi',
-            desc: 'Akses halaman utama Watermark KTP. Tidak perlu login atau mendaftar akun.'
+            title: 'Buka Aplikasi & Siapkan Dokumen',
+            desc: 'Akses halaman utama AmaninKTP. Anda tidak perlu mendaftar atau login. Siapkan file KTP atau dokumen penting lainnya (format JPG, PNG) yang ingin Anda beri watermark.'
         },
         {
             title: 'Upload Dokumen',
-            desc: 'Klik area upload, atau drag & drop file gambar (JPG, PNG) Anda. Anda juga bisa paste langsung (Ctrl+V) jika sudah menscreenshot atau copy gambar.'
+            desc: 'Klik area upload di tengah layar, atau tarik dan lepas (drag & drop) file gambar Anda ke area tersebut. Sistem akan langsung menampilkan preview dokumen Anda dengan aman (diproses di browser, tidak diupload ke server).'
         },
         {
-            title: 'Crop & Sesuaikan',
-            desc: 'Jika gambar kurang pas, gunakan fitur Crop. Tarik sudut grid untuk memotong bagian yang tidak perlu agar fokus pada dokumen.'
+            title: 'Crop & Potong (Opsional)',
+            desc: 'Jika foto dokumen Anda terlalu lebar atau ada background yang mengganggu, aktifkan mode Crop. Tarik sudut-sudut grid untuk memotong bagian yang tidak diinginkan, lalu klik "Selesai Crop" untuk memfokuskan tampilan pada dokumen saja.'
         },
         {
             title: 'Pilih Mode Watermark',
-            desc: 'Pilih **Menyeluruh** (Grid) untuk keamanan maksimal memenuhi seluruh dokumen, atau **Satu Teks** untuk menaruh watermark di posisi spesifik.'
+            desc: 'Tentukan jenis perlindungan yang Anda inginkan:\n• **Mode Menyeluruh (Tiled)**: Watermark akan memenuhi seluruh halaman dengan pola berulang. Ini memberikan perlindungan maksimal karena sulit dihapus.\n• **Mode Satu Teks**: Menempatkan satu watermark di posisi spesifik yang Anda tentukan.'
         },
         {
-            title: 'Isi Teks Watermark',
-            desc: 'Ketik tujuan penggunaan, misalnya "VERIFIKASI PINJOL". Gunakan tombol **Tambah Verifikasi + Tanggal** untuk otomatis menambahkan tanggal hari ini.'
+            title: 'Isi Teks & Tujuan',
+            desc: 'Ketik teks watermark Anda, misalnya "VERIFIKASI PINJOL 2024" atau "UNTUK LAMARAN KERJA". Gunakan tombol bantuan "+ Tanggal Hari Ini" untuk otomatis menambahkan tanggal saat ini agar dokumen tidak bisa disalahgunakan di masa depan.'
         },
         {
             title: 'Kustomisasi Tampilan',
-            desc: 'Atur ukuran font, rotasi (miring), transparansi, dan warna agar watermark terbaca namun tidak menutupi informasi vital.'
+            desc: 'Sesuaikan agar watermark terbaca jelas namun tidak menutupi informasi vital:\n• **Rotasi**: Miringkan teks agar menutupi area penting.\n• **Warna & Opasitas**: Pilih warna (Hitam/Putih/Merah) dan atur transparansi.\n• **Ukuran Font**: Sesuaikan besar kecilnya teks.\n• **Style**: Pilih font yang tegas dan mudah dibaca.'
         },
         {
-            title: 'Download Aman',
-            desc: 'Klik tombol **PNG** (gambar) atau **PDF** (dokumen). Proses selesai! File tersetempel dan siap digunakan.'
+            title: 'Download & Simpan',
+            desc: 'Periksa kembali hasil watermark di preview. Jika sudah sesuai, klik tombol **Download Gambar** untuk menyimpan hasilnya ke perangkat Anda.'
         }
     ]
 
     const signatureSteps = [
         {
-            title: 'Masuk ke Tanda Tangan',
-            desc: 'Klik menu **Tanda Tangan** di navigasi atas.'
+            title: 'Masuk ke Menu Tanda Tangan',
+            desc: 'Klik menu **Tanda Tangan** di navigasi atas. Halaman ini didesain khusus untuk membuat tanda tangan digital dan menempelkannya ke dokumen PDF atau Gambar.'
         },
         {
-            title: 'Buat Tanda Tangan',
-            desc: 'Gunakan mouse, trackpad, atau layar sentuh (HP/Tablet) untuk menggambar tanda tangan Anda di kanvas.'
+            title: 'Langkah 1: Buat Tanda Tangan',
+            desc: 'Di area "Buat Tanda Tangan Baru", goreskan tanda tangan Anda pada kanvas putih menggunakan mouse, trackpad, atau layar sentuh (stylus/jari). Anda bisa mengatur:\n• **Warna Pena**: Hitam, Biru, atau Merah.\n• **Ketebalan**: Geser slider untuk mengatur ketebalan garis.'
         },
         {
-            title: 'Atur Gaya',
-            desc: 'Sesuaikan ketebalan pena dan pilih warna (Hitam, Biru, atau Merah) sesuai kebutuhan dokumen.'
+            title: 'Simpan Tanda Tangan',
+            desc: 'Jika hasil goresan sudah sesuai, beri nama (opsional) lalu klik **Simpan Tanda Tangan**. Tanda tangan Anda akan tersimpan di daftar "Tanda Tangan Tersimpan" di bawah kanvas untuk dipakai berulang kali.'
         },
         {
-            title: 'Koreksi',
-            desc: 'Jika salah, klik **Hapus** untuk membersihkan kanvas dan ulang kembali sampai sempurna.'
+            title: 'Langkah 2: Upload Dokumen',
+            desc: 'Gulir ke bawah ke bagian "Tambahkan ke Dokumen". Upload file yang ingin ditandatangani (mendukung file Gambar JPG/PNG dan dokumen PDF multi-halaman). Dokumen akan muncul di area kerja.'
         },
         {
-            title: 'Simpan',
-            desc: 'Klik **Download TTD** untuk menyimpan sebagai format PNG Transparan (tanpa background) yang siap ditempel di dokumen Word/PDF manapun.'
+            title: 'Pilih Tanda Tangan Aktif',
+            desc: 'Pilih salah satu tanda tangan dari daftar "Pilih Tanda Tangan" yang sudah Anda buat sebelumnya. Tanda tangan yang aktif akan ditandai dengan centang hijau.'
+        },
+        {
+            title: 'Tempel Tanda Tangan (Drag-to-Select)',
+            desc: 'Untuk menempelkan tanda tangan dengan presisi:\n1. Arahkan mouse ke area dokumen yang diinginkan.\n2. **Klik dan Tahan (Drag)** mouse Anda membentuk kotak seleksi.\n3. Lepaskan mouse, dan tanda tangan akan otomatis muncul pas di dalam kotak yang Anda buat.\n\nAlternatif: Klik tombol **Tambah Tanda Tangan** untuk memunculkan tanda tangan di posisi default.'
+        },
+        {
+            title: 'Sesuaikan Posisi & Ukuran',
+            desc: 'Setelah tanda tangan muncul di dokumen:\n• **Pindahkan**: Klik dan geser tanda tangan ke posisi yang tepat.\n• **Ubah Ukuran**: Tarik ujung kanan bawah tanda tangan untuk membesarkan atau mengecilkan.\n• **Hapus**: Klik tanda "X" merah jika ingin membatalkan.'
+        },
+        {
+            title: 'Download Hasil',
+            desc: 'Setelah semua tanda tangan terpasang dengan benar, klik tombol **Download PDF** (untuk file PDF) atau **Download PNG** (per halaman) untuk menyimpan dokumen yang sudah ditandatangani ke perangkat Anda.'
         }
     ]
 

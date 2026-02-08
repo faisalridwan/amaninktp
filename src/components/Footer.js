@@ -23,7 +23,7 @@ export default function Footer({ onDonateClick }) {
                         <h4>Produk</h4>
                         <ul>
                             <li>
-                                <Link href="/"><FileImage size={14} /> Watermark KTP</Link>
+                                <Link href="/"><FileImage size={14} /> Watermark Dokumen</Link>
                             </li>
                             <li>
                                 <Link href="/signature"><PenTool size={14} /> Tanda Tangan</Link>
