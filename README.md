@@ -101,7 +101,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 If you find AmaninKTP useful and would like to support its development and maintenance, you can show your appreciation by making a donation. Every contribution helps us keep the tool free and secure for everyone.
 
-[**Donate via Saweria**](https://saweria.co/isallab)
+[**Support via Donation**](https://amaninktp.qreatip.com/#donate)
 
 ---
 
