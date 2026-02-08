@@ -4,6 +4,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Download, Upload, ArrowRight, Eraser, MousePointer2, Square, EyeOff, RotateCcw, Image as ImageIcon } from 'lucide-react';
 import styles from './page.module.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function RedactionTool() {
     const [file, setFile] = useState(null);
@@ -113,87 +115,96 @@ export default function RedactionTool() {
     };
 
     return (
-        <div className={styles.container}>
-            <Head>
-                <title>Sensor Data Dokumen - AmaninKTP</title>
-                <meta name="description" content="Tutup data sensitif pada dokumen KTP/SIM dengan mudah dan aman." />
-            </Head>
+        <>
+            <Navbar />
+            <div className={styles.container}>
+                <Head>
+                    <title>Sensor Data Dokumen - AmaninKTP</title>
+                    <meta name="description" content="Tutup data sensitif pada dokumen KTP/SIM dengan mudah dan aman." />
+                </Head>
 
-            <div className={styles.header}>
-                <Link href="/" className={styles.backLink}>
-                    <ArrowRight className="rotate-180" size={20} /> Kembali
-                </Link>
-                <h1>Sensor Data</h1>
-                <p>Tutupi data sensitif (NIK, Nama Ibu, dll) sebelum dibagikan.</p>
-            </div>
-
-            {!file ? (
-                <div
-                    className={styles.uploadArea}
-                    onClick={() => fileInputRef.current?.click()}
-                >
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={(e) => setFile(e.target.files[0])}
-                        accept="image/*"
-                        hidden
-                    />
-                    <div className={styles.uploadContent}>
-                        <div className={styles.iconCircle}>
-                            <EyeOff size={32} />
-                        </div>
-                        <h3>Upload Dokumen</h3>
-                        <p>Klik untuk memilih foto (JPG, PNG)</p>
-                    </div>
+                <div className={styles.header}>
+                    <h1>Sensor Data</h1>
+                    <p>Tutupi data sensitif (NIK, Nama Ibu, dll) sebelum dibagikan.</p>
                 </div>
-            ) : (
-                <div className={styles.workspace}>
-                    {/* Toolbar */}
-                    <div className={styles.toolbar}>
-                        <div className={styles.toolGroup}>
-                            <button
-                                className={`${styles.toolBtn} ${mode === 'block' ? styles.active : ''}`}
-                                onClick={() => setMode('block')}
-                            >
-                                <Square size={20} /> Block Hitam
-                            </button>
-                            {/* Future: Blur Tool */}
-                        </div>
 
-                        <div className={styles.actionGroup}>
-                            <button className={styles.iconBtn} onClick={handleUndo} disabled={history.length === 0}>
-                                <RotateCcw size={20} /> Undo
-                            </button>
-                            <button className={styles.downloadBtn} onClick={handleDownload}>
-                                <Download size={20} /> Download
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Canvas Area */}
-                    <div className={styles.canvasWrapper} ref={containerRef}>
-                        <canvas
-                            ref={canvasRef}
-                            onMouseDown={handleMouseDown}
-                            onMouseMove={handleMouseMove}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
-                            className={styles.canvas}
+                {!file ? (
+                    <div
+                        className={styles.uploadArea}
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={(e) => setFile(e.target.files[0])}
+                            accept="image/*"
+                            hidden
                         />
-                        {history.length === 0 && !isDrawing && (
-                            <div className={styles.overlayHint}>
-                                <MousePointer2 size={24} />
-                                <p>Drag untuk membuat kotak sensor</p>
+                        <div className={styles.uploadContent}>
+                            <div className={styles.iconCircle}>
+                                <EyeOff size={32} />
                             </div>
-                        )}
+                            <h3>Upload Dokumen</h3>
+                            <p>Klik untuk memilih foto (JPG, PNG)</p>
+                        </div>
                     </div>
+                ) : (
+                    <div className={styles.workspace}>
+                        {/* Toolbar */}
+                        <div className={styles.toolbar}>
+                            <div className={styles.toolGroup}>
+                                <button
+                                    className={`${styles.toolBtn} ${mode === 'block' ? styles.active : ''}`}
+                                    onClick={() => setMode('block')}
+                                >
+                                    <Square size={20} /> Block Hitam
+                                </button>
+                                {/* Future: Blur Tool */}
+                            </div>
 
-                    <button className={styles.resetLink} onClick={() => setFile(null)}>
-                        Ganti Gambar
-                    </button>
-                </div>
-            )}
-        </div>
+                            <div className={styles.actionGroup}>
+                                <button className={styles.iconBtn} onClick={handleUndo} disabled={history.length === 0}>
+                                    <RotateCcw size={20} /> Undo
+                                </button>
+                                <button className={styles.downloadBtn} onClick={handleDownload}>
+                                    <Download size={20} /> Download
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Canvas Area */}
+                        <div className={styles.canvasWrapper} ref={containerRef}>
+                            <canvas
+                                ref={canvasRef}
+                                onMouseDown={handleMouseDown}
+                                onMouseMove={handleMouseMove}
+                                onMouseUp={handleMouseUp}
+                                onMouseLeave={handleMouseUp}
+                                className={styles.canvas}
+                            />
+                            {history.length === 0 && !isDrawing && (
+                                <div className={styles.overlayHint}>
+                                    <MousePointer2 size={24} />
+                                    <p>Drag untuk membuat kotak sensor</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <button className={styles.resetLink} onClick={() => setFile(null)}>
+                            Ganti Gambar
+                        </button>
+                    </div>
+                )}
+
+                {/* Trust Section */}
+                <section className={styles.trust}>
+                    <div className={styles.trustItem}>🔒 100% Client-Side</div>
+                    <div className={styles.trustItem}>🚫 Tanpa Upload Server</div>
+                    <div className={styles.trustItem}>⚡ Tanpa Login</div>
+                    <div className={styles.trustItem}>🇮🇩 Karya Lokal</div>
+                </section>
+            </div>
+            <Footer />
+        </>
     );
 }
