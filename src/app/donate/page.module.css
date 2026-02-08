@@ -85,30 +85,102 @@
     margin: 0;
 }
 
-.donateAction {
+.paymentMethods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
     margin-top: 40px;
-    text-align: center;
 }
 
-.donateBtn {
+.paymentCard {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 30px;
+    border-radius: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.methodTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1E293B;
+    margin: 0;
+}
+
+.qrisContainer {
+    background: white;
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 220px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qrisPlaceholder {
+    width: 100%;
+    height: 100%;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.qrisImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.paypalBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    background: #0070BA;
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.paypalBtn:hover {
+    background: #005ea6;
+    transform: translateY(-2px);
+}
+
+.comingSoon {
+    margin-top: 30px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 14px;
+    color: #64748B;
+    font-style: italic;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 16px 32px;
-    background: #E91E63;
-    color: white;
-    font-weight: 700;
-    font-size: 18px;
-    border-radius: 16px;
-    text-decoration: none;
-    box-shadow: 0 10px 20px rgba(233, 30, 99, 0.3);
-    transition: all 0.3s;
+    gap: 8px;
 }
 
-.donateBtn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 30px rgba(233, 30, 99, 0.4);
-    filter: brightness(1.1);
+@media (max-width: 768px) {
+    .paymentMethods {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 640px) {

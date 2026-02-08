@@ -54,13 +54,50 @@ export default function DonatePage() {
                         <p className={styles.summary}>
                             AmaninKTP adalah proyek independen yang lahir dari kepedulian terhadap keamanan data pribadi.
                             Setiap baris kode ditulis untuk memastikan dokumen identitas Anda tetap menjadi milik Anda sepenuhnya.
-                            Dukungan Anda sangat berarti bagi keberlangsungan proyek ini.
+                            Pilih metode dukungan yang paling nyaman bagi Anda:
                         </p>
 
-                        <div className={styles.donateAction}>
-                            <a href="https://amaninktp.qreatip.com/donate" className={styles.donateBtn}>
-                                <Heart size={20} /> Donasi Sekarang
-                            </a>
+                        <div className={styles.paymentMethods}>
+                            {/* QRIS Section */}
+                            <div className={styles.paymentCard}>
+                                <h3 className={styles.methodTitle}>QRIS (Indonesia)</h3>
+                                <div className={styles.qrisContainer}>
+                                    <div className={styles.qrisPlaceholder}>
+                                        <div className={styles.qrisImage}>
+                                            <div style={{ padding: '20px', textAlign: 'center' }}>
+                                                <Zap size={40} color="#4CAF50" />
+                                                <p style={{ margin: '10px 0 0 0', fontWeight: 'bold', color: '#1E293B' }}>Scan QRIS</p>
+                                                <p style={{ fontSize: '11px', opacity: 0.7, color: '#64748B' }}>Buka aplikasi pembayaran & scan</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: '1.4' }}>
+                                    Dukung via Dana, GoPay, OVO, ShopeePay, atau Mobile Banking.
+                                </p>
+                            </div>
+
+                            {/* PayPal Section */}
+                            <div className={styles.paymentCard}>
+                                <h3 className={styles.methodTitle}>PayPal (Global)</h3>
+                                <div style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                    <div style={{ padding: '20px', textAlign: 'center' }}>
+                                        <Coffee size={50} color="#0070BA" strokeWidth={1.5} />
+                                    </div>
+                                </div>
+                                <a href="https://paypal.me/faisalridwan" target="_blank" rel="noopener noreferrer" className={styles.paypalBtn}>
+                                    <Heart size={18} /> Dukung via PayPal
+                                </a>
+                                <p style={{ fontSize: '13px', color: '#64748B', lineHeight: '1.4' }}>
+                                    Dukungan internasional untuk keberlanjutan server.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style={{ textAlign: 'center' }}>
+                            <div className={styles.comingSoon}>
+                                <Globe size={16} /> Metode pembayaran lainnya segera hadir
+                            </div>
                         </div>
                     </div>
 
