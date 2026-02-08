@@ -1,116 +1,118 @@
-# AmaninKTP 📄
+# AmaninKTP 📄 — Secure & Local KTP Watermarking & Digital Signature
 
-**AmaninKTP** is a free, secure, and open-source web-based tool that allows you to protect your sensitive documents (KTP, SIM, Passport, etc.) by adding custom watermarks and digital signatures. Every process is done 100% locally in your browser, ensuring your data never leaves your device.
+**AmaninKTP** is a free, secure, and open-source web-based tool that allows you to protect your sensitive documents (ID Cards/KTP, Driver's License, Passport, etc.) by adding custom watermarks and precise digital signatures.
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub forks](https://img.shields.io/github/forks/faisalridwan/amaninktp?style=social)](https://github.com/faisalridwan/amaninktp/network)
-[![GitHub stars](https://img.shields.io/github/stars/faisalridwan/amaninktp?style=social)](https://github.com/faisalridwan/amaninktp/stargazers)
+> [!IMPORTANT]  
+> **Official Website:** [https://amaninktp.qreatip.com/](https://amaninktp.qreatip.com/)
 
-## 🌟 Overview
+Every document manipulation process is performed **100% locally in your browser**. Your data and documents are never sent to our servers, ensuring absolute confidentiality of your personal information.
 
-**AmaninKTP** is designed to address the growing concern of identity theft and personal data misuse in Indonesia. By allowing users to add a specific watermark (e.g., "Verification for E-wallet, 10-10-2026") or a digital signature directly to their document scans, it renders the documents unusable for unintended purposes. 
+---
 
-Unlike traditional cloud-based tools, **AmaninKTP processes all images locally**. This means your private files are never uploaded to our servers, providing absolute privacy and security.
+[![Main Website](https://img.shields.io/badge/Main%20Website-amaninktp.qreatip.com-4CAF50?style=for-the-badge&logo=google-chrome&logoColor=white)](https://amaninktp.qreatip.com/)
+[![Next.js](https://img.shields.io/badge/Framework-Next.js%2015-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## 📖 Usage
+---
 
-To learn how to use AmaninKTP effectively, please visit our guide:
-[**Cara Pakai - AmaninKTP**](https://amaninktp.qreatip.com/guide)
+## 🌟 Why AmaninKTP? (Problem Statement)
 
-## 🛠️ Technical Stack & Dependencies
+In today's digital age, identity theft and the misuse of personal data through scans of ID cards (KTP) or other important documents are increasingly common in Indonesia. Raw documents are often misappropriated for illegal online loan registrations or other fraudulent activities.
 
-AmaninKTP is built with modern web technologies to ensure speed, security, and reliability:
+**AmaninKTP** serves as a practical solution to:
+1.  **Provide Context**: Add specific watermark text such as *"For E-wallet Verification Only - 08/02/2026"* so the document cannot be used for unintended purposes.
+2.  **Legality & Personalization**: Attach digital signatures directly to PDF documents quickly and easily.
+3.  **Uncompromising Security**: Eliminate concerns about document "leaks" during editing, as your browser is the only place the document exists.
 
-- **[Node.js](https://nodejs.org/)**: JavaScript runtime for development and pooling.
-- **[Next.js 15](https://nextjs.org/)**: React framework for the core application logic and SEO.
-- **[Vanilla CSS & CSS Modules](https://developer.mozilla.org/en-US/docs/Web/CSS)**: For a lightweight, premium, and responsive Neumorphic UI.
-- **[jsPDF](https://github.com/parallax/jsPDF)**: Library for generating secure PDF documents with signatures.
-- **[PDF.js](https://mozilla.github.io/pdf.js/)**: Used for high-performance PDF rendering directly in the browser.
-- **[Lucide React](https://lucide.dev/)**: For clean and consistent visual iconography.
+---
 
-## 🚀 Installation & Local Setup
+## ✨ Key Features (Deep Dive)
 
-To run AmaninKTP on your local machine, follow these steps:
+### 🛡️ Smart Watermarking
+*   **Tiled Mode**: Automatically covers the entire document area with repeating watermark text.
+*   **Single Mode (Manual)**: Specifically place one or more watermarks in designated areas.
+*   **Full Customization**: Adjust font size, text color, opacity levels, rotation, and line spacing.
 
-1. **Prerequisites**: Ensure you have [Node.js](https://nodejs.org/) (v18+) and `npm` installed.
-2. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/faisalridwan/amaninktp.git
-   ```
-3. **Navigate to Directory**:
-   ```bash
-   cd amaninktp
-   ```
-4. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-5. **Run Development Server**:
-   ```bash
-   npm run dev
-   ```
-6. **Build for Production**:
-   ```bash
-   npm run build
-   ```
-7. **Production Preview**:
-   ```bash
-   npm run start
-   ```
+### ✍️ Digital Signature (TTD)
+*   **Responsive Drawing Pad**: Create smooth signatures using a mouse, trackpad, or touch screen.
+*   **Local Signature Library**: Save your favorite signatures in the browser (localStorage) for future use without redraws.
+*   **Drag-and-Drop Placement**: Pixel-perfect precision for positioning signatures on PDF files.
 
-AmaninKTP will be accessible at `http://localhost:3000`.
+### 🔄 Efficient Workflow
+*   **Insta-Reset**: Revert all changes to default with a single click if a mistake occurs.
+*   **Real-Time Preview**: See every change you make instantly before saving the document.
+*   **Multi-Export**: Save the final result in high-quality **PNG** format or secure **PDF**.
 
-## ✨ Key Features
+---
 
-- **🛡️ Multi-Mode Watermarking**: 
-  - **Tiled Watermark**: Repeat watermark text across the entire document.
-  - **Single Placements**: Position, rotate, and resize watermarks manually.
-- **✍️ Digital Signatures**:
-  - **Drawing Pad**: Create smooth signatures using a mouse, trackpad, or touch.
-  - **Signature Library**: Save and manage multiple signatures (stored locally).
-  - **Precise Placement**: Drag and drop signatures onto specific areas of your PDF.
-- **🎨 Customization**: Full control over font size, color, opacity, rotation, and line spacing.
-- **🔄 Instant Reset**: Revert all changes to default with a single click.
-- **� Smart Drag-and-Drop**: Load your ID card scans or PDFs by simply dragging them into the tool.
-- **💾 High-Quality Download**: Export your watermarked documents as clean PNG images or secure PDFs.
-- **📱 Ultra Responsive**: Works flawlessly on mobile, tablet, and desktop devices.
+## � Privacy & Security Architecture
 
-## 🔒 Privacy Policy
+AmaninKTP is built on the principle of **Privacy by Design**:
 
-Your privacy is our absolute priority. AmaninKTP adheres to the following principles:
+1.  **Zero Server Upload**: We do not have a backend that stores files. When you select a file, the browser only reads the data locally into the application's memory.
+2.  **Client-Side Rendering**: `jsPDF` and `pdfjs-dist` libraries are used to manipulate images and text directly on your device's CPU.
+3.  **Ephemeral Storage**: The original document and edited results are immediately cleared from the browser's memory when the tab or browser is closed.
+4.  **No Tracking**: We do not use trackers that inspect your document's content.
 
-1. **100% Client-Side**: Every image manipulation, text rendering, and PDF generation happens strictly within your browser's memory.
-2. **No Data Upload**: We **NEVER** upload, sell, or store your documents. Your files are processed locally and discarded immediately when you close the tab.
-3. **No Tracking**: We do not use intrusive tracking or analytics on your documents.
-4. **Transparency**: As an open-source project, our security logic is fully auditable by the community.
+---
 
-## 🤝 Contributing
+## 🛠️ Tech Stack & Dependencies
 
-We welcome contributions from the community! Whether it's fixing a bug, adding a feature, or improving documentation, please read our [Contributing Guidelines](CONTRIBUTING.md) to get started.
+The project utilizes modern web technologies for high performance and security:
 
-## 🌍 Translations
+*   **Next.js 15**: The latest React framework for fast and SEO-friendly application performance.
+*   **React 19**: A component-based UI library for interactive interfaces.
+*   **Lucide React**: A consistent and elegant collection of open-source icons.
+*   **jsPDF**: The primary engine for generating and manipulating PDF documents on the client side.
+*   **PDF.js**: Used for high-performance rendering of PDF files into the browser canvas.
+*   **Vanilla CSS (CSS Modules)**: A calming **Neumorphic** design without heavy CSS library dependencies.
 
-AmaninKTP supports Indonesian and English. We are looking for contributors to help translate the tool into other regional or international languages.
+---
 
-## 📄 License
+## � Local Development Guide
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more information.
+Want to run AmaninKTP on your own computer or contribute?
 
-## 💖 Donations
+### 1. Prerequisites
+*   [Node.js](https://nodejs.org/) (Recommended v18 or higher)
+*   `npm` or `yarn`
 
-If you find AmaninKTP useful and would like to support its development and maintenance, you can show your appreciation by making a donation. Every contribution helps us keep the tool free and secure for everyone.
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/faisalridwan/amaninktp.git
 
-[**Support via Donation**](https://amaninktp.qreatip.com/donate)
+# Enter the directory
+cd amaninktp
+
+# Install dependencies
+npm install
+```
+
+### 3. NPM Commands
+*   `npm run dev`: Starts the development server at `http://localhost:3000`.
+*   `npm run build`: Creates an optimized production build.
+*   `npm run start`: Runs the production-built application.
+*   `npm run lint`: Checks code quality with ESLint.
+
+---
+
+## 📜 Changelog
+
+Want to know about the latest updates? Visit our changelog page directly in the application:
+[**Changelog - AmaninKTP**](https://amaninktp.qreatip.com/changelog)
+
+---
+
+## 💖 Contributing & Support
+
+We are very open to contributions! Please create an **Issue** to report bugs or a **Pull Request** to add new features.
+
+If you find this tool helpful, help us keep the server (hosting) and development running by making a donation:
+👉 [**Support AmaninKTP via Donation**](https://amaninktp.qreatip.com/donate)
 
 ---
 
 <p align="center">
-  <a href="https://github.com/faisalridwan/amaninktp">
-    <img src="https://img.shields.io/badge/GitHub-Repository-black?logo=github&style=for-the-badge" alt="GitHub Repository">
-  </a>
-</p>
-
-<p align="center">
-  Made with ❤️ by <a href="https://qreatip.com">Faisal Ridwan</a>
+  Made with ❤️ by <a href="https://qreatip.com">Faisal Ridwan</a> & the Qreatip Studio Team.
 </p>
