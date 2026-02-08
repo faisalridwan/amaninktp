@@ -54,7 +54,7 @@ export default function SignaturePage() {
 
         const resizeCanvas = () => {
             const rect = container.getBoundingClientRect()
-            const ctx = canvas.getContext('2d')
+            const ctx = canvas.getContext('2d', { willReadFrequently: true })
 
             // Save current content if needed, but usually clear on resize is safer or just redraw
             // For simple signature, we might lose it on resize, which is acceptable or we could save dataUrl
@@ -108,7 +108,7 @@ export default function SignaturePage() {
         if (!canvas) return
 
         const coords = getCoords(e, canvas)
-        const ctx = canvas.getContext('2d')
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })
         ctx.beginPath()
         ctx.moveTo(coords.x, coords.y)
 
@@ -123,7 +123,7 @@ export default function SignaturePage() {
         }
 
         const canvas = canvasRef.current
-        const ctx = canvas?.getContext('2d')
+        const ctx = canvas?.getContext('2d', { willReadFrequently: true })
         if (!ctx) return
 
         const coords = getCoords(e, canvas)
@@ -144,7 +144,7 @@ export default function SignaturePage() {
     const stopDrawing = useCallback(() => {
         if (isDrawing) {
             const canvas = canvasRef.current
-            const ctx = canvas?.getContext('2d')
+            const ctx = canvas?.getContext('2d', { willReadFrequently: true })
             if (ctx) ctx.beginPath()
         }
         setIsDrawing(false)
@@ -152,7 +152,7 @@ export default function SignaturePage() {
 
     const clearCanvas = () => {
         const canvas = canvasRef.current
-        const ctx = canvas?.getContext('2d')
+        const ctx = canvas?.getContext('2d', { willReadFrequently: true })
         if (!ctx) return
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         setHasDrawn(false)
@@ -229,7 +229,7 @@ export default function SignaturePage() {
                     const viewport = page.getViewport({ scale })
 
                     const canvas = document.createElement('canvas')
-                    const ctx = canvas.getContext('2d')
+                    const ctx = canvas.getContext('2d', { willReadFrequently: true })
                     canvas.width = viewport.width
                     canvas.height = viewport.height
 
@@ -268,13 +268,55 @@ export default function SignaturePage() {
         reader.readAsDataURL(file)
     }
 
+    const getVisiblePageIndex = () => {
+        if (!docScrollRef.current) return 0;
+
+        const scrollContainer = docScrollRef.current;
+        const scrollCenter = scrollContainer.scrollTop + (scrollContainer.clientHeight / 2);
+
+        let closestIndex = 0;
+        let minDiff = Infinity;
+
+        // Find which page container is closest to the center of the scroll view
+        pageContainerRefs.current.forEach((container, index) => {
+            if (!container) return;
+            // Get offset relative to scroll container
+            const containerTop = container.offsetTop;
+            const containerCenter = containerTop + (container.clientHeight / 2);
+
+            const diff = Math.abs(containerCenter - scrollCenter);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = index;
+            }
+        });
+
+        return closestIndex;
+    }
+
     const addSignatureToPage = (sigId, pageIndex) => {
-        const sig = savedSignatures.find(s => s.id === sigId)
-        if (!sig) return
+        // Default to active signature or first saved signature
+        let sig;
+        if (sigId) {
+            sig = savedSignatures.find(s => s.id === sigId);
+        } else if (activeSignatureId) {
+            sig = savedSignatures.find(s => s.id === activeSignatureId);
+        } else if (savedSignatures.length > 0) {
+            sig = savedSignatures[0];
+            setActiveSignatureId(sig.id); // Auto-activate if we used forced fallback
+        }
+
+        if (!sig) {
+            alert("Buat tanda tangan terlebih dahulu!");
+            return;
+        }
+
+        // Default to provided page index or visible page
+        const targetPageIndex = pageIndex !== undefined ? pageIndex : getVisiblePageIndex();
 
         const newSig = {
             id: Date.now(),
-            pageIndex,
+            pageIndex: targetPageIndex,
             dataUrl: sig.dataUrl,
             x: 100, // Default position
             y: 100, // Default position
@@ -282,6 +324,10 @@ export default function SignaturePage() {
             height: 80
         }
         setPlacedSignatures(prev => [...prev, newSig])
+
+        // Auto-select the newly added signature for adjustment
+        // We find index by length since it's added to end
+        setTimeout(() => setSelectedSigIndex(placedSignatures.length), 0);
     }
 
     const handleSigMouseDown = (e, sigIndex, pageIndex) => {
@@ -683,7 +729,11 @@ export default function SignaturePage() {
                                             <div
                                                 key={sig.id}
                                                 className={`${styles.sigPickerItem} ${activeSignatureId === sig.id ? styles.active : ''}`}
-                                                onClick={() => setActiveSignatureId(sig.id)}
+                                                onClick={() => {
+                                                    setActiveSignatureId(sig.id);
+                                                    addSignatureToPage(sig.id);
+                                                }}
+                                                title="Klik untuk menambahkan ke halaman yang terlihat"
                                             >
                                                 <img src={sig.dataUrl} alt="Signature" />
                                                 {activeSignatureId === sig.id && <Check size={12} className={styles.sigPickerCheck} />}

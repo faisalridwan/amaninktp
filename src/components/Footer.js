@@ -87,7 +87,7 @@ export default function Footer({ onDonateClick }) {
             <div className={styles.bottomBar}>
                 <div className="container">
                     <div className={styles.copyright}>
-                        Dibuat dengan ❤️ oleh <a href="https://qreatip.com" target="_blank" rel="noopener noreferrer">qreatip.com</a> - <a href="https://instagram.com/faisalridwan" target="_blank" rel="noopener noreferrer">Faisal Ridwan</a>
+                        Dibuat dengan ❤️ oleh <a href="https://qreatip.com" target="_blank" rel="noopener noreferrer">qreatip.com</a> & <a href="https://instagram.com/faisalridwan" target="_blank" rel="noopener noreferrer">Faisal Ridwan</a>
                     </div>
                 </div>
             </div>
