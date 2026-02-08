@@ -32,20 +32,12 @@ export default function SignaturePage() {
     const [isLoadingPdf, setIsLoadingPdf] = useState(false)
     const [zoomLevel, setZoomLevel] = useState(1)
 
+    // Drag Selection State
+    const [isSelecting, setIsSelecting] = useState(false)
+    const [selectionBox, setSelectionBox] = useState(null) // { pageIndex, startX, startY, x, y, width, height }
+
     const canvasRef = useRef(null)
     const containerRef = useRef(null)
-    const pageCanvasRefs = useRef([])
-    const pageContainerRefs = useRef([])
-    const fileInputRef = useRef(null)
-    const docScrollRef = useRef(null)
-    const workspaceRef = useRef(null)
-
-    const colors = [
-        { value: '#000000', label: 'Hitam' },
-        { value: '#1e40af', label: 'Biru' },
-        { value: '#dc2626', label: 'Merah' },
-    ]
-
     // Initialize signature canvas
     useEffect(() => {
         const canvas = canvasRef.current
@@ -267,7 +259,6 @@ export default function SignaturePage() {
         }
         reader.readAsDataURL(file)
     }
-
     const getVisiblePageIndex = () => {
         if (!docScrollRef.current) return 0;
 
@@ -294,7 +285,7 @@ export default function SignaturePage() {
         return closestIndex;
     }
 
-    const addSignatureToPage = (sigId, pageIndex) => {
+    const addSignatureToPage = (sigId, pageIndex, customRect = null) => {
         // Default to active signature or first saved signature
         let sig;
         if (sigId) {
@@ -307,27 +298,89 @@ export default function SignaturePage() {
         }
 
         if (!sig) {
-            alert("Buat tanda tangan terlebih dahulu!");
+            alert("Buat tanda tangan terlebih dahulu/pilih tanda tangan!");
             return;
         }
 
         // Default to provided page index or visible page
         const targetPageIndex = pageIndex !== undefined ? pageIndex : getVisiblePageIndex();
 
-        const newSig = {
+        let newSig = {
             id: Date.now(),
             pageIndex: targetPageIndex,
             dataUrl: sig.dataUrl,
-            x: 100, // Default position
-            y: 100, // Default position
             width: 200,
-            height: 80
+            height: 80,
+            x: 100, // Default position
+            y: 100  // Default position
         }
+
+        if (customRect) {
+            newSig.x = customRect.x
+            newSig.y = customRect.y
+            newSig.width = customRect.width
+            newSig.height = customRect.height
+        }
+
         setPlacedSignatures(prev => [...prev, newSig])
 
         // Auto-select the newly added signature for adjustment
         // We find index by length since it's added to end
         setTimeout(() => setSelectedSigIndex(placedSignatures.length), 0);
+    }
+    const pageCanvasRefs = useRef([])
+    const pageContainerRefs = useRef([])
+    const fileInputRef = useRef(null)
+    const docScrollRef = useRef(null)
+    const workspaceRef = useRef(null)
+
+    const colors = [
+        { value: '#000000', label: 'Hitam' },
+        { value: '#1e40af', label: 'Biru' },
+        { value: '#dc2626', label: 'Merah' },
+    ]
+
+
+    const handlePageMouseDown = (e, pageIndex) => {
+        // Only start selection if we have an active signature and not clicking existing one
+        if (!activeSignatureId || selectedSigIndex !== null) return
+
+        // Prevent default text selection
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+            // Don't prevent default immediately if it might interfere with other things, 
+            // but here we want to draw a box.
+        }
+
+        const canvas = pageCanvasRefs.current[pageIndex]
+        if (!canvas) return
+
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = canvas.width / rect.width
+        const scaleY = canvas.height / rect.height
+
+        let clientX, clientY
+        if (e.touches) {
+            clientX = e.touches[0].clientX
+            clientY = e.touches[0].clientY
+        } else {
+            clientX = e.clientX
+            clientY = e.clientY
+        }
+
+        const x = (clientX - rect.left) * scaleX
+        const y = (clientY - rect.top) * scaleY
+
+        setIsSelecting(true)
+        setSelectedSigIndex(null) // Deselect any active signature
+        setSelectionBox({
+            pageIndex,
+            startX: x,
+            startY: y,
+            x,
+            y,
+            width: 0,
+            height: 0
+        })
     }
 
     const handleSigMouseDown = (e, sigIndex, pageIndex) => {
@@ -370,6 +423,45 @@ export default function SignaturePage() {
     }
 
     const handleSigMouseMove = (e, pageIndex) => {
+        // Handle Selection Drawing
+        if (isSelecting && selectionBox) {
+            if (selectionBox.pageIndex !== pageIndex) return
+            e.preventDefault()
+
+            const canvas = pageCanvasRefs.current[pageIndex]
+            if (!canvas) return
+
+            const rect = canvas.getBoundingClientRect()
+            const scaleX = canvas.width / rect.width
+            const scaleY = canvas.height / rect.height
+
+            let clientX, clientY
+            if (e.touches) {
+                clientX = e.touches[0].clientX
+                clientY = e.touches[0].clientY
+            } else {
+                clientX = e.clientX
+                clientY = e.clientY
+            }
+
+            const currentX = (clientX - rect.left) * scaleX
+            const currentY = (clientY - rect.top) * scaleY
+
+            const width = Math.abs(currentX - selectionBox.startX)
+            const height = Math.abs(currentY - selectionBox.startY)
+            const x = Math.min(currentX, selectionBox.startX)
+            const y = Math.min(currentY, selectionBox.startY)
+
+            setSelectionBox(prev => ({
+                ...prev,
+                x,
+                y,
+                width,
+                height
+            }))
+            return
+        }
+
         if (selectedSigIndex === null || (!dragging && !resizing)) return
 
         const sig = placedSignatures[selectedSigIndex]
@@ -414,6 +506,19 @@ export default function SignaturePage() {
     }
 
     const handleMouseUp = () => {
+        if (isSelecting && selectionBox) {
+            // Finalize selection if valid
+            if (selectionBox.width > 20 && selectionBox.height > 20 && activeSignatureId) {
+                addSignatureToPage(activeSignatureId, selectionBox.pageIndex, {
+                    x: selectionBox.x,
+                    y: selectionBox.y,
+                    width: selectionBox.width,
+                    height: selectionBox.height
+                })
+            }
+            setIsSelecting(false)
+            setSelectionBox(null)
+        }
         setDragging(false)
         setResizing(false)
     }
@@ -639,15 +744,10 @@ export default function SignaturePage() {
                                     {savedSignatures.map((sig) => (
                                         <div
                                             key={sig.id}
-                                            className={`${styles.savedItem} ${activeSignatureId === sig.id ? styles.activeSig : ''}`}
+                                            className={styles.savedItem}
                                             onClick={() => setActiveSignatureId(sig.id)}
                                         >
                                             <img src={sig.dataUrl} alt="Signature" />
-                                            {activeSignatureId === sig.id && (
-                                                <div className={styles.activeCheck}>
-                                                    <Check size={12} />
-                                                </div>
-                                            )}
                                             <button onClick={(e) => {
                                                 e.stopPropagation()
                                                 deleteSignature(sig.id)
@@ -723,17 +823,13 @@ export default function SignaturePage() {
 
                             {savedSignatures.length > 0 && (
                                 <div className={styles.sigPicker}>
-                                    <span>Tanda Tangan Aktif:</span>
+                                    <span>Pilih Tanda Tangan:</span>
                                     <div className={styles.sigPickerList}>
                                         {savedSignatures.map((sig) => (
                                             <div
                                                 key={sig.id}
                                                 className={`${styles.sigPickerItem} ${activeSignatureId === sig.id ? styles.active : ''}`}
-                                                onClick={() => {
-                                                    setActiveSignatureId(sig.id);
-                                                    addSignatureToPage(sig.id);
-                                                }}
-                                                title="Klik untuk menambahkan ke halaman yang terlihat"
+                                                onClick={() => setActiveSignatureId(sig.id)}
                                             >
                                                 <img src={sig.dataUrl} alt="Signature" />
                                                 {activeSignatureId === sig.id && <Check size={12} className={styles.sigPickerCheck} />}
@@ -785,11 +881,38 @@ export default function SignaturePage() {
                                             onMouseLeave={handleMouseUp}
                                             onTouchMove={(e) => handleSigMouseMove(e, pageIndex)}
                                             onTouchEnd={handleMouseUp}
+                                            onMouseDown={(e) => handlePageMouseDown(e, pageIndex)}
+                                            onTouchStart={(e) => handlePageMouseDown(e, pageIndex)}
                                         >
                                             <canvas
                                                 ref={el => pageCanvasRefs.current[pageIndex] = el}
                                                 className={styles.pageCanvas}
                                             />
+
+                                            {/* Selection Box */}
+                                            {isSelecting && selectionBox && selectionBox.pageIndex === pageIndex && (() => {
+                                                const canvas = pageCanvasRefs.current[pageIndex]
+                                                if (!canvas) return null
+                                                // We need to recalculate scale because it's not available in this scope
+                                                const rect = canvas.getBoundingClientRect()
+                                                const scaleX = rect.width / canvas.width
+                                                const scaleY = rect.height / canvas.height
+                                                return (
+                                                    <div
+                                                        style={{
+                                                            position: 'absolute',
+                                                            left: selectionBox.x * scaleX,
+                                                            top: selectionBox.y * scaleY,
+                                                            width: selectionBox.width * scaleX,
+                                                            height: selectionBox.height * scaleY,
+                                                            border: '2px dashed #2563eb',
+                                                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                                                            pointerEvents: 'none',
+                                                            zIndex: 10
+                                                        }}
+                                                    />
+                                                )
+                                            })()}
 
                                             {/* Signature overlays for this page */}
                                             {placedSignatures
@@ -816,6 +939,17 @@ export default function SignaturePage() {
                                                             onMouseDown={(e) => handleSigMouseDown(e, globalIndex, pageIndex)}
                                                             onTouchStart={(e) => handleSigMouseDown(e, globalIndex, pageIndex)}
                                                         >
+                                                            <img
+                                                                src={sig.dataUrl}
+                                                                alt="Signature"
+                                                                style={{
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    objectFit: 'contain',
+                                                                    pointerEvents: 'none',
+                                                                    userSelect: 'none'
+                                                                }}
+                                                            />
                                                             <button
                                                                 className={styles.removeSig}
                                                                 onClick={(e) => {
@@ -839,7 +973,7 @@ export default function SignaturePage() {
                                                         onClick={() => addSignatureToPage(activeSignatureId, pageIndex)}
                                                         title="Tambah tanda tangan"
                                                     >
-                                                        <Plus size={14} /> TTD
+                                                        <Plus size={14} /> Tambah Tanda Tangan
                                                     </button>
                                                 </div>
                                             )}
@@ -859,7 +993,7 @@ export default function SignaturePage() {
                         </div>
                     )}
                 </section>
-            </main>
+            </main >
 
             <Footer onDonateClick={() => setIsDonationOpen(true)} />
             <DonationModal isOpen={isDonationOpen} onClose={() => setIsDonationOpen(false)} />

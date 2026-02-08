@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark KTP Online & TTD Digital – Aman & Lokal</title>
+    <meta name="description"
+        content="Buat watermark KTP dan tanda tangan online tanpa upload data ke server. Aman, gratis, dan mudah digunakan.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- FontAwesome Placeholder -->
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">AmaninKTP</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span>&#9776;</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="watermark.html" class="nav-item">Watermark KTP</a></li>
+                <li><a href="signature.html" class="nav-item">Tanda Tangan/a></li>
+                <li><a href="guide.html" class="nav-item">Cara Pakai</a></li>
+                <li><a href="privacy.html" class="nav-item">Privacy</a></li>
+                <li><button id="donate-btn-nav" class="nav-item nav-cta">Donasi ❤️</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>Watermark KTP &<br>Tanda Tangan Online</h1>
+            <p>Solusi aman untuk melindungi identitas Anda. Semua proses dilakukan di browser tanpa mengirim data ke
+                server.</p>
+            <div class="cta-group">
+                <a href="watermark.html" class="neu-btn primary">Mulai Watermark</a>
+                <a href="signature.html" class="neu-btn accent" style="margin-left: 20px;">Buat Tanda Tangan</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="container features-grid">
+        <div class="neu-card feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Watermark KTP</h3>
+            <p>Tambahkan teks watermark pada scan KTP Anda untuk mencegah penyalahgunaan data saat verifikasi online.
+            </p>
+            <a href="watermark.html" class="neu-btn">Coba Sekarang</a>
+        </div>
+
+        <div class="neu-card feature-card">
+            <div class="feature-icon">✍️</div>
+            <h3>Tanda Tangan Digital</h3>
+            <p>Buat tanda tangan digital transparan dengan mudah. Atur warna dan ketebalan sesuai kebutuhan.</p>
+            <a href="signature.html" class="neu-btn">Buat TTD</a>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <div class="container">
+            <h2>Keamanan Terjamin</h2>
+            <div class="trust-badges">
+                <div class="trust-badge">🔒 100% Client-Side</div>
+                <div class="trust-badge">🚫 Tanpa Upload Server</div>
+                <div class="trust-badge">⚡ Tanpa Login</div>
+                <div class="trust-badge">🇮🇩 Karya Lokal</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="guide.html">Cara Pakai</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="#" id="donate-btn-footer">Donasi</a>
+            </div>
+            <p>Aplikasi ini berjalan sepenuhnya di sisi pengguna. Data Anda aman.</p>
+        </div>
+    </footer>
+
+    <!-- Donation Modal -->
+    <div class="modal-overlay" id="donation-modal">
+        <div class="neu-card modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 class="text-center mb-20">Dukung Kami ❤️</h3>
+            <p class="text-center mb-20" style="color: var(--text-secondary);">Bantu kami menjaga server tetap... eh,
+                tidak ada server! Bantu kami beli kopi untuk coding.</p>
+
+            <div class="neu-input flex-center mb-20" style="background: #e0e5ec; min-height: 150px;">
+                <!-- QRIS Placeholder -->
+                <p>QRIS Placeholder</p>
+            </div>
+
+            <p class="text-center mb-20" style="font-size: 0.9rem;">Atau transfer ke:</p>
+            <div class="neu-input flex-center" style="justify-content: space-between;">
+                <span>BCA 1234567890</span>
+                <button class="neu-btn" style="padding: 4px 10px; font-size: 0.8rem;">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        // Donation Modal
+        const donationModal = document.getElementById('donation-modal');
+        const donateBtns = [document.getElementById('donate-btn-nav'), document.getElementById('donate-btn-footer')];
+        const closeModal = document.querySelector('.close-modal');
+
+        donateBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    donationModal.style.display = 'flex';
+                });
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            donationModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target == donationModal) {
+                donationModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
