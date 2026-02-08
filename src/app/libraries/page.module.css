@@ -73,7 +73,14 @@
     flex: 1;
 }
 
-.link {
+.links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.link,
+.githubLink {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +96,12 @@
     transition: all 0.2s;
 }
 
-.link:hover {
+.githubLink {
+    background: #f1f5f9;
+}
+
+.link:hover,
+.githubLink:hover {
     color: var(--primary-dark);
     transform: translateY(-2px);
 }
