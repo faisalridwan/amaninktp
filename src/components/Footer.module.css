@@ -136,105 +136,107 @@
     text-decoration: underline;
 }
 
+/* CTA Section - Card Style */
+.ctaSection {
+    /* Transparent wrapper */
+    padding: 0 0 40px;
+    margin-top: -40px;
+    /* Slight offset if needed, or just standard padding */
+    position: relative;
+    z-index: 5;
+}
+
+.ctaContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 8px 8px 24px rgba(174, 186, 202, 0.15), -8px -8px 24px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.ctaText h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.ctaText p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.ctaButtons {
+    display: flex;
+    gap: 16px;
+}
+
+.btnCtaPrimary,
+.btnCtaSecondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btnCtaPrimary {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: white;
+    box-shadow: 4px 4px 12px rgba(174, 186, 202, 0.4), -4px -4px 12px rgba(255, 255, 255, 0.9);
+}
+
+.btnCtaPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 16px rgba(174, 186, 202, 0.5), -6px -6px 16px rgba(255, 255, 255, 1);
+}
+
+.btnCtaSecondary {
+    background: var(--bg-primary);
+    color: var(--primary-dark);
+    box-shadow: 4px 4px 12px rgba(174, 186, 202, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.8);
+}
+
+.btnCtaSecondary:hover {
+    transform: translateY(-2px);
+    background: var(--bg-secondary);
+}
+
 @media (max-width: 900px) {
-
-    /* CTA Section */
-    .ctaSection {
-        background: linear-gradient(135deg, #E3EFFA 0%, #F5F7FA 100%);
-        border-bottom: 1px solid rgba(168, 197, 240, 0.4);
-        padding: 60px 0;
-        margin-bottom: 60px;
-    }
-
     .ctaContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 32px;
-    }
-
-    .ctaText h2 {
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0 0 8px;
-    }
-
-    .ctaText p {
-        font-size: 16px;
-        color: var(--text-secondary);
-        margin: 0;
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
     }
 
     .ctaButtons {
-        display: flex;
-        gap: 16px;
-    }
-
-    .btnCtaPrimary,
-    .btnCtaSecondary {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 14px;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    .btnCtaPrimary {
-        background: linear-gradient(135deg, #4CAF50, #66BB6A);
-        color: white;
-        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-    }
-
-    .btnCtaPrimary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-    }
-
-    .btnCtaSecondary {
-        background: white;
-        color: var(--primary-dark);
-        box-shadow: 2px 2px 6px rgba(174, 186, 202, 0.2), -2px -2px 6px rgba(255, 255, 255, 0.8);
-    }
-
-    .btnCtaSecondary:hover {
-        transform: translateY(-2px);
-        background: #F8FAFC;
-    }
-
-    @media (max-width: 900px) {
-        .ctaContainer {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .ctaButtons {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .footerContent {
         grid-template-columns: 1fr;
         gap: var(--space-xl);
         text-align: center;
-        /* Center align for tablet/mobile */
     }
 
     .brand {
         max-width: 100%;
-        /* Full width */
         margin: 0 auto;
     }
 
     .linksGrid {
         grid-template-columns: repeat(2, 1fr);
         text-align: left;
-        /* Keep links left aligned relative to their column if preferred, or center */
         max-width: 500px;
         margin: 0 auto;
     }

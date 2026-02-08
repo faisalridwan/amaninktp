@@ -174,20 +174,6 @@ export default function AboutPage() {
                         <Link href="/libraries" className={styles.textLink}>Lihat Perpustakaan →</Link>
                     </div>
                 </section>
-
-                {/* CTA */}
-                <section className={styles.ctaSection}>
-                    <h2>Siap Melindungi Dokumen Anda?</h2>
-                    <p>Gratis, aman, dan mudah digunakan. Tidak perlu daftar.</p>
-                    <div className={styles.ctaButtons}>
-                        <Link href="/" className={styles.ctaBtn}>
-                            <Shield size={18} /> Watermark Dokumen
-                        </Link>
-                        <Link href="/signature" className={styles.ctaBtnAlt}>
-                            <PenTool size={18} /> Tanda Tangan
-                        </Link>
-                    </div>
-                </section>
             </main>
 
             <Footer />
