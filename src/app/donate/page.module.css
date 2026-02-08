@@ -36,14 +36,6 @@
     margin-bottom: 40px;
 }
 
-.summary {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #475569;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
 /* Tabs */
 .tabsContainer {
     display: flex;
@@ -98,7 +90,7 @@
 
 /* Payment Cards */
 .paymentContent {
-    min-height: 520px;
+    min-height: 550px;
     display: flex;
     justify-content: center;
 }
@@ -133,39 +125,77 @@
     position: relative;
     width: 120px;
     height: 48px;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px;
 }
 
-.methodInstruction {
-    font-size: 15px;
-    color: #64748B;
+/* Amount Presets */
+.presetsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     margin-bottom: 24px;
-    line-height: 1.6;
 }
 
-/* QRIS Specific */
+.presetChip {
+    padding: 12px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    color: #64748B;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.presetChip:hover {
+    border-color: #4CAF50;
+    color: #4CAF50;
+    background: rgba(76, 175, 80, 0.02);
+}
+
+.presetChip.activeChip {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
 .amountInputWrapper {
     margin-bottom: 24px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .amountInput {
     width: 100%;
-    padding: 16px 24px;
-    border-radius: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid #4CAF50;
     background: white;
     font-size: 20px;
     font-weight: 800;
     color: #1E293B;
     text-align: center;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
     outline: none;
-    transition: all 0.2s;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
 }
 
-.amountInput:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+/* QRIS Section */
+.qrisVisual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .qrisContainer {
@@ -173,8 +203,6 @@
     padding: 30px;
     border-radius: 30px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    margin: 0 auto;
-    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -192,27 +220,85 @@
     text-transform: uppercase;
 }
 
+.downloadIconBtn {
+    background: #1E293B;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+}
+
+.downloadIconBtn:hover {
+    background: #0F172A;
+    transform: translateY(-2px);
+}
+
 .amountError {
     color: #E91E63;
     font-size: 13px;
-    font-weight: 600;
-    margin-top: 10px;
+    font-weight: 700;
+    margin: 20px 0;
 }
 
-/* Bank Specific */
-.bankInfo {
+/* Tutorial Box */
+.tutorialBox {
+    margin-top: 40px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.tutorialTitle {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1E293B;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tutorialSteps {
+    list-style-type: decimal;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tutorialSteps li {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.tutorialSteps li strong {
+    color: #1E293B;
+}
+
+/* Bank Display */
+.bankDisplay {
     margin: 30px 0;
 }
 
-.bankName {
-    font-size: 16px;
+.bankLabel {
+    font-size: 15px;
     font-weight: 700;
     color: #1E293B;
     display: block;
     margin-bottom: 12px;
 }
 
-.accountCard {
+.accountBox {
     display: inline-flex;
     align-items: center;
     gap: 15px;
@@ -222,117 +308,91 @@
     margin-bottom: 12px;
 }
 
-.accountNum {
-    font-family: monospace;
+.accountNumberText {
+    font-family: inherit;
     font-size: 24px;
     font-weight: 800;
     color: #1E293B;
     letter-spacing: 2px;
 }
 
-.inlineCopy {
+.copyIconButton {
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
     color: #64748B;
+    transition: all 0.2s;
 }
 
-.inlineCopy:hover {
-    color: #1E293B;
-    background: #f8fafc;
+.copyIconButton:hover {
     transform: scale(1.05);
+    background: #f8fafc;
+    color: #1E293B;
 }
 
-.accountHolder {
+.accountNameText {
     font-size: 14px;
     color: #64748B;
-    font-weight: 600;
+    font-weight: 700;
     display: block;
 }
 
-.bankNote {
-    font-size: 14px;
+.methodSmallNote {
+    font-size: 13px;
     color: #94A3B8;
-    font-style: italic;
     margin-top: 20px;
 }
 
-/* Intl Specific */
-.intlContent {
+/* Intl Visual */
+.intlVisual {
     margin: 40px 0;
 }
 
-.intlIcon {
+.globeIcon {
     color: #0070BA;
     opacity: 0.1;
     margin-bottom: 20px;
 }
 
-.intlContent p {
+.intlVisual p {
     font-size: 15px;
     color: #475569;
     line-height: 1.6;
 }
 
-/* Buttons */
-.actionBtn,
-.paypalAction {
+.paypalMainBtn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
     padding: 16px;
-    border-radius: 18px;
-    font-weight: 700;
-    font-size: 15px;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.actionBtn {
-    background: #1E293B;
-    color: white;
-    margin-top: 20px;
-}
-
-.actionBtn:hover {
-    background: #0F172A;
-    transform: translateY(-2px);
-}
-
-.actionBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.paypalAction {
     background: #0070BA;
     color: white;
+    border-radius: 18px;
+    font-weight: 700;
     text-decoration: none;
+    transition: all 0.2s;
 }
 
-.paypalAction:hover {
+.paypalMainBtn:hover {
     background: #005EA6;
     transform: translateY(-2px);
 }
 
-/* Coming Soon */
-.comingSoonContainer {
+/* Note Container */
+.footerNoteContainer {
     text-align: center;
     margin-top: 40px;
 }
 
-.comingSoonBadge {
+.comingSoonPill {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -344,8 +404,8 @@
     font-weight: 600;
 }
 
-/* Footer Section */
-.thankYouSection {
+/* Appreciation Section */
+.appreciationSection {
     margin-top: 100px;
     text-align: center;
     padding: 60px 40px;
@@ -353,7 +413,7 @@
     border-radius: 40px;
 }
 
-.thankYouTitle {
+.appreciationTitle {
     font-size: 32px;
     font-weight: 900;
     color: #1E293B;
@@ -364,53 +424,12 @@
     gap: 16px;
 }
 
-.thankYouDesc {
+.appreciationDesc {
     font-size: 17px;
     color: #475569;
     line-height: 1.8;
     max-width: 600px;
     margin: 0 auto;
-}
-
-/* FAQ */
-.faqSection {
-    margin-top: 100px;
-}
-
-.faqTitle {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1E293B;
-    margin-bottom: 40px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.faqGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-}
-
-.faqCard {
-    padding: 30px;
-    background: white;
-    border-radius: 24px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.faqCard h4 {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1E293B;
-    margin-bottom: 15px;
-}
-
-.faqCard p {
-    font-size: 14px;
-    color: #64748B;
-    line-height: 1.6;
 }
 
 @media (max-width: 640px) {
@@ -422,17 +441,11 @@
         font-size: 32px;
     }
 
-    .tabsContainer {
-        width: 100%;
-        overflow-x: auto;
-        justify-content: flex-start;
+    .presetsGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .paymentCard {
-        padding: 30px 20px;
-    }
-
-    .accountNum {
+    .accountNumberText {
         font-size: 20px;
     }
 }

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
-import { HelpCircle, Globe, Sparkles, Copy, Check, Info, Download, Coffee, Heart } from 'lucide-react'
+import { HelpCircle, Sparkles, Copy, Check, Download, Heart, Globe, PlayCircle } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -20,7 +20,7 @@ function crc16ccitt(str) {
             } else {
                 crc = crc << 1;
             }
-            crc = crc & 0xFFFF; // Ensure 16-bit
+            crc = crc & 0xFFFF;
         }
     }
     return crc.toString(16).toUpperCase().padStart(4, '0');
@@ -29,19 +29,15 @@ function crc16ccitt(str) {
 // QRIS Generation logic
 function generateQRIS(baseString, amount) {
     if (!amount || amount <= 0) return baseString;
-
     let cleanBase = baseString;
     const crcIndex = baseString.lastIndexOf("6304");
     if (crcIndex !== -1) {
         cleanBase = baseString.substring(0, crcIndex);
     }
-
     const amountStr = amount.toString();
     const amountLen = amountStr.length.toString().padStart(2, '0');
     const amountTag = `54${amountLen}${amountStr}`;
-
     let injectedString = cleanBase;
-
     if (cleanBase.includes("5303360")) {
         injectedString = cleanBase.replace("5303360", "5303360" + amountTag);
     } else if (cleanBase.includes("5802ID")) {
@@ -49,7 +45,6 @@ function generateQRIS(baseString, amount) {
     } else {
         injectedString = cleanBase + amountTag;
     }
-
     const stringToSign = injectedString + "6304";
     const crc = crc16ccitt(stringToSign);
     return stringToSign + crc;
@@ -58,24 +53,23 @@ function generateQRIS(baseString, amount) {
 const BASE_QRIS = "00020101021126610014COM.GO-JEK.WWW01189360091435688656990210G5688656990303UMI51440014ID.CO.QRIS.WWW0215ID10243341199880303UMI5204581253033605802ID5914qreatip studio6013JAKARTA TIMUR61051311062070703A01630460A8";
 
 export default function DonatePage() {
-    const [amount, setAmount] = useState('10000')
+    const [amount, setAmount] = useState('20000')
+    const [isCustomAmount, setIsCustomAmount] = useState(false)
     const [activeTab, setActiveTab] = useState('qris')
     const [copied, setCopied] = useState(false)
 
-    const faqs = [
-        {
-            q: "Mengapa dukungan Anda sangat berarti bagi AmaninKTP?",
-            a: "AmaninKTP hadir sebagai solusi gratis dan terbuka untuk membantu masyarakat melindungi privasi dokumen mereka. Namun, operasional infrastruktur digital tetap membutuhkan biaya rutin (domain, hosting, dsb). Dukungan Anda sangat membantu keberlangsungan alat ini."
-        },
-        {
-            q: "Ke mana alokasi dana donasi disalurkan?",
-            a: "Setiap Rupiah dialokasikan secara transparan untuk kebutuhan teknis proyek, seperti biaya server, riset fitur keamanan, dan pemeliharaan sistem agar tetap bisa digunakan gratis oleh semua orang."
-        },
-        {
-            q: "Apakah AmaninKTP benar-benar akan tetap gratis selamanya?",
-            a: "Tentu saja. Komitmen utama kami adalah menyediakan alat privasi yang bisa diakses siapa pun tanpa hambatan biaya. Donasi adalah cara komunitas mendukung komitmen ini."
-        }
+    const presets = [
+        { label: 'Rp20.000', value: '20000' },
+        { label: 'Rp30.000', value: '30000' },
+        { label: 'Rp40.000', value: '40000' },
+        { label: 'Rp50.000', value: '50000' },
+        { label: 'Rp100.000', value: '100000' }
     ]
+
+    const handlePresetClick = (val) => {
+        setAmount(val)
+        setIsCustomAmount(false)
+    }
 
     const formatCurrency = (val) => {
         const num = val.toString().replace(/\D/g, '')
@@ -99,23 +93,19 @@ export default function DonatePage() {
     const handleDownload = () => {
         const svg = document.getElementById('donation-qr');
         if (!svg) return;
-
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
-
         const serializer = new XMLSerializer();
         const svgStr = serializer.serializeToString(svg);
         const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
-
         img.onload = () => {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0);
-
             const pngUrl = canvas.toDataURL('image/png');
             const downloadLink = document.createElement('a');
             downloadLink.href = pngUrl;
@@ -125,7 +115,6 @@ export default function DonatePage() {
             document.body.removeChild(downloadLink);
             URL.revokeObjectURL(url);
         };
-
         img.src = url;
     };
 
@@ -181,45 +170,73 @@ export default function DonatePage() {
                                             <div className={styles.cardHeaderLogo}>
                                                 <Image src="/images/logos/qris.svg" alt="QRIS" fill style={{ objectFit: 'contain' }} />
                                             </div>
-                                            <p className={styles.methodInstruction}>
-                                                Scan menggunakan aplikasi e-wallet atau m-banking pilihan Anda.
-                                            </p>
 
-                                            <div className={styles.amountInputWrapper}>
-                                                <input
-                                                    type="text"
-                                                    className={styles.amountInput}
-                                                    value={formatCurrency(amount)}
-                                                    onChange={(e) => setAmount(e.target.value.replace(/\D/g, ''))}
-                                                    placeholder="Minimal Rp 1.000"
-                                                />
+                                            <div className={styles.presetsGrid}>
+                                                {presets.map((p) => (
+                                                    <button
+                                                        key={p.value}
+                                                        className={`${styles.presetChip} ${amount === p.value && !isCustomAmount ? styles.activeChip : ''}`}
+                                                        onClick={() => handlePresetClick(p.value)}
+                                                    >
+                                                        {p.label}
+                                                    </button>
+                                                ))}
+                                                <button
+                                                    className={`${styles.presetChip} ${isCustomAmount ? styles.activeChip : ''}`}
+                                                    onClick={() => setIsCustomAmount(true)}
+                                                >
+                                                    Custom
+                                                </button>
                                             </div>
 
-                                            {amount && parseInt(amount) >= 1000 ? (
-                                                <div className={styles.qrisContainer}>
-                                                    <QRCodeSVG
-                                                        id="donation-qr"
-                                                        value={qrisValue}
-                                                        size={200}
-                                                        level="M"
-                                                        includeMargin={false}
+                                            {isCustomAmount && (
+                                                <div className={styles.amountInputWrapper}>
+                                                    <input
+                                                        type="text"
+                                                        className={styles.amountInput}
+                                                        value={formatCurrency(amount)}
+                                                        onChange={(e) => setAmount(e.target.value.replace(/\D/g, ''))}
+                                                        placeholder="Masukkan jumlah"
+                                                        autoFocus
                                                     />
-                                                    <div className={styles.qrisBranding}>
-                                                        <Sparkles size={14} />
-                                                        <span>qreatip studio</span>
-                                                    </div>
                                                 </div>
-                                            ) : (
-                                                <div className={styles.amountError}>Minimal donasi Rp 1.000</div>
                                             )}
 
-                                            <button
-                                                onClick={handleDownload}
-                                                disabled={!amount || parseInt(amount) < 1000}
-                                                className={styles.actionBtn}
-                                            >
-                                                <Download size={18} /> Simpan QR
-                                            </button>
+                                            {amount && parseInt(amount) >= 1000 ? (
+                                                <div className={styles.qrisVisual}>
+                                                    <div className={styles.qrisContainer}>
+                                                        <QRCodeSVG
+                                                            id="donation-qr"
+                                                            value={qrisValue}
+                                                            size={200}
+                                                            level="M"
+                                                            includeMargin={false}
+                                                        />
+                                                        <div className={styles.qrisBranding}>
+                                                            <Sparkles size={14} />
+                                                            <span>qreatip studio</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <button onClick={handleDownload} className={styles.downloadIconBtn}>
+                                                        <Download size={20} /> Simpan QR
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className={styles.amountError}>Minimal Rp 1.000</div>
+                                            )}
+
+                                            <div className={styles.tutorialBox}>
+                                                <h4 className={styles.tutorialTitle}>
+                                                    <PlayCircle size={18} /> Cara Pembayaran:
+                                                </h4>
+                                                <ol className={styles.tutorialSteps}>
+                                                    <li>Buka aplikasi e-wallet (GoPay, OVO, Dana) atau m-banking Anda.</li>
+                                                    <li>Pilih menu <strong>Scan / Bayar</strong> dan arahkan kamera ke kode QR di atas.</li>
+                                                    <li>Pastikan nama penerima yang muncul adalah <strong>qreatip studio</strong>.</li>
+                                                    <li>Masukkan PIN dan selesaikan transaksi.</li>
+                                                </ol>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -229,22 +246,20 @@ export default function DonatePage() {
                                         <div className={styles.cardHeaderLogo}>
                                             <Image src="/images/logos/jago.svg" alt="Bank Jago" fill style={{ objectFit: 'contain' }} />
                                         </div>
-                                        <div className={styles.bankInfo}>
-                                            <span className={styles.bankName}>PT Bank Jago Tbk</span>
-                                            <div className={styles.accountCard}>
-                                                <span className={styles.accountNum}>105003774949</span>
+                                        <div className={styles.bankDisplay}>
+                                            <span className={styles.bankLabel}>PT Bank Jago Tbk</span>
+                                            <div className={styles.accountBox}>
+                                                <span className={styles.accountNumberText}>105003774949</span>
                                                 <button
-                                                    className={styles.inlineCopy}
+                                                    className={styles.copyIconButton}
                                                     onClick={() => handleCopy('105003774949')}
                                                 >
-                                                    {copied ? <Check size={16} /> : <Copy size={16} />}
+                                                    {copied ? <Check size={18} /> : <Copy size={18} />}
                                                 </button>
                                             </div>
-                                            <span className={styles.accountHolder}>A.N. Faisal Ridwan Siregar</span>
+                                            <span className={styles.accountNameText}>A.N. Faisal Ridwan Siregar</span>
                                         </div>
-                                        <p className={styles.bankNote}>
-                                            Dukungan langsung via transfer antar bank.
-                                        </p>
+                                        <p className={styles.methodSmallNote}>Transfer antar bank tersedia 24/7.</p>
                                     </div>
                                 )}
 
@@ -253,46 +268,32 @@ export default function DonatePage() {
                                         <div className={styles.cardHeaderLogo}>
                                             <Image src="/images/logos/paypal.svg" alt="PayPal" fill style={{ objectFit: 'contain' }} />
                                         </div>
-                                        <div className={styles.intlContent}>
-                                            <Globe size={48} className={styles.intlIcon} />
-                                            <p>Dukungan dari luar negeri menggunakan PayPal yang aman.</p>
+                                        <div className={styles.intlVisual}>
+                                            <Globe size={48} className={styles.globeIcon} />
+                                            <p>Metode ini disarankan untuk pendukung dari luar Indonesia.</p>
                                         </div>
-                                        <a href="https://paypal.me/faisalridwan" target="_blank" rel="noopener noreferrer" className={styles.paypalAction}>
-                                            <Heart size={18} /> Dukung via PayPal
+                                        <a href="https://paypal.me/faisalridwan" target="_blank" rel="noopener noreferrer" className={styles.paypalMainBtn}>
+                                            <Heart size={18} /> Donasi via PayPal
                                         </a>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div className={styles.comingSoonContainer}>
-                            <div className={styles.comingSoonBadge}>
+                        <div className={styles.footerNoteContainer}>
+                            <div className={styles.comingSoonPill}>
                                 <Sparkles size={14} /> Metode lainnya segera hadir
                             </div>
                         </div>
                     </div>
 
-                    <section className={styles.thankYouSection}>
-                        <h2 className={styles.thankYouTitle}>
+                    <section className={styles.appreciationSection}>
+                        <h2 className={styles.appreciationTitle}>
                             <Sparkles size={32} /> Terima Kasih
                         </h2>
-                        <p className={styles.thankYouDesc}>
-                            Dukungan Anda membantu kami menjaga AmaninKTP tetap gratis dan aman bagi seluruh masyarakat Indonesia. Setiap kontribusi sangat berarti bagi keberlangsungan proyek ini.
+                        <p className={styles.appreciationDesc}>
+                            Setiap bentuk dukungan membantu kami memastikan AmaninKTP tetap gratis, tanpa iklan, dan selalu aman untuk privasi masyarakat Indonesia.
                         </p>
-                    </section>
-
-                    <section className={styles.faqSection}>
-                        <h2 className={styles.faqTitle}>
-                            <HelpCircle size={24} /> FAQ
-                        </h2>
-                        <div className={styles.faqGrid}>
-                            {faqs.map((faq, i) => (
-                                <div key={i} className={styles.faqCard}>
-                                    <h4>{faq.q}</h4>
-                                    <p>{faq.a}</p>
-                                </div>
-                            ))}
-                        </div>
                     </section>
                 </div>
             </main>
