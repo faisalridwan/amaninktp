@@ -11,7 +11,7 @@ export default function Navbar({ onDonateClick }) {
     const pathname = usePathname()
 
     const navItems = [
-        { href: '/', label: 'Watermark KTP', icon: FileImage },
+        { href: '/', label: 'Watermark Dokumen', icon: FileImage },
         { href: '/signature', label: 'Tanda Tangan', icon: PenTool },
         { href: '/guide', label: 'Cara Pakai', icon: BookOpen },
         { href: '/privacy', label: 'Privacy', icon: Shield },

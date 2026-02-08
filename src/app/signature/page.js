@@ -356,8 +356,9 @@ export default function SignaturePage() {
 
 
     const handlePageMouseDown = (e, pageIndex) => {
-        // Only start selection if we have an active signature and not clicking existing one
-        if (!activeSignatureId || selectedSigIndex !== null) return
+        // Only start selection if we have an active signature
+        // We allow clicking background even if a sig is selected (it will just deselect it)
+        if (!activeSignatureId) return
 
         // Prevent default text selection
         if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
