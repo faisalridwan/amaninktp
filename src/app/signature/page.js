@@ -305,17 +305,31 @@ export default function SignaturePage() {
         // Default to provided page index or visible page
         const targetPageIndex = pageIndex !== undefined ? pageIndex : getVisiblePageIndex();
 
+        let defaultX = 100;
+        let defaultY = 100;
+
+        // If triggered from button, place near bottom-right
+        if (customRect?.fromButton) {
+            const canvas = pageCanvasRefs.current[targetPageIndex];
+            if (canvas) {
+                // Button is at bottom-right. Place signature slightly above and to the left.
+                // Signature default size is 200x80.
+                defaultX = Math.max(0, canvas.width - 250);
+                defaultY = Math.max(0, canvas.height - 150);
+            }
+        }
+
         let newSig = {
             id: Date.now(),
             pageIndex: targetPageIndex,
             dataUrl: sig.dataUrl,
             width: 200,
             height: 80,
-            x: 100, // Default position
-            y: 100  // Default position
+            x: defaultX,
+            y: defaultY
         }
 
-        if (customRect) {
+        if (customRect && !customRect.fromButton) {
             newSig.x = customRect.x
             newSig.y = customRect.y
             newSig.width = customRect.width
@@ -970,7 +984,7 @@ export default function SignaturePage() {
                                             {activeSignatureId && (
                                                 <div className={styles.addSigToPage}>
                                                     <button
-                                                        onClick={() => addSignatureToPage(activeSignatureId, pageIndex)}
+                                                        onClick={() => addSignatureToPage(activeSignatureId, pageIndex, { fromButton: true })}
                                                         title="Tambah tanda tangan"
                                                     >
                                                         <Plus size={14} /> Tambah Tanda Tangan
