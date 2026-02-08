@@ -12,8 +12,8 @@ export default function JsonLd() {
         },
         description: 'Aplikasi web gratis untuk membuat watermark KTP dan tanda tangan digital secara aman langsung di browser.',
         featureList: 'Watermark KTP, Tanda Tangan Digital, Edit PDF, Client-side Processing',
-        screenshot: 'https://amaninktp.qreatip.com/images/og-image.jpg',
-        url: 'https://amaninktp.qreatip.com',
+        screenshot: 'https://amanindata.qreatip.com/images/og-image.jpg',
+        url: 'https://amanindata.qreatip.com',
         author: {
             '@type': 'Person',
             name: 'Faisal Ridwan',

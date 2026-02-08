@@ -441,11 +441,129 @@
     margin-bottom: 20px;
 }
 
-/* Dark Mode */
+/* ==================== DARK MODE ==================== */
+
+/* Upload Area Dark */
+:global([data-theme="dark"]) .uploadArea {
+    background: var(--bg-secondary);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+:global([data-theme="dark"]) .uploadArea:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary-color);
+}
+
+:global([data-theme="dark"]) .iconCircle {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.6), -8px -8px 20px rgba(51, 65, 85, 0.15);
+    color: #818CF8;
+}
+
+:global([data-theme="dark"]) .supportedTypes span {
+    background: rgba(255, 255, 255, 0.1);
+    color: #94A3B8;
+}
+
+/* Cards & Workspace Dark */
 :global([data-theme="dark"]) .card,
 :global([data-theme="dark"]) .previewCard {
     background: var(--bg-secondary);
+    box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.5), -6px -6px 20px rgba(51, 65, 85, 0.08);
+}
+
+:global([data-theme="dark"]) .cardTabHeader {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+:global([data-theme="dark"]) .tabBtn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #E2E8F0;
+}
+
+/* Preset Buttons Dark */
+:global([data-theme="dark"]) .presetBtn {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme="dark"]) .presetBtn:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: #818CF8;
+}
+
+:global([data-theme="dark"]) .presetBtn.active {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #818CF8;
+    box-shadow: 0 0 0 1px #818CF8;
+}
+
+:global([data-theme="dark"]) .presetPercent {
+    background: rgba(99, 102, 241, 0.2);
+    color: #A5B4FC;
+}
+
+/* Stats Dark */
+:global([data-theme="dark"]) .saveBadge {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+}
+
+/* Feature Grid Dark */
+:global([data-theme="dark"]) .featureItem {
+    background: var(--bg-secondary);
+    box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .featureIcon {
+    color: #818CF8;
+}
+
+/* Trust Section Dark */
+:global([data-theme="dark"]) .trust {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .trustItem {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
     box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5), -6px -6px 15px rgba(51, 65, 85, 0.1);
+    color: #CBD5E1;
+}
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 1024px) {
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .uploadArea {
+        padding: 50px 25px;
+        margin: 20px auto;
+    }
+
+    .featureGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .trust {
+        padding: 40px 0 15px;
+        gap: 10px;
+    }
+
+    .trustItem {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
 }
 
 :global([data-theme="dark"]) .presetBtn {

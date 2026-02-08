@@ -3,13 +3,13 @@
 **AmaninKTP** is a free, secure, and open-source web-based tool that allows you to protect your sensitive documents (ID Cards/KTP, Driver's License, Passport, etc.) by adding custom watermarks and precise digital signatures.
 
 > [!IMPORTANT]  
-> **Official Website:** [https://amaninktp.qreatip.com/](https://amaninktp.qreatip.com/)
+> **Official Website:** [https://amanindata.qreatip.com/](https://amanindata.qreatip.com/)
 
 Every document manipulation process is performed **100% locally in your browser**. Your data and documents are never sent to our servers, ensuring absolute confidentiality of your personal information.
 
 ---
 
-[![Main Website](https://img.shields.io/badge/Main%20Website-amaninktp.qreatip.com-4CAF50?style=for-the-badge&logo=google-chrome&logoColor=white)](https://amaninktp.qreatip.com/)
+[![Main Website](https://img.shields.io/badge/Main%20Website-amanindata.qreatip.com-4CAF50?style=for-the-badge&logo=google-chrome&logoColor=white)](https://amanindata.qreatip.com/)
 [![Next.js](https://img.shields.io/badge/Framework-Next.js%2015-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -100,7 +100,7 @@ npm install
 ## 📜 Changelog
 
 Want to know about the latest updates? Visit our changelog page directly in the application:
-[**Changelog - AmaninKTP**](https://amaninktp.qreatip.com/changelog)
+[**Changelog - AmaninKTP**](https://amanindata.qreatip.com/changelog)
 
 ---
 
@@ -109,7 +109,7 @@ Want to know about the latest updates? Visit our changelog page directly in the 
 We are very open to contributions! Please create an **Issue** to report bugs or a **Pull Request** to add new features.
 
 If you find this tool helpful, help us keep the server (hosting) and development running by making a donation:
-👉 [**Support AmaninKTP via Donation**](https://amaninktp.qreatip.com/donate)
+👉 [**Support AmaninKTP via Donation**](https://amanindata.qreatip.com/donate)
 
 ---
 

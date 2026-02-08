@@ -119,6 +119,12 @@ export default function RedactionTool() {
             };
             reader.readAsDataURL(file);
         }
+
+        // Auto-scroll to workspace
+        setTimeout(() => {
+            const workspace = document.querySelector(`.${styles.workspace}`);
+            if (workspace) workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     };
 
     // Rendering Logic

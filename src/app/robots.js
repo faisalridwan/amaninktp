@@ -6,6 +6,6 @@ export default function robots() {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: 'https://amaninktp.qreatip.com/sitemap.xml',
+        sitemap: 'https://amanindata.qreatip.com/sitemap.xml',
     }
 }

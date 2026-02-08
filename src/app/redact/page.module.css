@@ -376,6 +376,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     transition: background 0.2s;
 }
@@ -399,4 +400,226 @@
 .formatSelect option {
     background: var(--bg-primary);
     color: var(--text-primary);
+}
+
+/* Loading Overlay */
+.loadingOverlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* ==================== DARK MODE ==================== */
+
+/* Upload Area Dark */
+:global([data-theme="dark"]) .uploadArea {
+    background: var(--bg-secondary);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+:global([data-theme="dark"]) .uploadArea:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--primary-color);
+}
+
+:global([data-theme="dark"]) .iconCircle {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.6), -8px -8px 20px rgba(51, 65, 85, 0.15);
+    color: #818CF8;
+}
+
+:global([data-theme="dark"]) .safeTag {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+}
+
+/* Control Panel Dark */
+:global([data-theme="dark"]) .controlPanel {
+    background: var(--bg-secondary);
+    box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.5), -6px -6px 20px rgba(51, 65, 85, 0.08);
+}
+
+:global([data-theme="dark"]) .toolBtn.active {
+    background: rgba(99, 102, 241, 0.2);
+    color: #A5B4FC;
+}
+
+:global([data-theme="dark"]) .iconBtn {
+    background: #1E293B;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #94A3B8;
+}
+
+:global([data-theme="dark"]) .iconBtn:hover:not(:disabled) {
+    background: #334155;
+    color: white;
+}
+
+:global([data-theme="dark"]) .resetBtn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+}
+
+:global([data-theme="dark"]) .divider {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Viewer Dark */
+:global([data-theme="dark"]) .viewerContainer {
+    background: #0F172A;
+    box-shadow: inset 6px 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+:global([data-theme="dark"]) .canvasContainer {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Color Group Dark */
+:global([data-theme="dark"]) .colorSwatch {
+    border-color: #334155;
+}
+
+:global([data-theme="dark"]) .colorSwatch.active {
+    box-shadow: 0 0 0 2px #818CF8;
+}
+
+/* Trust Section Dark */
+:global([data-theme="dark"]) .trust {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme="dark"]) .trustItem {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.5), -6px -6px 15px rgba(51, 65, 85, 0.1);
+    color: #CBD5E1;
+}
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .uploadArea {
+        padding: 50px 25px;
+        margin: 20px auto;
+    }
+
+    .iconCircle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .workspace {
+        height: auto;
+        min-height: auto;
+    }
+
+    .controlPanel {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        position: relative;
+        top: 0;
+    }
+
+    .toolGroup,
+    .zoomGroup,
+    .actionGroup {
+        gap: 6px;
+    }
+
+    .toolBtn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .toolBtn span {
+        display: none;
+    }
+
+    .iconBtn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .divider {
+        display: none;
+    }
+
+    .colorGroup {
+        padding: 0 5px;
+        gap: 5px;
+    }
+
+    .colorSwatch {
+        width: 20px;
+        height: 20px;
+    }
+
+    .customColorInput {
+        width: 28px;
+        height: 28px;
+    }
+
+    .viewerContainer {
+        padding: 15px;
+        border-radius: 16px;
+    }
+
+    .downloadGroup {
+        border-radius: 10px;
+    }
+
+    .downloadBtnSplit {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .formatSelect {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+
+    .trust {
+        padding: 40px 0 15px;
+        gap: 10px;
+    }
+
+    .trustItem {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .uploadArea {
+        padding: 40px 20px;
+    }
+
+    .controlPanel {
+        padding: 10px;
+    }
+
+    .toolBtn {
+        padding: 6px 10px;
+    }
+
+    .zoomValue {
+        min-width: 40px;
+        font-size: 12px;
+    }
 }

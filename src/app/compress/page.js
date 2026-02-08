@@ -98,6 +98,12 @@ export default function ImageCompressor() {
             alert('Format file tidak didukung. Gunakan Gambar atau PDF.');
             setFile(null);
         }
+
+        // Auto-scroll to workspace
+        setTimeout(() => {
+            const workspace = document.querySelector(`.${styles.workspace}`);
+            if (workspace) workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     };
 
     const generatePdfPreviews = async (pdfFile) => {

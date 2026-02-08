@@ -7,7 +7,7 @@ export const metadata = {
     openGraph: {
         title: 'Tanda Tangan Digital Online Gratis - Aman & Cepat',
         description: 'Tool TTD digital gratis. Upload dokumen, buat tanda tangan, dan tempel langsung. Privasi terjaga 100%.',
-        url: 'https://amaninktp.qreatip.com/signature',
+        url: 'https://amanindata.qreatip.com/signature',
     },
 }
 

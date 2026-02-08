@@ -18,7 +18,7 @@ export const metadata = {
     authors: [{ name: 'Faisal Ridwan', url: 'https://qreatip.com' }],
     creator: 'Faisal Ridwan',
     publisher: 'AmaninKTP',
-    metadataBase: new URL('https://amaninktp.qreatip.com'),
+    metadataBase: new URL('https://amanindata.qreatip.com'),
     alternates: {
         canonical: '/',
     },
@@ -26,7 +26,7 @@ export const metadata = {
         title: 'Watermark KTP Online & TTD Digital – Aman & Lokal',
         description: 'Cara aman buat watermark KTP dan tanda tangan digital langsung di browser tanpa upload data.',
         type: 'website',
-        url: 'https://amaninktp.qreatip.com',
+        url: 'https://amanindata.qreatip.com',
         siteName: 'AmaninKTP',
         locale: 'id_ID',
         images: [

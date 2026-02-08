@@ -81,7 +81,7 @@ export default function Home() {
 
     // Get final watermark text - all from textarea
     const getFinalWatermarkText = useCallback(() => {
-        return watermarkText.trim() || 'WATERMARK \n by amaninktp.qreatip.com'
+        return watermarkText.trim() || 'WATERMARK \n by amanindata.qreatip.com'
     }, [watermarkText])
 
     // Main draw function
@@ -450,7 +450,7 @@ export default function Home() {
     }
 
     // Download
-    const getFileName = (ext) => `${originalFileName || 'ktp'}-watermark by amaninktp.qreatip.com.${ext}`
+    const getFileName = (ext) => `${originalFileName || 'ktp'}-watermark by amanindata.qreatip.com.${ext}`
 
     const handleDownloadPNG = () => {
         if (!canvasRef.current || !imageLoaded) return

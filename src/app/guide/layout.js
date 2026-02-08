@@ -7,7 +7,7 @@ export const metadata = {
     openGraph: {
         title: 'Panduan Lengkap AmaninKTP',
         description: 'Tutorial cara aman memberi watermark pada KTP dan dokumen penting lainnya agar tidak disalahgunakan.',
-        url: 'https://amaninktp.qreatip.com/guide',
+        url: 'https://amanindata.qreatip.com/guide',
     },
 }
 

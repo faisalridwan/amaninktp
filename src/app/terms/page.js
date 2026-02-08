@@ -21,7 +21,7 @@ export default function TermsPage() {
                     <div className={styles.intro}>
                         <p>
                             Terms of Service ("Syarat", "Syarat Layanan") ini mengatur hubungan Anda dengan website
-                            https://amaninktp.qreatip.com ("Layanan") yang dioperasikan oleh AmaninKTP ("kami", "kita", atau "milik kami").
+                            https://amanindata.qreatip.com ("Layanan") yang dioperasikan oleh AmaninKTP ("kami", "kita", atau "milik kami").
                         </p>
                         <p className={styles.important}>
                             <strong>Harap baca Syarat Layanan ini dengan seksama sebelum menggunakan Layanan.</strong>

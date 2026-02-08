@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
                 <section className={`neu-card no-hover ${styles.content}`}>
                     <div className={styles.intro}>
                         <p>
-                            AmaninKTP ("kami", "kita", atau "milik kami") mengoperasikan website amaninktp.qreatip.com
+                            AmaninKTP ("kami", "kita", atau "milik kami") mengoperasikan website amanindata.qreatip.com
                             (selanjutnya disebut sebagai "Layanan"). Halaman ini memberitahu Anda tentang kebijakan kami
                             mengenai pengumpulan, penggunaan, dan pengungkapan data non-identifikasi pribadi ketika
                             Anda menggunakan Layanan kami dan pilihan-pilihan yang Anda miliki terkait dengan data tersebut.
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
                             Dengan menggunakan Layanan, Anda setuju dengan pengumpulan dan penggunaan informasi sesuai
                             dengan kebijakan ini. Kecuali ditentukan lain dalam Kebijakan Privasi ini, istilah-istilah
                             yang digunakan dalam Kebijakan Privasi ini memiliki arti yang sama seperti dalam Syarat dan
-                            Ketentuan kami, yang dapat diakses dari https://amaninktp.qreatip.com/terms/.
+                            Ketentuan kami, yang dapat diakses dari https://amanindata.qreatip.com/terms/.
                         </p>
                     </div>
 
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
                         <h3><FileText size={20} /> Definisi</h3>
                         <ul className={styles.definitions}>
                             <li>
-                                <strong>Layanan:</strong> merujuk pada Website amaninktp.qreatip.com.
+                                <strong>Layanan:</strong> merujuk pada Website amanindata.qreatip.com.
                             </li>
                             <li>
                                 <strong>Data Non-PII:</strong> informasi non-identifikasi pribadi adalah data yang tidak dapat
