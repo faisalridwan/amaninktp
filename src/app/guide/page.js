@@ -87,79 +87,107 @@ export default function GuidePage() {
                     <p className={styles.heroSubtitle}>Panduan lengkap mengamankan dokumen Anda dengan AmaninKTP</p>
                 </header>
 
-                <div className={styles.guidesGrid}>
-                    {/* Watermark Guide */}
-                    <div className={`neu-card no-hover ${styles.guideCard}`}>
-                        <div className={styles.cardHeader}>
-                            <Shield size={24} className={styles.iconBlue} />
-                            <h2>Panduan Watermark KTP</h2>
+                <div className={styles.guideWrapper}>
+                    {/* Sidebar Navigation */}
+                    <aside className={styles.sidebar}>
+                        <div className={styles.sidebarSticky}>
+                            <h3 className={styles.sidebarTitle}>Isi Konten</h3>
+                            <ul className={styles.sidebarNav}>
+                                <li>
+                                    <a href="#watermark-guide">
+                                        <Shield size={16} /> Watermark Dokumen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#signature-guide">
+                                        <MousePointer size={16} /> Tanda Tangan Digital
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#security-tips">
+                                        <Lightbulb size={16} /> Tips Keamanan
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div className={styles.stepList}>
-                            {watermarkSteps.map((step, index) => (
-                                <div key={index} className={styles.stepItem}>
-                                    <div className={styles.stepNumber}>{index + 1}</div>
-                                    <div className={styles.stepContent}>
-                                        <h3>{step.title}</h3>
-                                        <p>{step.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.cardFooter}>
-                            <a href="/" className={styles.actionBtn}>Coba Watermark Sekarang</a>
-                        </div>
-                    </div>
+                    </aside>
 
-                    {/* Signature Guide */}
-                    <div className={`neu-card no-hover ${styles.guideCard}`}>
-                        <div className={styles.cardHeader}>
-                            <MousePointer size={24} className={styles.iconBlue} />
-                            <h2>Panduan Tanda Tangan</h2>
+                    <div className={styles.contentArea}>
+                        <div className={styles.guidesGrid}>
+                            {/* Watermark Guide */}
+                            <div id="watermark-guide" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Shield size={24} className={styles.iconBlue} />
+                                    <h2>Panduan Watermark Dokumen</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {watermarkSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/" className={styles.actionBtn}>Coba Watermark Sekarang</a>
+                                </div>
+                            </div>
+
+                            {/*     Signature Guide */}
+                            <div id="signature-guide" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <MousePointer size={24} className={styles.iconBlue} />
+                                    <h2>Panduan Tanda Tangan</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {signatureSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/signature" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buat Tanda Tangan</a>
+                                </div>
+                            </div>
                         </div>
-                        <div className={styles.stepList}>
-                            {signatureSteps.map((step, index) => (
-                                <div key={index} className={styles.stepItem}>
-                                    <div className={styles.stepNumber}>{index + 1}</div>
-                                    <div className={styles.stepContent}>
-                                        <h3>{step.title}</h3>
-                                        <p>{step.desc}</p>
+
+                        {/* Tips Section */}
+                        <section id="security-tips" className={styles.tipsSection}>
+                            <h2 className={styles.sectionTitle}><Lightbulb size={24} /> Tips Keamanan Dokumen</h2>
+                            <div className={styles.tipsGrid}>
+                                <div className={styles.tipCard}>
+                                    <AlertTriangle size={24} className={styles.iconWarning} />
+                                    <div>
+                                        <h3>Jangan Polos</h3>
+                                        <p>Jangan pernah mengirim foto KTP/SIM "polos" tanpa watermark ke pihak yang tidak dikenal atau via chat sembarangan.</p>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                        <div className={styles.cardFooter}>
-                            <a href="/signature" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buat Tanda Tangan</a>
-                        </div>
+                                <div className={styles.tipCard}>
+                                    <Info size={24} className={styles.iconInfo} />
+                                    <div>
+                                        <h3>Tulis Tujuan Spesifik</h3>
+                                        <p>Di watermark, tuliskan: "UNTUK VERIFIKASI [NAMA_APLIKASI] SAJA". Ini mempersulit penyalahgunaan untuk aplikasi lain.</p>
+                                    </div>
+                                </div>
+                                <div className={styles.tipCard}>
+                                    <CheckCircle size={24} className={styles.iconSuccess} />
+                                    <div>
+                                        <h3>Posisi Strategis</h3>
+                                        <p>Pastikan watermark menutupi sebagian data penting (tapi tetap terbaca) agar tidak bisa dicrop atau dihapus dengan mudah.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
-
-                {/* Tips Section */}
-                <section className={styles.tipsSection}>
-                    <h2 className={styles.sectionTitle}><Lightbulb size={24} /> Tips Keamanan Dokumen</h2>
-                    <div className={styles.tipsGrid}>
-                        <div className={styles.tipCard}>
-                            <AlertTriangle size={24} className={styles.iconWarning} />
-                            <div>
-                                <h3>Jangan Polos</h3>
-                                <p>Jangan pernah mengirim foto KTP/SIM "polos" tanpa watermark ke pihak yang tidak dikenal atau via chat sembarangan.</p>
-                            </div>
-                        </div>
-                        <div className={styles.tipCard}>
-                            <Info size={24} className={styles.iconInfo} />
-                            <div>
-                                <h3>Tulis Tujuan Spesifik</h3>
-                                <p>Di watermark, tuliskan: "UNTUK VERIFIKASI [NAMA_APLIKASI] SAJA". Ini mempersulit penyalahgunaan untuk aplikasi lain.</p>
-                            </div>
-                        </div>
-                        <div className={styles.tipCard}>
-                            <CheckCircle size={24} className={styles.iconSuccess} />
-                            <div>
-                                <h3>Posisi Strategis</h3>
-                                <p>Pastikan watermark menutupi sebagian data penting (tapi tetap terbaca) agar tidak bisa dicrop atau dihapus dengan mudah.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
                 {/* FAQ */}
                 <section id="faq" className={styles.faqSection}>

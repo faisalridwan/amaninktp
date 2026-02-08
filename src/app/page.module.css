@@ -389,8 +389,17 @@
     background: white;
     border-radius: 12px;
     box-shadow: inset 2px 2px 6px rgba(174, 186, 202, 0.2), inset -2px -2px 6px rgba(255, 255, 255, 0.9);
-    min-height: 300px;
+    min-height: 400px;
+    /* Increased slightly */
     overflow: hidden;
+    position: relative;
+}
+
+.canvasContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .canvas {

@@ -7,6 +7,8 @@ import Footer from '@/components/Footer'
 import DonationModal from '@/components/DonationModal'
 import styles from './page.module.css'
 
+import WatermarkControls from '@/components/WatermarkControls'
+
 export default function Home() {
     const [isDonationOpen, setIsDonationOpen] = useState(false)
 
@@ -34,11 +36,10 @@ export default function Home() {
     // Single text states
     const [textPosition, setTextPosition] = useState({ x: 0, y: 0 })
     const [textScale, setTextScale] = useState(1)
-    const [isDragging, setIsDragging] = useState(false)
-    const [isResizing, setIsResizing] = useState(false)
-    const [isRotating, setIsRotating] = useState(false)
-    const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-    const [showTextBorder, setShowTextBorder] = useState(false)
+    const [textDimensions, setTextDimensions] = useState({ width: 0, height: 0 })
+    const [canvasMetrics, setCanvasMetrics] = useState({ width: 0, height: 0, scale: 1 })
+
+    // Removed old interactive states (isDragging etc) since handled by overlay
 
     const canvasRef = useRef(null)
     const cropCanvasRef = useRef(null)
@@ -137,34 +138,11 @@ export default function Home() {
                 ctx.fillText(line, 0, yOffset)
             })
 
-            if (showTextBorder && watermarkType === 'single') {
-                ctx.globalAlpha = 1
-                ctx.strokeStyle = '#5B8DEF'
-                ctx.lineWidth = 2
-                ctx.setLineDash([6, 4])
 
-                const maxWidth = Math.max(...lines.map(line => ctx.measureText(line).width))
-                const totalHeight = lines.length * lineHeight
-
-                ctx.strokeRect(-maxWidth / 2 - 12, -totalHeight / 2 - 12, maxWidth + 24, totalHeight + 24)
-
-                const handleSize = 8
-                ctx.fillStyle = '#5B8DEF'
-                ctx.setLineDash([])
-
-                ctx.fillRect(-maxWidth / 2 - 12 - handleSize / 2, -totalHeight / 2 - 12 - handleSize / 2, handleSize, handleSize)
-                ctx.fillRect(maxWidth / 2 + 12 - handleSize / 2, -totalHeight / 2 - 12 - handleSize / 2, handleSize, handleSize)
-                ctx.fillRect(-maxWidth / 2 - 12 - handleSize / 2, totalHeight / 2 + 12 - handleSize / 2, handleSize, handleSize)
-                ctx.fillRect(maxWidth / 2 + 12 - handleSize / 2, totalHeight / 2 + 12 - handleSize / 2, handleSize, handleSize)
-
-                ctx.beginPath()
-                ctx.arc(0, -totalHeight / 2 - 28, 6, 0, Math.PI * 2)
-                ctx.fill()
-            }
         }
 
         ctx.restore()
-    }, [uploadedImage, croppedImage, watermarkType, fontSize, fontFamily, rotation, opacity, color, textPosition, textScale, showTextBorder, getFinalWatermarkText])
+    }, [uploadedImage, croppedImage, watermarkType, fontSize, fontFamily, rotation, opacity, color, textPosition, textScale, getFinalWatermarkText])
 
     useEffect(() => {
         if (imageLoaded && !isCropping) draw()
@@ -259,75 +237,68 @@ export default function Home() {
 
     const cancelCrop = () => { setIsCropping(false); setCropStart(null); setCropEnd(null) }
 
-    // Canvas manipulation
-    const getCanvasCoords = (e) => {
-        const canvas = canvasRef.current
-        if (!canvas) return { x: 0, y: 0 }
-        const rect = canvas.getBoundingClientRect()
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY
-        return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height) }
-    }
-
-    const handleCanvasMouseDown = (e) => {
-        if (!imageLoaded || watermarkType !== 'single' || isCropping) return
-        e.preventDefault()
-        const coords = getCanvasCoords(e)
-        const distance = Math.sqrt(Math.pow(coords.x - textPosition.x, 2) + Math.pow(coords.y - textPosition.y, 2))
-
-        if (distance > fontSize * textScale * 1.5 && coords.y < textPosition.y - fontSize * textScale) {
-            setIsRotating(true); setDragStart(coords)
-        } else if (distance > fontSize * textScale * 0.8) {
-            setIsResizing(true); setDragStart({ ...coords, initialScale: textScale, initialDistance: distance })
-        } else {
-            setIsDragging(true); setDragStart(coords)
-        }
-        setShowTextBorder(true)
-    }
-
-    const handleCanvasMouseMove = (e) => {
+    // Measure text dimensions
+    useEffect(() => {
         if (watermarkType !== 'single') return
-        const coords = getCanvasCoords(e)
-        if (isDragging) {
-            setTextPosition(prev => ({ x: prev.x + coords.x - dragStart.x, y: prev.y + coords.y - dragStart.y }))
-            setDragStart(coords)
-        } else if (isResizing && dragStart.initialDistance) {
-            const dist = Math.sqrt(Math.pow(coords.x - textPosition.x, 2) + Math.pow(coords.y - textPosition.y, 2))
-            setTextScale(Math.max(0.3, Math.min(3, (dist / dragStart.initialDistance) * dragStart.initialScale)))
-        } else if (isRotating) {
-            setRotation(Math.round(Math.atan2(coords.y - textPosition.y, coords.x - textPosition.x) * 180 / Math.PI + 90))
-        }
-    }
 
-    const handleCanvasMouseUp = () => { setIsDragging(false); setIsResizing(false); setIsRotating(false) }
-    const handleCanvasMouseEnter = () => { if (watermarkType === 'single' && imageLoaded) setShowTextBorder(true) }
-    const handleCanvasMouseLeave = () => { setShowTextBorder(false); handleCanvasMouseUp() }
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        const text = getFinalWatermarkText()
+        const lines = text.split('\n')
+        const actualFontSize = fontSize // Base font size, scale handled by component
+
+        ctx.font = `bold ${actualFontSize}px "${fontFamily}", sans-serif`
+
+        const maxWidth = Math.max(...lines.map(line => ctx.measureText(line).width))
+        const lineHeight = actualFontSize * 1.3
+        const totalHeight = lines.length * lineHeight
+
+        setTextDimensions({ width: maxWidth, height: totalHeight })
+    }, [watermarkText, fontSize, fontFamily, watermarkType, getFinalWatermarkText])
+
+    // Measure canvas display size
+    useEffect(() => {
+        const updateMetrics = () => {
+            const canvas = canvasRef.current
+            if (!canvas) return
+            const rect = canvas.getBoundingClientRect()
+            setCanvasMetrics({
+                width: rect.width,
+                height: rect.height,
+                scale: rect.width / canvas.width
+            })
+        }
+
+        updateMetrics()
+        window.addEventListener('resize', updateMetrics)
+        return () => window.removeEventListener('resize', updateMetrics)
+    }, [imageLoaded, croppedImage, uploadedImage])
+
+    const handleWatermarkUpdate = (updates) => {
+        if (updates.x !== undefined) setTextPosition(prev => ({ ...prev, x: updates.x, y: updates.y }))
+        if (updates.rotation !== undefined) setRotation(Math.round(updates.rotation))
+        if (updates.scale !== undefined) setTextScale(updates.scale)
+    }
 
     // Download
     const getFileName = (ext) => `${originalFileName || 'ktp'}-watermark by amaninktp.qreatip.com.${ext}`
 
     const handleDownloadPNG = () => {
         if (!canvasRef.current || !imageLoaded) return
-        setShowTextBorder(false)
-        setTimeout(() => {
-            const link = document.createElement('a')
-            link.download = getFileName('png')
-            link.href = canvasRef.current.toDataURL('image/png')
-            link.click()
-        }, 50)
+        const link = document.createElement('a')
+        link.download = getFileName('png')
+        link.href = canvasRef.current.toDataURL('image/png')
+        link.click()
     }
 
     const handleDownloadPDF = async () => {
         if (!canvasRef.current || !imageLoaded) return
-        setShowTextBorder(false)
-        setTimeout(async () => {
-            const { jsPDF } = await import('jspdf')
-            const canvas = canvasRef.current
-            const pdfW = canvas.width * 0.264583, pdfH = canvas.height * 0.264583
-            const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? 'landscape' : 'portrait', unit: 'mm', format: [pdfW, pdfH] })
-            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfW, pdfH)
-            pdf.save(getFileName('pdf'))
-        }, 50)
+        const { jsPDF } = await import('jspdf')
+        const canvas = canvasRef.current
+        const pdfW = canvas.width * 0.264583, pdfH = canvas.height * 0.264583
+        const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? 'landscape' : 'portrait', unit: 'mm', format: [pdfW, pdfH] })
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfW, pdfH)
+        pdf.save(getFileName('pdf'))
     }
 
     const handleReset = () => {
@@ -466,8 +437,35 @@ export default function Home() {
                                 <span>Transparansi</span><span className={styles.val}>{Math.round(opacity * 100)}%</span>
                             </div>
                             <input type="range" min="0.05" max="1" step="0.05" value={opacity} onChange={(e) => setOpacity(+e.target.value)} className={styles.slider} />
-                        </div>
 
+                            {watermarkType === 'single' && (uploadedImage || croppedImage) && (
+                                <>
+                                    <div className={styles.sliderRow}>
+                                        <span>Posisi X</span><span className={styles.val}>{Math.round(textPosition.x)}px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max={(croppedImage || uploadedImage).width}
+                                        value={textPosition.x}
+                                        onChange={(e) => setTextPosition(prev => ({ ...prev, x: +e.target.value }))}
+                                        className={styles.slider}
+                                    />
+
+                                    <div className={styles.sliderRow}>
+                                        <span>Posisi Y</span><span className={styles.val}>{Math.round(textPosition.y)}px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max={(croppedImage || uploadedImage).height}
+                                        value={textPosition.y}
+                                        onChange={(e) => setTextPosition(prev => ({ ...prev, y: +e.target.value }))}
+                                        className={styles.slider}
+                                    />
+                                </>
+                            )}
+                        </div>
                         {/* Color */}
                         <div className={styles.section}>
                             <label className={styles.label}><Palette size={14} /> Warna</label>
@@ -505,12 +503,23 @@ export default function Home() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={styles.canvasWrap}
-                                onMouseDown={handleCanvasMouseDown} onMouseMove={handleCanvasMouseMove} onMouseUp={handleCanvasMouseUp}
-                                onMouseEnter={handleCanvasMouseEnter} onMouseLeave={handleCanvasMouseLeave}
-                                onTouchStart={handleCanvasMouseDown} onTouchMove={handleCanvasMouseMove} onTouchEnd={handleCanvasMouseUp}
-                            >
-                                <canvas ref={canvasRef} className={styles.canvas} style={{ display: imageLoaded ? 'block' : 'none' }} />
+                            <div className={styles.canvasWrap} ref={cropWrapperRef}>
+                                <div className={styles.canvasContainer} style={{ width: canvasMetrics.width, height: canvasMetrics.height }}>
+                                    <canvas ref={canvasRef} className={styles.canvas} style={{ display: imageLoaded ? 'block' : 'none' }} />
+
+                                    {imageLoaded && watermarkType === 'single' && (
+                                        <WatermarkControls
+                                            position={textPosition}
+                                            dimensions={textDimensions}
+                                            rotation={rotation}
+                                            scale={textScale}
+                                            displayScale={canvasMetrics.scale}
+                                            onUpdate={handleWatermarkUpdate}
+                                            isActive={true}
+                                        />
+                                    )}
+                                </div>
+
                                 {!imageLoaded && (
                                     <div className={styles.placeholder}>
                                         <FileImage size={48} strokeWidth={1} />

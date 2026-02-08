@@ -26,15 +26,77 @@
     margin: 0 auto;
 }
 
+/* Guides Layout */
+.guideWrapper {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 80px;
+    align-items: flex-start;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+}
+
+.sidebarSticky {
+    background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 4px 4px 10px rgba(174, 186, 202, 0.25), -4px -4px 10px rgba(255, 255, 255, 0.8);
+}
+
+.sidebarTitle {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 16px 4px;
+    letter-spacing: 1px;
+}
+
+.sidebarNav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebarNav li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.sidebarNav li a:hover {
+    background: rgba(168, 197, 240, 0.2);
+    color: var(--primary-dark);
+    transform: translateX(5px);
+}
+
+.contentArea {
+    flex: 1;
+    min-width: 0;
+}
+
 /* Guides Grid */
 .guidesGrid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 48px;
-    margin-bottom: 80px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 60px;
 }
 
 .guideCard {
@@ -42,6 +104,8 @@
     flex-direction: column;
     padding: 32px;
     height: 100%;
+    scroll-margin-top: 100px;
+    /* Offset for sticky nav headers */
 }
 
 .cardHeader {
@@ -260,6 +324,30 @@
     line-height: 1.6;
 }
 
+/* Mobile */
+@media (max-width: 1000px) {
+    .guideWrapper {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 24px;
+    }
+
+    .sidebarNav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebarNav li {
+        flex: 1;
+        min-width: 150px;
+    }
+}
+
 @media (max-width: 600px) {
     .heroTitle {
         font-size: 26px;
@@ -271,5 +359,9 @@
 
     .faqItem summary {
         font-size: 14px;
+    }
+
+    .sidebarNav li {
+        min-width: 100%;
     }
 }

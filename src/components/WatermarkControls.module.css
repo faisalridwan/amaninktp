@@ -1,0 +1,104 @@
+.overlay {
+    position: absolute;
+    pointer-events: auto;
+    cursor: move;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+}
+
+.outline {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    pointer-events: none;
+}
+
+.rotateHandle {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 1px solid #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    color: #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 21;
+}
+
+.rotateHandle:active {
+    cursor: grabbing;
+    background: #eff6ff;
+}
+
+/* Connect rotate handle to box */
+.rotateHandle::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    /* distance to box + border */
+    left: 50%;
+    width: 2px;
+    height: 16px;
+    background: #3b82f6;
+    transform: translateX(-50%);
+}
+
+.resizeHandle {
+    position: absolute;
+    bottom: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 1px solid #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: nwse-resize;
+    color: #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 21;
+}
+
+.resizeHandle:active {
+    background: #eff6ff;
+}
+
+.deleteHandle {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 21;
+}
+
+.deleteHandle:hover {
+    background: #dc2626;
+}
+
+.moveHandle {
+    color: rgba(59, 130, 246, 0.5);
+    pointer-events: none;
+}
