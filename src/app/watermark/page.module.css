@@ -209,3 +209,16 @@
         font-size: var(--font-size-2xl);
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .stepNumber {
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3), -2px -2px 6px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .fileInputWrapper {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.3), inset -2px -2px 6px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .canvasContainer {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.3), inset -2px -2px 6px rgba(51, 65, 85, 0.15);
+}

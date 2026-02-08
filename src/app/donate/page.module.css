@@ -816,3 +816,30 @@
     color: var(--text-primary);
     border-color: #4CAF50;
 }
+
+/* PayPal globe icon - make white in dark mode */
+:global([data-theme="dark"]) .globeIcon {
+    color: #93C5FD;
+    opacity: 0.4;
+}
+
+/* PayPal description text */
+:global([data-theme="dark"]) .intlVisual p {
+    color: var(--text-secondary);
+}
+
+/* Coming soon pill - make text visible */
+:global([data-theme="dark"]) .comingSoonPill {
+    background: rgba(51, 65, 85, 0.6);
+    color: var(--text-secondary);
+}
+
+/* Method small note text */
+:global([data-theme="dark"]) .methodSmallNote {
+    color: var(--text-muted);
+}
+
+/* QRIS branding stays dark since bg is white */
+:global([data-theme="dark"]) .qrisBranding {
+    color: #1E293B;
+}
