@@ -65,7 +65,7 @@ export default function DonationModal({ isOpen, onClose }) {
 
     const handleCopyEmail = async () => {
         try {
-            await navigator.clipboard.writeText('faisalridwann@gmail.com')
+            await navigator.clipboard.writeText('faisalridwansiregar@gmail.com')
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         } catch (err) {
@@ -164,7 +164,7 @@ export default function DonationModal({ isOpen, onClose }) {
                         <div className={styles.paypalSection}>
                             <div className={styles.paypalBox}>
                                 <p className={styles.paypalLabel}>PayPal Email</p>
-                                <p className={styles.paypalEmail}>faisalridwann@gmail.com</p>
+                                <p className={styles.paypalEmail}>faisalridwansiregar@gmail.com</p>
                                 <button onClick={handleCopyEmail} className={styles.copyBtn}>
                                     {copied ? <Check size={12} /> : <Copy size={12} />}
                                     {copied ? 'Tersalin' : 'Salin Email'}
@@ -172,7 +172,7 @@ export default function DonationModal({ isOpen, onClose }) {
                             </div>
 
                             <a
-                                href="https://paypal.me/faisalridwan"
+                                href="https://paypal.me/faisalridwansiregar"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={styles.paypalBtn}

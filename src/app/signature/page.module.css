@@ -1,38 +1,104 @@
+/* Security Badge */
+.securityBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+    border: 1px solid #81C784;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    color: #2E7D32;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.securityBadge svg {
+    flex-shrink: 0;
+}
+
+/* Page Header */
 .pageHeader {
     text-align: center;
-    padding: var(--space-xl) 0;
-    margin-bottom: var(--space-xl);
+    padding: 20px 0 32px;
 }
 
 .pageHeader h1 {
-    font-size: var(--font-size-3xl);
+    font-size: 28px;
     color: var(--text-primary);
-    margin-bottom: var(--space-md);
+    margin-bottom: 12px;
 }
 
 .pageHeader p {
     color: var(--text-secondary);
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
+    font-size: 15px;
+}
+
+/* Mode Selector */
+.modeSelector {
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    background: var(--bg-secondary);
+    border-radius: 14px;
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modeBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modeBtn.active {
+    background: white;
+    color: var(--primary-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modeBtn:hover:not(.active) {
+    color: var(--text-primary);
+}
+
+/* CREATE MODE */
+.createMode {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .workspace {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-    margin-bottom: var(--space-lg);
+    padding: 24px;
 }
 
 .signatureContainer {
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 280px;
     background: #FFFFFF;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    border-radius: 12px;
+    box-shadow: inset 2px 2px 6px rgba(174, 186, 202, 0.2), inset -2px -2px 6px rgba(255, 255, 255, 0.9);
     cursor: crosshair;
     overflow: hidden;
     touch-action: none;
+    margin-bottom: 24px;
 }
 
 .signatureContainer canvas {
@@ -51,55 +117,59 @@
 
 .canvasHint p {
     color: var(--text-muted);
-    font-size: var(--font-size-lg);
+    font-size: 16px;
     opacity: 0.5;
 }
 
 .controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-xl);
-    align-items: end;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.controlRow {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
 }
 
 .controlGroup {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: 10px;
 }
 
-.controlLabel {
+.controlGroup label {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: var(--font-size-sm);
+    gap: 8px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
 }
 
-.controlValue {
+.controlGroup label span {
     font-weight: 600;
     color: var(--primary-dark);
     background: var(--bg-secondary);
     padding: 2px 8px;
-    border-radius: var(--radius-xs);
-    font-size: var(--font-size-xs);
+    border-radius: 6px;
+    font-size: 12px;
 }
 
 .colorOptions {
     display: flex;
-    gap: var(--space-md);
-    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .colorBtn {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: 3px solid transparent;
     cursor: pointer;
-    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
-    transition: all var(--transition-normal);
+    box-shadow: 2px 2px 6px rgba(174, 186, 202, 0.3), -2px -2px 6px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
 }
 
 .colorBtn:hover {
@@ -108,45 +178,417 @@
 
 .colorBtn.active {
     border-color: var(--text-primary);
-    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
     transform: scale(1.05);
 }
 
-.buttonGroup {
+.controlGroup input[type="range"] {
+    width: 150px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    outline: none;
+}
+
+.controlGroup input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-dark);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.buttonRow {
     display: flex;
-    gap: var(--space-md);
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.buttonGroup .neu-btn {
-    flex: 1;
+.btnPrimary,
+.btnSecondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
+.btnPrimary {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: white;
+}
+
+.btnPrimary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.btnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btnSecondary {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.btnSecondary:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Saved Signatures */
+.savedSection {
+    padding: 24px;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+}
+
+.savedSection h3 {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+}
+
+.savedHint {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+}
+
+.savedGrid {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.savedItem {
+    position: relative;
+    padding: 12px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(174, 186, 202, 0.2), -2px -2px 8px rgba(255, 255, 255, 0.9);
+}
+
+.savedItem img {
+    height: 50px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+/* SIGN MODE */
+.signMode {
+    min-height: 400px;
+}
+
+.uploadArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 80px 40px;
+    background: var(--bg-secondary);
+    border: 2px dashed rgba(168, 197, 240, 0.6);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.uploadArea:hover {
+    border-color: var(--primary-dark);
+    background: rgba(168, 197, 240, 0.1);
+}
+
+.uploadArea svg {
+    color: var(--primary-dark);
+    opacity: 0.5;
+}
+
+.uploadArea h3 {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.uploadArea p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.signWorkspace {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+}
+
+/* Signature Picker */
+.sigPicker {
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 14px;
+    height: fit-content;
+}
+
+.sigPicker h4 {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0 0 16px;
+}
+
+.noSigs {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.noSigs p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+}
+
+.btnSmall {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    background: var(--primary-dark);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.sigList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sigItem {
+    position: relative;
+    padding: 10px;
+    background: white;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sigItem:hover {
+    border-color: var(--primary-dark);
+}
+
+.sigItem img {
+    height: 35px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.sigItem span {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-dark);
+    color: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sigItem:hover span {
+    opacity: 1;
+}
+
+/* Document Area */
+.docArea {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.docContainer {
+    position: relative;
+    display: inline-block;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.docCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.sigOverlay {
+    position: absolute;
+    border: 2px dashed transparent;
+    cursor: move;
+    box-sizing: border-box;
+}
+
+.sigOverlay.selected {
+    border-color: #4CAF50;
+}
+
+.removeSig {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sigOverlay:hover .removeSig,
+.sigOverlay.selected .removeSig {
+    opacity: 1;
+}
+
+.resizeHandle {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sigOverlay:hover .resizeHandle,
+.sigOverlay.selected .resizeHandle {
+    opacity: 1;
+}
+
+.docActions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Tips */
 .tips {
     text-align: center;
-    padding: var(--space-lg);
+    padding: 24px;
     color: var(--text-secondary);
-    font-size: var(--font-size-sm);
+    font-size: 14px;
 }
 
 .tips strong {
     color: var(--text-primary);
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+    .securityBadge {
+        font-size: 11px;
+        padding: 10px 14px;
+    }
+
     .pageHeader h1 {
-        font-size: var(--font-size-2xl);
+        font-size: 22px;
+    }
+
+    .modeSelector {
+        flex-direction: column;
+    }
+
+    .modeBtn {
+        padding: 12px;
     }
 
     .signatureContainer {
-        height: 280px;
+        height: 220px;
     }
 
-    .controls {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-    }
-
-    .buttonGroup {
+    .controlRow {
         flex-direction: column;
+        gap: 16px;
+    }
+
+    .buttonRow {
+        flex-direction: column;
+    }
+
+    .btnPrimary,
+    .btnSecondary {
+        width: 100%;
+    }
+
+    .signWorkspace {
+        grid-template-columns: 1fr;
+    }
+
+    .sigPicker {
+        order: 2;
+    }
+
+    .docArea {
+        order: 1;
+    }
+
+    .sigList {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sigItem {
+        flex: 0 0 auto;
     }
 }
