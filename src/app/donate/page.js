@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
-import { Heart, HelpCircle, Globe, Zap, Coffee, Banknote, Sparkles, Copy, Check, Info, Download } from 'lucide-react'
+import { HelpCircle, Globe, Sparkles, Copy, Check, Info, Download, Coffee, Heart } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
-// CRC16-CCITT (Poly: 0x1021, Init: 0xFFFF) implementation as provided by user
+// CRC16-CCITT (Poly: 0x1021, Init: 0xFFFF) implementation
 function crc16ccitt(str) {
     let crc = 0xFFFF;
     for (let i = 0; i < str.length; i++) {
@@ -26,7 +26,7 @@ function crc16ccitt(str) {
     return crc.toString(16).toUpperCase().padStart(4, '0');
 }
 
-// QRIS Generation logic as provided by user
+// QRIS Generation logic
 function generateQRIS(baseString, amount) {
     if (!amount || amount <= 0) return baseString;
 
@@ -42,7 +42,6 @@ function generateQRIS(baseString, amount) {
 
     let injectedString = cleanBase;
 
-    // Use standard insertion points for QRIS (after tag 53 or before tag 58)
     if (cleanBase.includes("5303360")) {
         injectedString = cleanBase.replace("5303360", "5303360" + amountTag);
     } else if (cleanBase.includes("5802ID")) {
@@ -66,23 +65,15 @@ export default function DonatePage() {
     const faqs = [
         {
             q: "Mengapa dukungan Anda sangat berarti bagi AmaninKTP?",
-            a: "AmaninKTP hadir sebagai solusi gratis dan terbuka untuk membantu masyarakat melindungi privasi dokumen mereka. Namun, operasional infrastruktur digital seperti perpanjangan nama domain (.com), biaya hosting, koneksi internet untuk development, serta pemeliharaan hardware tetap membutuhkan biaya rutin. Dukungan Anda adalah 'bahan bakar' yang memastikan alat ini tetap hidup, stabil, dan bisa terus dikembangkan untuk manfaat yang lebih luas."
+            a: "AmaninKTP hadir sebagai solusi gratis dan terbuka untuk membantu masyarakat melindungi privasi dokumen mereka. Namun, operasional infrastruktur digital tetap membutuhkan biaya rutin (domain, hosting, dsb). Dukungan Anda sangat membantu keberlangsungan alat ini."
         },
         {
             q: "Ke mana alokasi dana donasi disalurkan?",
-            a: "Setiap Rupiah yang Anda berikan dialokasikan secara transparan untuk kebutuhan teknis proyek. Ini mencakup biaya langganan server, pembaruan keamanan sistem, riset fitur baru (seperti peningkatan algoritma watermark), serta memastikan AmaninKTP tetap kompatibel dengan berbagai perangkat dan browser terbaru."
+            a: "Setiap Rupiah dialokasikan secara transparan untuk kebutuhan teknis proyek, seperti biaya server, riset fitur keamanan, dan pemeliharaan sistem agar tetap bisa digunakan gratis oleh semua orang."
         },
         {
             q: "Apakah AmaninKTP benar-benar akan tetap gratis selamanya?",
-            a: "Tentu saja. Komitmen utama kami adalah menyediakan alat privasi yang bisa diakses siapa pun tanpa hambatan biaya (paywall). Donasi dari para pendukung adalah kunci utama yang memungkinkan kami menjaga model 'Gratis untuk Semua' ini tanpa harus mengorbankan privasi pengguna lewat iklan yang intrusif atau penjualan data."
-        },
-        {
-            q: "Apakah proses donasi saya terjamin keamanannya?",
-            a: "Sangat terjamin. Kami tidak mengelola dana atau menyimpan informasi kartu/rekening Anda secara langsung. Semua transaksi diproses melalui platform donasi pihak ketiga yang terpercaya dan memiliki izin resmi. Keamanan transaksi Anda dilindungi dengan enkripsi standar industri."
-        },
-        {
-            q: "Selain materi, apa lagi yang bisa saya berikan untuk membantu?",
-            a: "Dukungan tidak selalu harus berupa uang. Anda bisa membantu kami dengan melaporkan bug, memberikan saran fitur baru, atau menyebarkan informasi tentang AmaninKTP agar lebih banyak orang menyadari pentingnya melindungi privasi dokumen."
+            a: "Tentu saja. Komitmen utama kami adalah menyediakan alat privasi yang bisa diakses siapa pun tanpa hambatan biaya. Donasi adalah cara komunitas mendukung komitmen ini."
         }
     ]
 
@@ -147,24 +138,18 @@ export default function DonatePage() {
                     <header className={styles.hero}>
                         <h1 className={styles.heroTitle}>Dukung <span>AmaninKTP</span></h1>
                         <p className={styles.heroSubtitle}>
-                            Bantu kami menjaga privasi dokumen masyarakat Indonesia tetap aman, gratis, dan open-source.
+                            Bantu kami menjaga privasi dokumen tetap aman, gratis, dan open-source.
                         </p>
                     </header>
 
                     <div className={styles.card}>
-                        <p className={styles.summary}>
-                            AmaninKTP adalah proyek independen yang lahir dari kepedulian terhadap keamanan data pribadi.
-                            Setiap baris kode ditulis untuk memastikan dokumen identitas Anda tetap menjadi milik Anda sepenuhnya.
-                            Pilih metode dukungan yang paling nyaman bagi Anda:
-                        </p>
-
                         <div className={styles.tabsContainer}>
                             <button
                                 className={`${styles.tabBtn} ${activeTab === 'qris' ? styles.activeTab : ''}`}
                                 onClick={() => setActiveTab('qris')}
                             >
                                 <div className={styles.logoIcon}>
-                                    <Image src="/images/logos/qris.svg" alt="QRIS" fill />
+                                    <Image src="/images/logos/qris.svg" alt="QRIS" fill style={{ objectFit: 'contain' }} />
                                 </div>
                                 QRIS
                             </button>
@@ -173,7 +158,7 @@ export default function DonatePage() {
                                 onClick={() => setActiveTab('bank')}
                             >
                                 <div className={styles.logoIcon}>
-                                    <Image src="/images/logos/jago.svg" alt="Bank Jago" fill />
+                                    <Image src="/images/logos/jago.svg" alt="Jago" fill style={{ objectFit: 'contain' }} />
                                 </div>
                                 Bank Jago
                             </button>
@@ -182,7 +167,7 @@ export default function DonatePage() {
                                 onClick={() => setActiveTab('intl')}
                             >
                                 <div className={styles.logoIcon}>
-                                    <Image src="/images/logos/paypal.svg" alt="PayPal" fill />
+                                    <Image src="/images/logos/paypal.svg" alt="PayPal" fill style={{ objectFit: 'contain' }} />
                                 </div>
                                 PayPal
                             </button>
@@ -193,12 +178,11 @@ export default function DonatePage() {
                                 {activeTab === 'qris' && (
                                     <div className={styles.paymentCard}>
                                         <div className={styles.qrisSection}>
-                                            <div style={{ position: 'relative', width: '80px', height: '30px', marginBottom: '10px' }}>
-                                                <Image src="/images/logos/qris.svg" alt="QRIS Logo" fill style={{ objectFit: 'contain' }} />
+                                            <div className={styles.cardHeaderLogo}>
+                                                <Image src="/images/logos/qris.svg" alt="QRIS" fill style={{ objectFit: 'contain' }} />
                                             </div>
-                                            <h3 className={styles.methodTitle}>QRIS Interaktif</h3>
-                                            <p style={{ fontSize: '15px', color: '#64748B', margin: '15px 0' }}>
-                                                Scan menggunakan aplikasi pembayaran pilihan Anda.
+                                            <p className={styles.methodInstruction}>
+                                                Scan menggunakan aplikasi e-wallet atau m-banking pilihan Anda.
                                             </p>
 
                                             <div className={styles.amountInputWrapper}>
@@ -211,33 +195,30 @@ export default function DonatePage() {
                                                 />
                                             </div>
 
-                                            {amount && parseInt(amount) >= 1000 && (
+                                            {amount && parseInt(amount) >= 1000 ? (
                                                 <div className={styles.qrisContainer}>
                                                     <QRCodeSVG
                                                         id="donation-qr"
                                                         value={qrisValue}
-                                                        size={220}
+                                                        size={200}
                                                         level="M"
                                                         includeMargin={false}
                                                     />
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
-                                                        <Sparkles size={14} color="#E91E63" />
-                                                        <p style={{ fontSize: '12px', fontWeight: 'bold', color: '#E91E63', letterSpacing: '2px', margin: 0 }}>QRIS AKTIF</p>
+                                                    <div className={styles.qrisBranding}>
+                                                        <Sparkles size={14} />
+                                                        <span>qreatip studio</span>
                                                     </div>
                                                 </div>
-                                            )}
-
-                                            {parseInt(amount) < 1000 && (
-                                                <p style={{ color: '#E91E63', fontSize: '12px', marginTop: '10px' }}>Minimal donasi Rp 1.000</p>
+                                            ) : (
+                                                <div className={styles.amountError}>Minimal donasi Rp 1.000</div>
                                             )}
 
                                             <button
                                                 onClick={handleDownload}
                                                 disabled={!amount || parseInt(amount) < 1000}
-                                                className={styles.copyBtn}
-                                                style={{ marginTop: '20px', width: '100%', maxWidth: '220px' }}
+                                                className={styles.actionBtn}
                                             >
-                                                <Download size={18} /> Simpan Gambar QR
+                                                <Download size={18} /> Simpan QR
                                             </button>
                                         </div>
                                     </div>
@@ -245,61 +226,58 @@ export default function DonatePage() {
 
                                 {activeTab === 'bank' && (
                                     <div className={styles.paymentCard}>
-                                        <div style={{ position: 'relative', width: '100px', height: '40px', marginBottom: '10px' }}>
-                                            <Image src="/images/logos/jago.svg" alt="Bank Jago Logo" fill style={{ objectFit: 'contain' }} />
+                                        <div className={styles.cardHeaderLogo}>
+                                            <Image src="/images/logos/jago.svg" alt="Bank Jago" fill style={{ objectFit: 'contain' }} />
                                         </div>
-                                        <h3 className={styles.methodTitle}>Transfer Bank Jago</h3>
-                                        <div className={styles.bankDetails}>
-                                            <div className={styles.bankIcon}>Jago</div>
-                                            <p style={{ fontSize: '16px', fontWeight: '700', marginBottom: '8px' }}>PT Bank Jago Tbk</p>
-                                            <div className={styles.accountNumber}>105003774949</div>
-                                            <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '20px' }}>A.N. Faisal Ridwan Siregar</p>
-
-                                            <button
-                                                className={styles.copyBtn}
-                                                onClick={() => handleCopy('105003774949')}
-                                            >
-                                                {copied ? <><Check size={16} color="#4CAF50" /> Tersalin!</> : <><Copy size={16} /> Salin Nomor Rekening</>}
-                                            </button>
+                                        <div className={styles.bankInfo}>
+                                            <span className={styles.bankName}>PT Bank Jago Tbk</span>
+                                            <div className={styles.accountCard}>
+                                                <span className={styles.accountNum}>105003774949</span>
+                                                <button
+                                                    className={styles.inlineCopy}
+                                                    onClick={() => handleCopy('105003774949')}
+                                                >
+                                                    {copied ? <Check size={16} /> : <Copy size={16} />}
+                                                </button>
+                                            </div>
+                                            <span className={styles.accountHolder}>A.N. Faisal Ridwan Siregar</span>
                                         </div>
+                                        <p className={styles.bankNote}>
+                                            Dukungan langsung via transfer antar bank.
+                                        </p>
                                     </div>
                                 )}
 
                                 {activeTab === 'intl' && (
                                     <div className={styles.paymentCard}>
-                                        <div style={{ position: 'relative', width: '120px', height: '40px', marginBottom: '10px' }}>
-                                            <Image src="/images/logos/paypal.svg" alt="PayPal Logo" fill style={{ objectFit: 'contain' }} />
+                                        <div className={styles.cardHeaderLogo}>
+                                            <Image src="/images/logos/paypal.svg" alt="PayPal" fill style={{ objectFit: 'contain' }} />
                                         </div>
-                                        <h3 className={styles.methodTitle}>Donasi Internasional</h3>
-                                        <div style={{ margin: '30px 0', padding: '20px', background: 'rgba(0,112,186,0.05)', borderRadius: '24px' }}>
-                                            <Coffee size={50} color="#0070BA" strokeWidth={1} />
-                                            <p style={{ marginTop: '15px', fontSize: '15px', color: '#475569', lineHeight: '1.6' }}>
-                                                Mendukung donasi via PayPal yang aman dan terpercaya.
-                                            </p>
+                                        <div className={styles.intlContent}>
+                                            <Globe size={48} className={styles.intlIcon} />
+                                            <p>Dukungan dari luar negeri menggunakan PayPal yang aman.</p>
                                         </div>
-                                        <a href="https://paypal.me/faisalridwan" target="_blank" rel="noopener noreferrer" className={styles.paypalBtn}>
-                                            <Heart size={20} /> Dukung via PayPal
+                                        <a href="https://paypal.me/faisalridwan" target="_blank" rel="noopener noreferrer" className={styles.paypalAction}>
+                                            <Heart size={18} /> Dukung via PayPal
                                         </a>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div style={{ textAlign: 'center' }}>
-                            <div className={styles.comingSoon}>
-                                <Sparkles size={16} color="#FFD700" /> Metode pembayaran lainnya segera hadir
+                        <div className={styles.comingSoonContainer}>
+                            <div className={styles.comingSoonBadge}>
+                                <Sparkles size={14} /> Metode lainnya segera hadir
                             </div>
                         </div>
                     </div>
 
                     <section className={styles.thankYouSection}>
                         <h2 className={styles.thankYouTitle}>
-                            <Sparkles color="#FFD700" size={32} /> Terima Kasih Atas Kebaikan Anda
+                            <Sparkles size={32} /> Terima Kasih
                         </h2>
                         <p className={styles.thankYouDesc}>
-                            Setiap donasi yang Anda berikan bukan sekadar angka, melainkan bentuk kepercayaan dan semangat bagi kami untuk terus menjaga privasi jutaan masyarakat Indonesia. Dukungan Anda membantu kami membiayai infrastruktur server, pemeliharaan sistem, dan riset fitur keamanan baru.
-                            <br /><br />
-                            Semoga kebaikan Anda mendapatkan balasan yang berlipat ganda, dilancarkan rezekinya, dan menjadi amal jariyah yang terus mengalir manfaatnya. Terima kasih telah menjadi bagian penting dalam perjalanan menjaga keamanan data pribadi di Indonesia.
+                            Dukungan Anda membantu kami menjaga AmaninKTP tetap gratis dan aman bagi seluruh masyarakat Indonesia. Setiap kontribusi sangat berarti bagi keberlangsungan proyek ini.
                         </p>
                     </section>
 
@@ -307,11 +285,10 @@ export default function DonatePage() {
                         <h2 className={styles.faqTitle}>
                             <HelpCircle size={24} /> FAQ
                         </h2>
-
-                        <div className={styles.faqList}>
+                        <div className={styles.faqGrid}>
                             {faqs.map((faq, i) => (
-                                <div key={i} className={styles.faqItem}>
-                                    <h3>{faq.q}</h3>
+                                <div key={i} className={styles.faqCard}>
+                                    <h4>{faq.q}</h4>
                                     <p>{faq.a}</p>
                                 </div>
                             ))}

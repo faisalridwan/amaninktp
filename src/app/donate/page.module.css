@@ -31,7 +31,7 @@
 .card {
     background: #F1F5F9;
     padding: 40px;
-    border-radius: 32px;
+    border-radius: 40px;
     box-shadow: 20px 20px 60px #d1d5db, -20px -20px 60px #ffffff;
     margin-bottom: 40px;
 }
@@ -39,60 +39,20 @@
 .summary {
     font-size: 16px;
     line-height: 1.8;
-    color: #334155;
-    margin-bottom: 30px;
-}
-
-.faqSection {
-    margin-top: 60px;
-}
-
-.faqTitle {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1E293B;
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.faqList {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.faqItem {
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-}
-
-.faqItem h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1E293B;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.faqItem p {
-    font-size: 15px;
     color: #475569;
-    line-height: 1.6;
-    margin: 0;
+    text-align: center;
+    margin-bottom: 40px;
 }
 
+/* Tabs */
 .tabsContainer {
     display: flex;
     justify-content: center;
     gap: 12px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     padding: 8px;
     background: rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
+    border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     width: fit-content;
     margin-left: auto;
@@ -100,15 +60,15 @@
 }
 
 .tabBtn {
-    padding: 12px 20px;
-    border-radius: 14px;
+    padding: 12px 24px;
+    border-radius: 18px;
     border: none;
     background: transparent;
-    color: #475569;
+    color: #64748B;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -116,31 +76,36 @@
 
 .logoIcon {
     position: relative;
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.tabBtn:hover .logoIcon {
+    opacity: 1;
 }
 
 .tabBtn.activeTab {
     background: white;
     color: #1E293B;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
+.tabBtn.activeTab .logoIcon {
+    opacity: 1;
+}
+
+/* Payment Cards */
 .paymentContent {
-    min-height: 500px;
+    min-height: 520px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .methodGrid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
     width: 100%;
+    max-width: 500px;
 }
 
 .paymentCard {
@@ -149,70 +114,7 @@
     padding: 40px;
     border-radius: 32px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    transition: all 0.3s ease;
-    width: 100%;
-    max-width: 500px;
-}
-
-.methodTitle {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1E293B;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.qrisSection {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.amountInputWrapper {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 280px;
-}
-
-.amountInput {
-    width: 100%;
-    padding: 16px 24px;
-    border-radius: 18px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    background: white;
-    font-size: 20px;
-    font-weight: 700;
-    color: #1E293B;
-    text-align: center;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-    outline: none;
-    transition: all 0.2s;
-}
-
-.amountInput:focus {
-    border-color: #E91E63;
-    box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.1);
-}
-
-.qrisContainer {
-    background: white;
-    padding: 24px;
-    border-radius: 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    margin: 30px auto;
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    animation: slideUp 0.4s ease-out;
+    animation: slideUp 0.5s ease-out;
 }
 
 @keyframes slideUp {
@@ -227,103 +129,232 @@
     }
 }
 
-.bankDetails {
-    margin: 20px 0;
-    width: 100%;
+.cardHeaderLogo {
+    position: relative;
+    width: 120px;
+    height: 48px;
+    margin: 0 auto 20px;
 }
 
-.bankIcon {
-    width: 60px;
-    height: 60px;
-    background: #FFD200;
-    color: #000;
-    border-radius: 18px;
+.methodInstruction {
+    font-size: 15px;
+    color: #64748B;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+/* QRIS Specific */
+.amountInputWrapper {
+    margin-bottom: 24px;
+}
+
+.amountInput {
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: white;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1E293B;
+    text-align: center;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.amountInput:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+}
+
+.qrisContainer {
+    background: white;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.qrisBranding {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
+    color: #E91E63;
     font-weight: 800;
-    font-size: 16px;
-    margin: 0 auto 15px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.accountNumber {
-    font-family: monospace;
-    font-size: 22px;
+.amountError {
+    color: #E91E63;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Bank Specific */
+.bankInfo {
+    margin: 30px 0;
+}
+
+.bankName {
+    font-size: 16px;
     font-weight: 700;
     color: #1E293B;
-    background: rgba(0, 0, 0, 0.04);
-    padding: 12px 24px;
-    border-radius: 14px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
+    display: block;
+    margin-bottom: 12px;
 }
 
-.copyBtn {
+.accountCard {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 12px 24px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+.accountNum {
+    font-family: monospace;
+    font-size: 24px;
+    font-weight: 800;
+    color: #1E293B;
+    letter-spacing: 2px;
+}
+
+.inlineCopy {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: white;
-    font-size: 14px;
-    font-weight: 600;
-    color: #475569;
     cursor: pointer;
     transition: all 0.2s;
-    margin: 0 auto;
+    color: #64748B;
 }
 
-.copyBtn:hover {
-    background: #f8fafc;
+.inlineCopy:hover {
     color: #1E293B;
-    transform: translateY(-2px);
+    background: #f8fafc;
+    transform: scale(1.05);
 }
 
-.paypalBtn {
-    width: 100%;
+.accountHolder {
+    font-size: 14px;
+    color: #64748B;
+    font-weight: 600;
+    display: block;
+}
+
+.bankNote {
+    font-size: 14px;
+    color: #94A3B8;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Intl Specific */
+.intlContent {
+    margin: 40px 0;
+}
+
+.intlIcon {
+    color: #0070BA;
+    opacity: 0.1;
+    margin-bottom: 20px;
+}
+
+.intlContent p {
+    font-size: 15px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.actionBtn,
+.paypalAction {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    width: 100%;
     padding: 16px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.actionBtn {
+    background: #1E293B;
+    color: white;
+    margin-top: 20px;
+}
+
+.actionBtn:hover {
+    background: #0F172A;
+    transform: translateY(-2px);
+}
+
+.actionBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.paypalAction {
     background: #0070BA;
     color: white;
-    font-weight: 700;
-    border-radius: 16px;
     text-decoration: none;
-    transition: all 0.2s;
 }
 
-.paypalBtn:hover {
-    background: #005ea6;
+.paypalAction:hover {
+    background: #005EA6;
+    transform: translateY(-2px);
 }
 
-.comingSoon {
-    margin-top: 50px;
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50px;
-    font-size: 14px;
-    color: #64748B;
-    font-style: italic;
+/* Coming Soon */
+.comingSoonContainer {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.comingSoonBadge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50px;
+    font-size: 13px;
+    color: #64748B;
+    font-weight: 600;
 }
 
+/* Footer Section */
 .thankYouSection {
     margin-top: 100px;
     text-align: center;
     padding: 60px 40px;
-    background: linear-gradient(135deg, rgba(233, 30, 99, 0.08) 0%, rgba(30, 144, 255, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(30, 144, 255, 0.05) 100%);
     border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .thankYouTitle {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 900;
     color: #1E293B;
     margin-bottom: 20px;
@@ -334,11 +365,52 @@
 }
 
 .thankYouDesc {
-    font-size: 18px;
+    font-size: 17px;
     color: #475569;
     line-height: 1.8;
-    max-width: 700px;
+    max-width: 600px;
     margin: 0 auto;
+}
+
+/* FAQ */
+.faqSection {
+    margin-top: 100px;
+}
+
+.faqTitle {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1E293B;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.faqGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.faqCard {
+    padding: 30px;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.faqCard h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 15px;
+}
+
+.faqCard p {
+    font-size: 14px;
+    color: #64748B;
+    line-height: 1.6;
 }
 
 @media (max-width: 640px) {
@@ -350,11 +422,17 @@
         font-size: 32px;
     }
 
-    .card {
-        padding: 24px;
+    .tabsContainer {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
     }
 
-    .faqItem {
-        padding: 20px;
+    .paymentCard {
+        padding: 30px 20px;
+    }
+
+    .accountNum {
+        font-size: 20px;
     }
 }
