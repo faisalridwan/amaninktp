@@ -531,11 +531,133 @@
         font-size: 32px;
     }
 
+    .heroSubtitle {
+        font-size: 16px;
+    }
+
+    .card {
+        padding: 24px;
+        border-radius: 30px;
+    }
+
+    /* Scrollable Tabs on Mobile */
+    .tabsContainer {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding-bottom: 12px;
+        /* Space for scrollbar if any */
+        -webkit-overflow-scrolling: touch;
+        gap: 8px;
+        background: transparent;
+        border: none;
+    }
+
+    .tabsContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tabBtn {
+        flex: 0 0 auto;
+        padding: 10px 16px;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .paymentContent {
+        min-height: auto;
+    }
+
+    .paymentCard {
+        padding: 24px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.6);
+    }
+
+    .cardHeaderLogo {
+        width: 100px;
+        height: 40px;
+        margin-bottom: 24px;
+    }
+
     .presetsGrid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .presetChip {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .amountInput {
+        font-size: 18px;
+        padding: 14px;
+    }
+
+    .qrisContainer {
+        padding: 20px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .qrisContainer svg {
+        width: 100% !important;
+        height: auto !important;
     }
 
     .accountNumberText {
-        font-size: 20px;
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+
+    .accountBox {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .copyIconButton {
+        width: 100%;
+        height: 44px;
+        /* Better touch target */
+    }
+
+    .tutorialBox {
+        padding: 20px;
+    }
+
+    .appreciationSection {
+        padding: 40px 20px;
+        margin-top: 60px;
+        border-radius: 30px;
+    }
+
+    .appreciationTitle {
+        font-size: 24px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .faqTitle {
+        font-size: 22px;
+    }
+
+    .accordionHeader {
+        padding: 20px;
+    }
+
+    .accordionHeader h4 {
+        font-size: 15px;
+        line-height: 1.5;
+        padding-right: 10px;
     }
 }
