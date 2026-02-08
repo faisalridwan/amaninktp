@@ -431,6 +431,97 @@
     margin: 0 auto;
 }
 
+/* FAQ Section */
+.faqSection {
+    margin-top: 100px;
+    margin-bottom: 60px;
+}
+
+.faqTitle {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1E293B;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.accordionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.accordionItem {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.accordionItem.open {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+.accordionHeader {
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s;
+}
+
+.accordionHeader:hover {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+.accordionHeader h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1E293B;
+    margin: 0;
+}
+
+.chevron {
+    color: #64748B;
+    transition: transform 0.3s ease;
+}
+
+.open .chevron {
+    transform: rotate(180deg);
+    color: #4CAF50;
+}
+
+.accordionContent {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+}
+
+.open .accordionContent {
+    max-height: 1000px;
+    transition: max-height 0.4s cubic-bezier(1, 0, 1, 0);
+}
+
+.innerContent {
+    padding: 0 24px 24px;
+}
+
+.innerContent p {
+    font-size: 15px;
+    color: #64748B;
+    line-height: 1.8;
+    margin: 0;
+}
+
 @media (max-width: 640px) {
     .donationPage {
         padding: 40px 20px;

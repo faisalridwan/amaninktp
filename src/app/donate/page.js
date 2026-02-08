@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
-import { HelpCircle, Sparkles, Copy, Check, Download, Heart, Globe, PlayCircle } from 'lucide-react'
+import { HelpCircle, Sparkles, Copy, Check, Download, Heart, Globe, PlayCircle, ChevronDown } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -57,6 +57,11 @@ export default function DonatePage() {
     const [isCustomAmount, setIsCustomAmount] = useState(false)
     const [activeTab, setActiveTab] = useState('qris')
     const [copied, setCopied] = useState(false)
+    const [openIndex, setOpenIndex] = useState(0)
+
+    const toggleAccordion = (index) => {
+        setOpenIndex(openIndex === index ? -1 : index)
+    }
 
     const faqs = [
         {
@@ -315,7 +320,7 @@ export default function DonatePage() {
                             <Sparkles size={32} /> Terima Kasih
                         </h2>
                         <p className={styles.appreciationDesc}>
-                            Setiap bentuk dukungan membantu kami memastikan AmaninKTP tetap gratis, dan selalu aman untuk privasi masyarakat Indonesia.
+                            Setiap bentuk dukungan membantu kami memastikan AmaninKTP tetap gratis dan selalu aman untuk privasi masyarakat Indonesia.
                         </p>
                     </section>
 
@@ -323,11 +328,21 @@ export default function DonatePage() {
                         <h2 className={styles.faqTitle}>
                             <HelpCircle size={24} /> Kenapa harus donasi?
                         </h2>
-                        <div className={styles.faqGrid}>
+                        <div className={styles.accordionContainer}>
                             {faqs.map((faq, i) => (
-                                <div key={i} className={styles.faqCard}>
-                                    <h4>{faq.q}</h4>
-                                    <p>{faq.a}</p>
+                                <div key={i} className={`${styles.accordionItem} ${openIndex === i ? styles.open : ''}`}>
+                                    <button
+                                        className={styles.accordionHeader}
+                                        onClick={() => toggleAccordion(i)}
+                                    >
+                                        <h4>{faq.q}</h4>
+                                        <ChevronDown size={20} className={styles.chevron} />
+                                    </button>
+                                    <div className={styles.accordionContent}>
+                                        <div className={styles.innerContent}>
+                                            <p>{faq.a}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
