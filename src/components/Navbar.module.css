@@ -1,123 +1,115 @@
 .navbar {
-    padding: var(--space-lg) 0;
     position: sticky;
     top: 0;
-    background-color: var(--bg-primary);
     z-index: 100;
-    animation: fadeInDown 0.5s ease;
+    background: var(--bg-primary);
+    box-shadow: 0 4px 20px rgba(174, 186, 202, 0.3);
+    padding: var(--space-md) 0;
 }
 
 .navContent {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 
 .logo {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-lg);
     font-weight: 700;
     color: var(--primary-dark);
-    letter-spacing: -0.5px;
-    transition: color var(--transition-normal);
+    text-decoration: none;
 }
 
-.logo:hover {
-    color: var(--primary-color);
+.menuToggle {
+    display: none;
+    background: var(--bg-primary);
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
 }
 
 .navLinks {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navItem {
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
     font-size: var(--font-size-sm);
-    padding: 10px 18px;
-    border-radius: var(--radius-sm);
+    font-weight: 500;
     color: var(--text-secondary);
-    transition: all var(--transition-normal);
     background: transparent;
     border: none;
     cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition-normal);
 }
 
 .navItem:hover {
     color: var(--primary-dark);
-    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+    background: var(--bg-secondary);
 }
 
 .navItem.active {
     color: var(--primary-dark);
+    background: var(--bg-primary);
     box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
-    background-color: var(--bg-secondary);
 }
 
 .navCta {
-    background: linear-gradient(145deg, var(--accent-light), var(--accent-color));
-    color: var(--text-primary) !important;
-    font-weight: 600;
+    background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+    color: white !important;
     box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
 }
 
 .navCta:hover {
-    box-shadow: var(--shadow-dark), var(--shadow-light);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-dark), var(--shadow-light);
+    background: linear-gradient(135deg, #FF5252, #FF7979);
 }
 
-.menuToggle {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-primary);
-    padding: 10px;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
-    background: var(--bg-primary);
-    transition: all var(--transition-normal);
-    border: none;
-    align-items: center;
-    justify-content: center;
-}
+@media (max-width: 900px) {
+    .menuToggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.menuToggle:hover {
-    color: var(--primary-dark);
-}
-
-.menuToggle:active {
-    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
-}
-
-@media (max-width: 768px) {
     .navLinks {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 80px;
-        left: var(--space-md);
-        right: var(--space-md);
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
         background: var(--bg-primary);
+        flex-direction: column;
         padding: var(--space-lg);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-dark), var(--shadow-light);
-        z-index: 100;
         gap: var(--space-sm);
+        box-shadow: 0 10px 30px rgba(174, 186, 202, 0.4);
+        transform: translateY(-150%);
+        opacity: 0;
+        transition: all 0.3s ease;
     }
 
     .navLinks.show {
-        display: flex;
-        animation: fadeInDown 0.3s ease;
+        transform: translateY(0);
+        opacity: 1;
     }
 
-    .navLinks .navItem {
+    .navItem {
         width: 100%;
-        text-align: center;
-        padding: 12px;
-    }
-
-    .menuToggle {
-        display: flex;
+        justify-content: center;
+        padding: 14px;
     }
 }

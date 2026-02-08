@@ -1,0 +1,131 @@
+.hero {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+
+.hero h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 28px;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.hero h1 svg {
+    color: var(--primary-dark);
+}
+
+.hero p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.cardHeader svg {
+    color: var(--primary-dark);
+}
+
+.category {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.card h3 {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+}
+
+.version {
+    font-size: 11px;
+    color: var(--primary-dark);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0 0 12px;
+    flex: 1;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary-dark);
+}
+
+.note {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 32px;
+}
+
+.note svg {
+    flex-shrink: 0;
+    color: var(--primary-dark);
+}
+
+.note h4 {
+    font-size: 15px;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+}
+
+.note p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X } from 'lucide-react'
 import styles from './Navbar.module.css'
 
 export default function Navbar({ onDonateClick }) {
@@ -10,11 +11,11 @@ export default function Navbar({ onDonateClick }) {
     const pathname = usePathname()
 
     const navItems = [
-        { href: '/', label: 'Watermark KTP' },
-        { href: '/signature', label: 'TTD Online' },
-        { href: '/about', label: 'About' },
-        { href: '/guide', label: 'Cara Pakai' },
-        { href: '/privacy', label: 'Privacy' },
+        { href: '/', label: 'Watermark KTP', icon: FileImage },
+        { href: '/signature', label: 'TTD Online', icon: PenTool },
+        { href: '/guide', label: 'Cara Pakai', icon: BookOpen },
+        { href: '/privacy', label: 'Privacy', icon: Shield },
+        { href: '/about', label: 'About', icon: Info },
     ]
 
     const isActive = (href) => pathname === href
@@ -31,7 +32,7 @@ export default function Navbar({ onDonateClick }) {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     aria-label="Toggle menu"
                 >
-                    <span>{isMenuOpen ? '✕' : '☰'}</span>
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
 
                 <ul className={`${styles.navLinks} ${isMenuOpen ? styles.show : ''}`}>
@@ -42,7 +43,8 @@ export default function Navbar({ onDonateClick }) {
                                 className={`${styles.navItem} ${isActive(item.href) ? styles.active : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                {item.label}
+                                <item.icon size={16} />
+                                <span>{item.label}</span>
                             </Link>
                         </li>
                     ))}
@@ -54,7 +56,8 @@ export default function Navbar({ onDonateClick }) {
                                 onDonateClick?.()
                             }}
                         >
-                            Donasi ❤️
+                            <Heart size={16} />
+                            <span>Donasi</span>
                         </button>
                     </li>
                 </ul>

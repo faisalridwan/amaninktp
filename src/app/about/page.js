@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { FileImage, Shield, CreditCard, Users, FileText, Building, File, Upload, Crop, Type, Palette, Download, Move, RotateCcw, PenTool, Eraser, Lock, Server, Zap, Trash2 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DonationModal from '@/components/DonationModal'
@@ -10,93 +11,38 @@ import styles from './page.module.css'
 export default function AboutPage() {
     const [isDonationOpen, setIsDonationOpen] = useState(false)
 
+    const documentTypes = [
+        { icon: CreditCard, label: 'KTP', desc: 'Kartu Tanda Penduduk' },
+        { icon: CreditCard, label: 'SIM', desc: 'Surat Izin Mengemudi' },
+        { icon: Users, label: 'Kartu Keluarga', desc: 'Dokumen keluarga' },
+        { icon: FileText, label: 'Paspor', desc: 'Dokumen perjalanan' },
+        { icon: Building, label: 'NPWP', desc: 'Nomor Pokok Wajib Pajak' },
+        { icon: File, label: 'Dokumen Lain', desc: 'Ijazah, akta, dll' },
+    ]
+
     const watermarkFeatures = [
-        {
-            icon: '📁',
-            title: 'Upload Fleksibel',
-            description: 'Upload gambar dengan klik, drag & drop, atau paste dari clipboard (Ctrl+V). Mendukung format JPG, PNG, WebP, dan lainnya.'
-        },
-        {
-            icon: '✂️',
-            title: 'Crop Gambar',
-            description: 'Potong gambar dengan mudah. Tampilan grid membantu komposisi yang sempurna. Resize area crop dengan drag handles.'
-        },
-        {
-            icon: '🔲',
-            title: 'Watermark Menyeluruh',
-            description: 'Watermark tersebar di seluruh gambar dengan pola diagonal. Sangat sulit dihapus dan melindungi seluruh dokumen.'
-        },
-        {
-            icon: '📍',
-            title: 'Watermark Satu Teks',
-            description: 'Posisi watermark bebas. Drag untuk pindahkan, tarik sudut untuk resize, tarik atas untuk rotate. Interaksi langsung di canvas.'
-        },
-        {
-            icon: '📅',
-            title: 'Auto Tanggal',
-            description: 'Tambahkan tanggal secara otomatis ke watermark. Format: "Verifikasi DD/MM/YYYY". Teks dapat diedit sesuai kebutuhan.'
-        },
-        {
-            icon: '🔤',
-            title: 'Pilihan Font',
-            description: 'Tersedia berbagai font: Arial, Times New Roman, PT Sans, Poppins, dan Georgia. Sesuaikan dengan kebutuhan dokumen.'
-        },
-        {
-            icon: '🎨',
-            title: 'Kustomisasi Lengkap',
-            description: 'Atur ukuran font (10-100px), rotasi (-180° s/d 180°), transparansi (5-100%), dan warna sesuai keinginan.'
-        },
-        {
-            icon: '💾',
-            title: 'Download PNG & PDF',
-            description: 'Unduh hasil dalam format PNG (kualitas tinggi) atau PDF (siap cetak). Nama file otomatis berformat profesional.'
-        }
+        { icon: Upload, title: 'Upload Fleksibel', desc: 'Klik, drag & drop, atau paste (Ctrl+V)' },
+        { icon: Crop, title: 'Crop Gambar', desc: 'Potong area dengan grid guide' },
+        { icon: Type, title: 'Teks Kustom', desc: 'Tulis watermark sesuai kebutuhan' },
+        { icon: Palette, title: 'Warna & Style', desc: 'Atur font, warna, dan transparansi' },
+        { icon: Move, title: 'Drag & Resize', desc: 'Posisi bebas di mode satu teks' },
+        { icon: RotateCcw, title: 'Rotasi', desc: 'Putar watermark -180° hingga 180°' },
+        { icon: Download, title: 'Export', desc: 'Download PNG atau PDF' },
+        { icon: Shield, title: 'Auto Verifikasi', desc: 'Tambah tanggal otomatis' },
     ]
 
     const signatureFeatures = [
-        {
-            icon: '✍️',
-            title: 'Kanvas Digital',
-            description: 'Buat tanda tangan langsung di browser menggunakan mouse atau jari (touchscreen). Hasil halus dan natural.'
-        },
-        {
-            icon: '🎨',
-            title: 'Pilihan Warna',
-            description: '5 pilihan warna pena: Hitam, Biru, Merah, Hijau, dan Ungu. Sesuaikan dengan kebutuhan dokumen.'
-        },
-        {
-            icon: '📏',
-            title: 'Ketebalan Garis',
-            description: 'Atur ketebalan garis dari 1px hingga 10px. Buat tanda tangan tebal yang jelas atau tipis yang elegan.'
-        },
-        {
-            icon: '🖼️',
-            title: 'Background Transparan',
-            description: 'Hasil tanda tangan memiliki background transparan (PNG). Langsung bisa ditempelkan pada dokumen digital.'
-        }
+        { icon: PenTool, title: 'Kanvas Digital', desc: 'Tulis dengan mouse atau jari' },
+        { icon: Palette, title: 'Pilihan Warna', desc: '5 warna pena tersedia' },
+        { icon: Type, title: 'Ketebalan', desc: 'Atur tipis hingga tebal' },
+        { icon: Eraser, title: 'Hapus & Ulang', desc: 'Clear canvas kapan saja' },
     ]
 
     const securityFeatures = [
-        {
-            icon: '🔒',
-            title: '100% Client-Side',
-            description: 'Seluruh proses dilakukan di browser Anda. Tidak ada data yang dikirim ke server kami. Aman dan privat.'
-        },
-        {
-            icon: '🚫',
-            title: 'Tanpa Upload',
-            description: 'Gambar KTP dan tanda tangan tidak pernah meninggalkan perangkat Anda. Server hanya mengirim kode website.'
-        },
-        {
-            icon: '⚡',
-            title: 'Tanpa Login',
-            description: 'Tidak perlu mendaftar atau login. Langsung pakai tanpa memberikan email atau data pribadi apapun.'
-        },
-        {
-            icon: '🗑️',
-            title: 'Tidak Disimpan',
-            description: 'Setelah Anda menutup tab browser, semua data hilang permanen. Tidak ada database yang menyimpan gambar.'
-        }
+        { icon: Lock, title: '100% Client-Side', desc: 'Semua proses di browser Anda' },
+        { icon: Server, title: 'Tanpa Upload', desc: 'Data tidak dikirim ke server' },
+        { icon: Zap, title: 'Tanpa Login', desc: 'Langsung pakai tanpa akun' },
+        { icon: Trash2, title: 'Tidak Disimpan', desc: 'Data hilang saat tab ditutup' },
     ]
 
     return (
@@ -106,30 +52,47 @@ export default function AboutPage() {
             <main className="container">
                 {/* Hero */}
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}>
-                        Tentang <span>AmaninKTP</span>
-                    </h1>
+                    <h1 className={styles.heroTitle}>Tentang <span>AmaninKTP</span></h1>
                     <p className={styles.heroSubtitle}>
-                        Aplikasi gratis untuk melindungi foto KTP dan membuat tanda tangan digital.
-                        100% aman, tanpa upload ke server.
+                        Aplikasi gratis untuk melindungi dokumen identitas dengan watermark. 100% aman, 100% privat.
                     </p>
                     <Link href="/" className={styles.ctaBtn}>
-                        🛡️ Mulai Watermark Sekarang
+                        <Shield size={18} /> Mulai Watermark
                     </Link>
                 </header>
 
+                {/* Document Types Section */}
+                <section className={styles.docSection}>
+                    <h2 className={styles.sectionTitle}>
+                        <FileImage size={24} /> Melindungi Berbagai Dokumen Anda
+                    </h2>
+                    <p className={styles.sectionDesc}>
+                        Aman dari penyalahgunaan digital! Watermark KTP membantu melindungi berbagai dokumen penting Anda — dari KTP, SIM, hingga paspor — dengan mudah dan profesional.
+                    </p>
+                    <div className={styles.docGrid}>
+                        {documentTypes.map((doc, i) => (
+                            <div key={i} className={`neu-card no-hover ${styles.docCard}`}>
+                                <doc.icon size={28} />
+                                <h3>{doc.label}</h3>
+                                <p>{doc.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
                 {/* Watermark Features */}
                 <section className={styles.featureSection}>
-                    <h2 className={styles.sectionTitle}>🖼️ Fitur Watermark KTP</h2>
-                    <p className={styles.sectionDesc}>
-                        Lindungi foto KTP Anda dengan watermark profesional. Semua fitur didesain untuk kemudahan dan keamanan maksimal.
-                    </p>
+                    <h2 className={styles.sectionTitle}>
+                        <FileImage size={24} /> Fitur Watermark KTP
+                    </h2>
                     <div className={styles.featureGrid}>
-                        {watermarkFeatures.map((feature, index) => (
-                            <div key={index} className={`neu-card no-hover ${styles.featureCard}`}>
-                                <span className={styles.featureIcon}>{feature.icon}</span>
-                                <h3>{feature.title}</h3>
-                                <p>{feature.description}</p>
+                        {watermarkFeatures.map((f, i) => (
+                            <div key={i} className={styles.featureCard}>
+                                <f.icon size={20} />
+                                <div>
+                                    <h4>{f.title}</h4>
+                                    <p>{f.desc}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -137,106 +100,50 @@ export default function AboutPage() {
 
                 {/* Signature Features */}
                 <section className={styles.featureSection}>
-                    <h2 className={styles.sectionTitle}>✍️ Fitur Tanda Tangan Digital</h2>
-                    <p className={styles.sectionDesc}>
-                        Buat tanda tangan digital profesional untuk dokumen Anda. Mudah, cepat, dan berkualitas tinggi.
-                    </p>
+                    <h2 className={styles.sectionTitle}>
+                        <PenTool size={24} /> Fitur Tanda Tangan
+                    </h2>
                     <div className={styles.featureGrid}>
-                        {signatureFeatures.map((feature, index) => (
-                            <div key={index} className={`neu-card no-hover ${styles.featureCard}`}>
-                                <span className={styles.featureIcon}>{feature.icon}</span>
-                                <h3>{feature.title}</h3>
-                                <p>{feature.description}</p>
+                        {signatureFeatures.map((f, i) => (
+                            <div key={i} className={styles.featureCard}>
+                                <f.icon size={20} />
+                                <div>
+                                    <h4>{f.title}</h4>
+                                    <p>{f.desc}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </section>
 
-                {/* Security Features */}
+                {/* Security */}
                 <section className={styles.featureSection}>
-                    <h2 className={styles.sectionTitle}>🔐 Keamanan & Privasi</h2>
-                    <p className={styles.sectionDesc}>
-                        Kami mengutamakan keamanan data Anda. Berikut adalah jaminan privasi yang kami berikan.
-                    </p>
+                    <h2 className={styles.sectionTitle}>
+                        <Shield size={24} /> Keamanan & Privasi
+                    </h2>
                     <div className={styles.featureGrid}>
-                        {securityFeatures.map((feature, index) => (
-                            <div key={index} className={`neu-card no-hover ${styles.featureCard}`}>
-                                <span className={styles.featureIcon}>{feature.icon}</span>
-                                <h3>{feature.title}</h3>
-                                <p>{feature.description}</p>
+                        {securityFeatures.map((f, i) => (
+                            <div key={i} className={styles.featureCard}>
+                                <f.icon size={20} />
+                                <div>
+                                    <h4>{f.title}</h4>
+                                    <p>{f.desc}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
-                </section>
-
-                {/* How It Works */}
-                <section className={styles.howSection}>
-                    <h2 className={styles.sectionTitle}>📖 Cara Menggunakan</h2>
-
-                    <div className={styles.howGrid}>
-                        <div className={`neu-card no-hover ${styles.howCard}`}>
-                            <h3>🖼️ Watermark KTP</h3>
-                            <ol className={styles.stepList}>
-                                <li>Buka halaman utama atau klik "Watermark KTP"</li>
-                                <li>Upload gambar dengan klik, drag & drop, atau paste (Ctrl+V)</li>
-                                <li>Crop gambar jika diperlukan</li>
-                                <li>Pilih jenis watermark: Menyeluruh atau Satu Teks</li>
-                                <li>Tulis teks watermark (otomatis terisi tanggal)</li>
-                                <li>Atur font, ukuran, rotasi, transparansi, dan warna</li>
-                                <li>Untuk mode "Satu Teks": drag untuk pindah, tarik sudut untuk resize</li>
-                                <li>Download hasil sebagai PNG atau PDF</li>
-                            </ol>
-                        </div>
-
-                        <div className={`neu-card no-hover ${styles.howCard}`}>
-                            <h3>✍️ Tanda Tangan Online</h3>
-                            <ol className={styles.stepList}>
-                                <li>Buka halaman "TTD Online" dari menu</li>
-                                <li>Pilih warna pena yang diinginkan</li>
-                                <li>Atur ketebalan garis dengan slider</li>
-                                <li>Gambar tanda tangan Anda di area putih</li>
-                                <li>Jika salah, klik "Hapus" untuk mengulang</li>
-                                <li>Klik "Download PNG" untuk menyimpan</li>
-                                <li>Hasil memiliki background transparan</li>
-                            </ol>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Tips */}
-                <section className={`neu-card no-hover ${styles.tipsSection}`}>
-                    <h2>💡 Tips Keamanan</h2>
-                    <ul className={styles.tipsList}>
-                        <li>
-                            <strong>Gunakan watermark yang spesifik:</strong> Sertakan nama platform/perusahaan dan tanggal.
-                            Contoh: "Hanya untuk verifikasi Shopee, 8 Feb 2026"
-                        </li>
-                        <li>
-                            <strong>Mode Menyeluruh lebih aman:</strong> Watermark tersebar di seluruh gambar,
-                            sangat sulit dihapus dengan editing
-                        </li>
-                        <li>
-                            <strong>Transparansi 30-50% optimal:</strong> Cukup terlihat tapi data KTP tetap terbaca jelas
-                        </li>
-                        <li>
-                            <strong>Simpan file asli dengan aman:</strong> Jangan pernah membagikan foto KTP tanpa watermark
-                        </li>
-                        <li>
-                            <strong>Periksa sebelum mengirim:</strong> Pastikan watermark terlihat jelas pada hasil akhir
-                        </li>
-                    </ul>
                 </section>
 
                 {/* CTA */}
                 <section className={styles.ctaSection}>
-                    <h2>Siap Melindungi KTP Anda?</h2>
-                    <p>Gratis, aman, dan mudah digunakan. Mulai sekarang!</p>
+                    <h2>Siap Melindungi Dokumen Anda?</h2>
+                    <p>Gratis, aman, dan mudah digunakan.</p>
                     <div className={styles.ctaButtons}>
                         <Link href="/" className={styles.ctaBtn}>
-                            🛡️ Watermark KTP
+                            <Shield size={18} /> Watermark KTP
                         </Link>
-                        <Link href="/signature" className={styles.ctaBtnSecondary}>
-                            ✍️ Tanda Tangan
+                        <Link href="/signature" className={styles.ctaBtnAlt}>
+                            <PenTool size={18} /> Tanda Tangan
                         </Link>
                     </div>
                 </section>
