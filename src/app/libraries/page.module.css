@@ -121,3 +121,22 @@
         font-size: 26px;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .cardHeader {
+    border-bottom-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .version {
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.3), inset -1px -1px 3px rgba(51, 65, 85, 0.2);
+}
+
+:global([data-theme="dark"]) .link,
+:global([data-theme="dark"]) .githubLink {
+    background: var(--bg-primary);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3), -2px -2px 6px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .githubLink {
+    background: var(--bg-secondary);
+}

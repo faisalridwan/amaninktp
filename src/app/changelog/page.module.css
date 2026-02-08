@@ -188,3 +188,14 @@
         margin-top: 0;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .entry::after {
+    background: var(--bg-secondary);
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+:global([data-theme="dark"]) .versionBadge {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3), inset -2px -2px 5px rgba(51, 65, 85, 0.2);
+}

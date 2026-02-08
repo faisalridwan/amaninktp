@@ -677,3 +677,142 @@
         padding-right: 10px;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .heroTitle {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .heroSubtitle {
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .card {
+    background: var(--bg-secondary);
+    box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.4), -8px -8px 24px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .tabsContainer {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .tabBtn {
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .tabBtn.activeTab {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .paymentCard {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .presetChip {
+    background: var(--bg-secondary);
+    border-color: rgba(71, 85, 105, 0.4);
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .presetChip:hover {
+    border-color: #4CAF50;
+    color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+:global([data-theme="dark"]) .presetChip.activeChip {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+:global([data-theme="dark"]) .qrisContainer {
+    background: #FFFFFF;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .tutorialBox {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .tutorialTitle {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .tutorialSteps li {
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .tutorialSteps li strong {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .bankLabel,
+:global([data-theme="dark"]) .accountNumberText,
+:global([data-theme="dark"]) .qrisBranding {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .accountBox {
+    background: rgba(30, 41, 59, 0.6);
+}
+
+:global([data-theme="dark"]) .copyIconButton {
+    background: var(--bg-secondary);
+    border-color: rgba(71, 85, 105, 0.4);
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .copyIconButton:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .appreciationSection {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.08) 0%, rgba(30, 144, 255, 0.08) 100%);
+}
+
+:global([data-theme="dark"]) .appreciationTitle {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .appreciationDesc {
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .faqTitle {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .accordionItem {
+    background: var(--bg-secondary);
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .accordionItem.open {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+:global([data-theme="dark"]) .accordionHeader:hover {
+    background: rgba(51, 65, 85, 0.3);
+}
+
+:global([data-theme="dark"]) .accordionHeader h4 {
+    color: var(--text-primary);
+}
+
+:global([data-theme="dark"]) .innerContent p {
+    color: var(--text-secondary);
+}
+
+:global([data-theme="dark"]) .amountInput {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: #4CAF50;
+}
