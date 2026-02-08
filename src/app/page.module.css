@@ -74,6 +74,7 @@
     max-height: 70vh;
     overflow-y: auto;
     padding-right: 8px;
+    padding-bottom: 24px;
 }
 
 .controls::-webkit-scrollbar {
@@ -131,6 +132,8 @@
 .uploadBox span {
     font-size: 12px;
     color: var(--text-secondary);
+    text-align: center;
+    word-break: break-all;
 }
 
 .cropBtn {
@@ -183,34 +186,26 @@
     box-shadow: inset 2px 2px 5px rgba(174, 186, 202, 0.3), inset -2px -2px 5px rgba(255, 255, 255, 0.5);
 }
 
-/* Checkbox */
-.checkbox {
+/* Auto Button */
+.autoBtn {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+    border: none;
+    border-radius: 8px;
     font-size: 12px;
-    color: var(--text-secondary);
+    font-weight: 600;
+    color: #2E7D32;
     cursor: pointer;
-}
-
-.checkbox input {
-    display: none;
-}
-
-.checkbox .checkIcon {
-    width: 16px;
-    height: 16px;
-    padding: 2px;
-    background: var(--bg-secondary);
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 3px rgba(174, 186, 202, 0.4);
-    color: transparent;
     transition: all 0.2s;
 }
 
-.checkbox input:checked+.checkIcon {
-    background: var(--primary-dark);
-    color: white;
+.autoBtn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #C8E6C9, #A5D6A7);
 }
 
 /* Textarea */
@@ -369,6 +364,7 @@
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(174, 186, 202, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.8);
     transition: all 0.2s;
+    margin-bottom: 16px;
 }
 
 .resetBtn:hover {
@@ -380,6 +376,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .canvasWrap {
@@ -399,6 +396,7 @@
     max-height: 60vh;
     border-radius: 8px;
     cursor: grab;
+    object-fit: contain;
 }
 
 .canvas:active {
@@ -440,6 +438,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
+    align-items: center;
 }
 
 .cropHint {
@@ -450,21 +450,73 @@
     margin: 0;
 }
 
+.cropWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-height: 50vh;
+    overflow: hidden;
+}
+
 .cropCanvas {
     max-width: 100%;
     max-height: 50vh;
+    width: auto;
+    height: auto;
     border-radius: 8px;
     cursor: crosshair;
+    object-fit: contain;
 }
 
 .cropBtns {
     display: flex;
     gap: 12px;
     justify-content: center;
+    width: 100%;
+    padding: 0 20px;
 }
 
-.cropBtns button {
-    min-width: 100px;
+.applyBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.applyBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.cancelBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 24px;
+    background: var(--bg-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(174, 186, 202, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+    color: var(--text-primary);
 }
 
 /* Trust */
@@ -534,5 +586,16 @@
     .docItem {
         padding: 6px 10px;
         font-size: 11px;
+    }
+
+    .cropBtns {
+        flex-direction: row;
+        padding: 0;
+    }
+
+    .applyBtn,
+    .cancelBtn {
+        flex: 1;
+        padding: 12px 16px;
     }
 }

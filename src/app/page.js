@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Upload, Crop, Type, Palette, Download, RotateCcw, Calendar, FileImage, CreditCard, Users, FileText, Building, File, Check } from 'lucide-react'
+import { Upload, Crop, Type, Palette, Download, RotateCcw, FileImage, CreditCard, Users, FileText, Building, File, Check } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DonationModal from '@/components/DonationModal'
@@ -25,7 +25,6 @@ export default function Home() {
     // Watermark states
     const [watermarkType, setWatermarkType] = useState('tiled')
     const [watermarkText, setWatermarkText] = useState('')
-    const [addAutoDate, setAddAutoDate] = useState(true)
     const [fontSize, setFontSize] = useState(30)
     const [fontFamily, setFontFamily] = useState('Arial')
     const [rotation, setRotation] = useState(-15)
@@ -43,6 +42,7 @@ export default function Home() {
 
     const canvasRef = useRef(null)
     const cropCanvasRef = useRef(null)
+    const cropWrapperRef = useRef(null)
     const fileInputRef = useRef(null)
 
     const fonts = [
@@ -62,7 +62,7 @@ export default function Home() {
         { icon: File, label: 'Dokumen Lain' },
     ]
 
-    // Generate auto watermark
+    // Generate auto watermark text
     const getAutoText = useCallback(() => {
         const today = new Date()
         const day = today.getDate().toString().padStart(2, '0')
@@ -71,15 +71,18 @@ export default function Home() {
         return `Verifikasi ${day}/${month}/${year}`
     }, [])
 
-    // Get final watermark text
-    const getFinalWatermarkText = useCallback(() => {
-        let text = watermarkText.trim()
-        if (addAutoDate) {
+    // Handle checkbox - insert text into textarea
+    const handleAutoTextToggle = (checked) => {
+        if (checked) {
             const autoText = getAutoText()
-            text = text ? `${text}\n${autoText}` : autoText
+            setWatermarkText(prev => prev.trim() ? `${prev.trim()}\n${autoText}` : autoText)
         }
-        return text || 'WATERMARK'
-    }, [watermarkText, addAutoDate, getAutoText])
+    }
+
+    // Get final watermark text - all from textarea
+    const getFinalWatermarkText = useCallback(() => {
+        return watermarkText.trim() || 'WATERMARK'
+    }, [watermarkText])
 
     // Main draw function
     const draw = useCallback(() => {
@@ -329,18 +332,22 @@ export default function Home() {
 
     const handleReset = () => {
         setUploadedImage(null); setCroppedImage(null); setOriginalFileName(''); setImageLoaded(false)
-        setWatermarkText(''); setAddAutoDate(true); setFontSize(30); setFontFamily('Arial')
+        setWatermarkText(''); setFontSize(30); setFontFamily('Arial')
         setRotation(-15); setOpacity(0.3); setColor('#080808'); setWatermarkType('tiled'); setTextScale(1)
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
-    // Crop overlay
+    // Crop overlay - draw with proper sizing
     useEffect(() => {
         if (!isCropping || !uploadedImage) return
         const canvas = cropCanvasRef.current
         if (!canvas) return
+
         const ctx = canvas.getContext('2d')
-        canvas.width = uploadedImage.width; canvas.height = uploadedImage.height
+        // Set canvas to image dimensions (internal size)
+        canvas.width = uploadedImage.width
+        canvas.height = uploadedImage.height
+
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(uploadedImage, 0, 0)
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
@@ -420,17 +427,18 @@ export default function Home() {
                         {/* Text */}
                         <div className={styles.section}>
                             <label className={styles.label}><Type size={14} /> Teks Watermark</label>
-                            <label className={styles.checkbox}>
-                                <input type="checkbox" checked={addAutoDate} onChange={(e) => setAddAutoDate(e.target.checked)} />
-                                <Check size={14} className={styles.checkIcon} />
-                                <span>Tambah Verifikasi + Tanggal</span>
-                            </label>
+                            <button
+                                className={styles.autoBtn}
+                                onClick={() => handleAutoTextToggle(true)}
+                            >
+                                <Check size={14} /> Tambah Verifikasi + Tanggal
+                            </button>
                             <textarea
                                 className={styles.textarea}
                                 value={watermarkText}
                                 onChange={(e) => setWatermarkText(e.target.value)}
-                                placeholder="Teks tambahan (opsional)"
-                                rows={2}
+                                placeholder="Tulis teks watermark disini..."
+                                rows={3}
                             />
                         </div>
 
@@ -485,13 +493,15 @@ export default function Home() {
                         {isCropping && uploadedImage ? (
                             <div className={styles.cropArea}>
                                 <p className={styles.cropHint}>Drag untuk memilih area</p>
-                                <canvas ref={cropCanvasRef} className={styles.cropCanvas}
-                                    onMouseDown={handleCropMouseDown} onMouseMove={handleCropMouseMove} onMouseUp={handleCropMouseUp} onMouseLeave={handleCropMouseUp}
-                                    onTouchStart={handleCropMouseDown} onTouchMove={handleCropMouseMove} onTouchEnd={handleCropMouseUp}
-                                />
+                                <div className={styles.cropWrapper} ref={cropWrapperRef}>
+                                    <canvas ref={cropCanvasRef} className={styles.cropCanvas}
+                                        onMouseDown={handleCropMouseDown} onMouseMove={handleCropMouseMove} onMouseUp={handleCropMouseUp} onMouseLeave={handleCropMouseUp}
+                                        onTouchStart={handleCropMouseDown} onTouchMove={handleCropMouseMove} onTouchEnd={handleCropMouseUp}
+                                    />
+                                </div>
                                 <div className={styles.cropBtns}>
-                                    <button className={styles.pngBtn} onClick={applyCrop}><Check size={14} /> Apply</button>
-                                    <button className={styles.resetBtn} onClick={cancelCrop}>Cancel</button>
+                                    <button className={styles.applyBtn} onClick={applyCrop}><Check size={14} /> Apply</button>
+                                    <button className={styles.cancelBtn} onClick={cancelCrop}>Cancel</button>
                                 </div>
                             </div>
                         ) : (

@@ -12,7 +12,7 @@ export default function Navbar({ onDonateClick }) {
 
     const navItems = [
         { href: '/', label: 'Watermark KTP', icon: FileImage },
-        { href: '/signature', label: 'TTD Online', icon: PenTool },
+        { href: '/signature', label: 'Tanda Tangan', icon: PenTool },
         { href: '/guide', label: 'Cara Pakai', icon: BookOpen },
         { href: '/privacy', label: 'Privacy', icon: Shield },
         { href: '/about', label: 'About', icon: Info },
