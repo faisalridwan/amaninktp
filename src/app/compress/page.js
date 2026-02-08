@@ -378,7 +378,7 @@ export default function ImageCompressor() {
                                         <>
                                             <div className={styles.statItem}>
                                                 <span className={styles.statLabel}>Hasil</span>
-                                                <span className={`${styles.statValue} ${styles.successText}`}>
+                                                <span className={`${styles.statValue} ${compressedSize < originalSize ? styles.successText : styles.warningText}`}>
                                                     {formatSize(compressedSize)}
                                                 </span>
                                             </div>

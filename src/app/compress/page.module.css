@@ -234,7 +234,11 @@
 }
 
 .successText {
-    color: #059669;
+    color: #10B981;
+}
+
+.warningText {
+    color: #F59E0B;
 }
 
 .saveBadge {
