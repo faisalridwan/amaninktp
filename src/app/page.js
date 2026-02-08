@@ -418,7 +418,7 @@ export default function Home() {
                                 className={styles.autoBtn}
                                 onClick={() => handleAutoTextToggle(true)}
                             >
-                                <Check size={14} /> Tambah Verifikasi + Tanggal
+                                <Check size={14} /> Tambah Verifikasi & Tanggal
                             </button>
                             <textarea
                                 className={styles.textarea}

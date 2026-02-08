@@ -100,7 +100,7 @@ export default function GuidePage() {
                                 </li>
                                 <li>
                                     <a href="#signature-guide">
-                                        <MousePointer size={16} /> Tanda Tangan Digital
+                                        <MousePointer size={16} /> Tanda Tangan
                                     </a>
                                 </li>
                                 <li>

@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import ConsentModal from '@/components/ConsentModal'
 
 export const metadata = {
     title: 'Watermark KTP Online & TTD Digital – Aman & Lokal | AmaninKTP',
@@ -49,6 +50,7 @@ export default function RootLayout({ children }) {
             </head>
             <body>
                 <GoogleAnalytics />
+                <ConsentModal />
                 {children}
             </body>
         </html>
