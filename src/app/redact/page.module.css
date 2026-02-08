@@ -322,3 +322,81 @@
     color: var(--text-secondary);
     box-shadow: 4px 4px 10px rgba(174, 186, 202, 0.3), -4px -4px 10px rgba(255, 255, 255, 0.8);
 }
+
+/* Color Picker */
+.colorGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+}
+
+.colorSwatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+.colorSwatch.active {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px var(--primary-dark);
+}
+
+.customColorInput {
+    width: 32px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Download Group */
+.downloadGroup {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    overflow: hidden;
+}
+
+.downloadBtnSplit {
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.downloadBtnSplit:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.formatSelect {
+    padding: 10px 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.formatSelect option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}

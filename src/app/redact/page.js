@@ -30,7 +30,8 @@ export default function RedactionTool() {
     const [documentPages, setDocumentPages] = useState([]); // Array of Image objects
     const [documentName, setDocumentName] = useState('');
     const [mode, setMode] = useState('block'); // 'block' | 'blur'
-    const [redactions, setRedactions] = useState([]); // {pageIndex, x, y, w, h, type}
+    const [redactions, setRedactions] = useState([]); // {pageIndex, x, y, w, h, type, color}
+    const [blockColor, setBlockColor] = useState('#000000');
     const [isDrawing, setIsDrawing] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
     const [currentRect, setCurrentRect] = useState(null);
@@ -162,7 +163,7 @@ export default function RedactionTool() {
 
             allToDraw.forEach(rect => {
                 if (rect.type === 'block') {
-                    ctx.fillStyle = 'black';
+                    ctx.fillStyle = rect.color || 'black';
                     ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
                 } else if (rect.type === 'blur') {
                     // Optimized Blur: Use filter
@@ -215,7 +216,8 @@ export default function RedactionTool() {
             y: Math.min(startPos.y, currentPos.y),
             w: Math.abs(currentPos.x - startPos.x),
             h: Math.abs(currentPos.y - startPos.y),
-            type: mode
+            type: mode,
+            color: mode === 'block' ? blockColor : null
         });
     };
 
@@ -234,38 +236,46 @@ export default function RedactionTool() {
     const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.1, 2));
     const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.1, 0.5));
 
-    const handleDownload = async () => {
+    const handleDownload = async (format = 'pdf') => {
         if (documentPages.length === 0) return;
         setIsLoading(true);
 
         try {
-            if (file.type === 'application/pdf') {
+            if (format === 'pdf') {
                 const { jsPDF } = await import('jspdf');
                 let pdf = null;
 
                 for (let i = 0; i < documentPages.length; i++) {
                     const canvas = pageCanvasRefs.current[i];
-                    const imgData = canvas.toDataURL('image/png', 0.95);
+                    const imgData = canvas.toDataURL('image/jpeg', 0.9);
                     const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait';
 
                     if (i === 0) {
                         pdf = new jsPDF({
                             orientation,
                             unit: 'px',
-                            format: [canvas.width, canvas.height]
+                            format: [canvas.width, canvas.height],
+                            hotfixes: ["px_scaling"]
                         });
                     } else {
                         pdf.addPage([canvas.width, canvas.height], orientation);
                     }
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
                 }
-                pdf.save(`sensor-${documentName}.pdf`);
+                pdf.save(`sensor-${documentName.split('.')[0]}.pdf`);
             } else {
-                const canvas = pageCanvasRefs.current[0];
-                const link = document.createElement('a');
-                link.download = `sensor-${documentName}`;
-                link.href = canvas.toDataURL('image/png', 0.95);
-                link.click();
+                // Download as PNG
+                // If single page, download normally. If multi-page, download as ZIP or just the current/all?
+                // User said "variasi menjadi pdf atau png". For now let's download all as individual files if PNG.
+                for (let i = 0; i < documentPages.length; i++) {
+                    const canvas = pageCanvasRefs.current[i];
+                    const link = document.createElement('a');
+                    link.download = `sensor-${documentName.split('.')[0]}-page${i + 1}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    // Small delay to avoid browser blocking multiple downloads
+                    if (documentPages.length > 1) await new Promise(r => setTimeout(r, 200));
+                }
             }
         } catch (err) {
             console.error('Download error:', err);
@@ -340,6 +350,29 @@ export default function RedactionTool() {
                                 </button>
                             </div>
 
+                            {mode === 'block' && (
+                                <>
+                                    <div className={styles.divider} />
+                                    <div className={styles.colorGroup}>
+                                        {['#000000', '#FFFFFF', '#EF4444', '#22C55E', '#3B82F6'].map(color => (
+                                            <div
+                                                key={color}
+                                                className={`${styles.colorSwatch} ${blockColor === color ? styles.active : ''}`}
+                                                style={{ backgroundColor: color }}
+                                                onClick={() => setBlockColor(color)}
+                                            />
+                                        ))}
+                                        <input
+                                            type="color"
+                                            value={blockColor}
+                                            onChange={(e) => setBlockColor(e.target.value)}
+                                            className={styles.customColorInput}
+                                            title="Custom Color"
+                                        />
+                                    </div>
+                                </>
+                            )}
+
                             <div className={styles.divider} />
 
                             <div className={styles.zoomGroup}>
@@ -363,9 +396,25 @@ export default function RedactionTool() {
                                 >
                                     <RotateCcw size={20} />
                                 </button>
-                                <button className={styles.downloadBtn} onClick={handleDownload} disabled={isLoading}>
-                                    {isLoading ? '...' : <><Download size={20} /> Download</>}
-                                </button>
+
+                                <div className={styles.downloadGroup}>
+                                    <button
+                                        className={styles.downloadBtnSplit}
+                                        onClick={() => handleDownload(window.document.getElementById('redactFormat').value)}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? '...' : <><Download size={18} /> Simpan</>}
+                                    </button>
+                                    <select
+                                        id="redactFormat"
+                                        className={styles.formatSelect}
+                                        defaultValue="pdf"
+                                    >
+                                        <option value="pdf">PDF</option>
+                                        <option value="png">PNG</option>
+                                    </select>
+                                </div>
+
                                 <button className={styles.resetBtn} onClick={handleReset} title="Mulai Ulang">
                                     <X size={20} />
                                 </button>

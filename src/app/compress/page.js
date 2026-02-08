@@ -43,6 +43,7 @@ export default function ImageCompressor() {
         maxSizeMB: 1
     });
     const [compressedBlob, setCompressedBlob] = useState(null);
+    const [compressedPages, setCompressedPages] = useState([]); // Array of dataURLs
     const [progress, setProgress] = useState(0);
 
     const fileInputRef = useRef(null);
@@ -160,6 +161,9 @@ export default function ImageCompressor() {
                 const compressed = await imageCompression(file, options);
                 setCompressedBlob(compressed);
                 setCompressedSize(compressed.size);
+
+                const dataUrl = await imageCompression.getDataUrlFromFile(compressed);
+                setCompressedPages([dataUrl]);
             } else {
                 // PDF Compression (Rerender -> Compress Images -> Package PDF)
                 const { jsPDF } = await import('jspdf');
@@ -169,6 +173,7 @@ export default function ImageCompressor() {
 
                 let outPdf = null;
                 const totalPages = pdf.numPages;
+                const compressedPagesArr = [];
 
                 for (let i = 1; i <= totalPages; i++) {
                     const page = await pdf.getPage(i);
@@ -194,18 +199,24 @@ export default function ImageCompressor() {
                         outPdf = new jsPDF({
                             orientation,
                             unit: 'px',
-                            format: [canvas.width, canvas.height]
+                            format: [canvas.width, canvas.height],
+                            hotfixes: ["px_scaling"]
                         });
                     } else {
                         outPdf.addPage([canvas.width, canvas.height], orientation);
                     }
                     outPdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+                    compressedPagesArr.push(imgData);
                     setProgress(10 + (i / totalPages * 85));
                 }
+
+                setCompressedPages(compressedPagesArr);
 
                 const pdfOutput = outPdf.output('blob');
                 setCompressedBlob(pdfOutput);
                 setCompressedSize(pdfOutput.size);
+                // We don't necessarily update compressedPages here because they are intermediate,
+                // but for PNG download we need them. Let's collect them in runCompression.
             }
             setProgress(100);
         } catch (err) {
@@ -219,13 +230,53 @@ export default function ImageCompressor() {
         }
     };
 
-    const handleDownload = () => {
-        if (!compressedBlob) return;
-        const url = URL.createObjectURL(compressedBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `compressed-${documentName}`;
-        link.click();
+    const handleDownload = async (format = 'pdf') => {
+        if (!compressedBlob && compressedPages.length === 0) return;
+        setIsCompressing(true);
+
+        try {
+            if (format === 'pdf') {
+                if (documentType === 'pdf') {
+                    // Original was PDF, processed as PDF, just download the blob
+                    const url = URL.createObjectURL(compressedBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${documentName.split('.')[0]} - compress by amanindata.qreatip.com.pdf`;
+                    link.click();
+                } else {
+                    // Original was Image, convert to PDF
+                    const { jsPDF } = await import('jspdf');
+                    const img = new Image();
+                    await new Promise(resolve => {
+                        img.onload = resolve;
+                        img.src = compressedPages[0];
+                    });
+                    const orientation = img.width > img.height ? 'landscape' : 'portrait';
+                    const pdf = new jsPDF({
+                        orientation,
+                        unit: 'px',
+                        format: [img.width, img.height],
+                        hotfixes: ["px_scaling"]
+                    });
+                    pdf.addImage(compressedPages[0], 'JPEG', 0, 0, img.width, img.height);
+                    pdf.save(`${documentName.split('.')[0]} - compress by amanindata.qreatip.com.pdf`);
+                }
+            } else {
+                // Download as PNG/Images
+                for (let i = 0; i < compressedPages.length; i++) {
+                    const link = document.createElement('a');
+                    link.download = `${documentName.split('.')[0]} - compress by amanindata.qreatip.com${compressedPages.length > 1 ? `-${i + 1}` : ''}.png`;
+                    link.href = compressedPages[i];
+                    link.click();
+                    if (compressedPages.length > 1) await new Promise(r => setTimeout(r, 200));
+                }
+            }
+        } catch (err) {
+            console.error('Download error:', err);
+            alert('Gagal mengunduh file.');
+        } finally {
+            setIsCompressing(false);
+        }
     };
 
     const handleReset = () => {
@@ -235,6 +286,7 @@ export default function ImageCompressor() {
         setPreviews([]);
         setCompressedBlob(null);
         setCompressedSize(0);
+        setCompressedPages([]);
         setAdvancedMode(false);
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
@@ -403,9 +455,23 @@ export default function ImageCompressor() {
                                         {isCompressing ? `Memproses ${Math.round(progress)}%` : 'Kompres Sekarang'}
                                     </button>
                                 ) : (
-                                    <button className={styles.downloadBtn} onClick={handleDownload}>
-                                        <Download size={20} /> Download Hasil
-                                    </button>
+                                    <div className={styles.downloadGroup}>
+                                        <button
+                                            className={styles.downloadBtnSplit}
+                                            onClick={() => handleDownload(window.document.getElementById('compressFormat').value)}
+                                            disabled={isCompressing}
+                                        >
+                                            {isCompressing ? '...' : <><Download size={18} /> Simpan Selaku</>}
+                                        </button>
+                                        <select
+                                            id="compressFormat"
+                                            className={styles.formatSelect}
+                                            defaultValue={documentType === 'pdf' ? 'pdf' : 'png'}
+                                        >
+                                            <option value="pdf">PDF</option>
+                                            <option value="png">PNG</option>
+                                        </select>
+                                    </div>
                                 )}
                                 <button className={styles.resetBtn} onClick={handleReset}>
                                     Ganti File
