@@ -13,7 +13,7 @@ export default function ContactPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        window.location.href = `mailto:hello@qreatip.com?subject=Contact from ${formData.name}&body=${formData.message}`
+        window.location.href = `mailto:faisalridwann@gmail.com?subject=Contact from ${formData.name}&body=${formData.message}`
     }
 
     return (
@@ -35,7 +35,7 @@ export default function ContactPage() {
                                 <Mail className={styles.icon} size={20} />
                                 <div>
                                     <h3>Email</h3>
-                                    <a href="mailto:hello@qreatip.com">hello@qreatip.com</a>
+                                    <a href="mailto:faisalridwann@gmail.com">faisalridwann@gmail.com</a>
                                 </div>
                             </div>
                             <div className={styles.contactItem}>

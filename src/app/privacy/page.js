@@ -81,7 +81,7 @@ export default function PrivacyPage() {
 
                         <h3>6. Hubungi Kami</h3>
                         <p>
-                            Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami melalui halaman <a href="/contact">Kontak</a> atau email ke privacy@qreatip.com.
+                            Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami melalui halaman <a href="/contact">Kontak</a> atau email ke faisalridwann@gmail.com.
                         </p>
                     </article>
                 </section>
