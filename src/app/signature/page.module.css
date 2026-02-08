@@ -1030,3 +1030,89 @@
 .slider::-moz-range-thumb:hover {
     transform: scale(1.2);
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .zoomControls {
+    background: var(--bg-secondary);
+    border-color: rgba(71, 85, 105, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .zoomControls button:hover {
+    background: rgba(51, 65, 85, 0.5);
+}
+
+:global([data-theme="dark"]) .sigPicker {
+    background: linear-gradient(135deg, #1E3A5F, #2D4A7C);
+}
+
+:global([data-theme="dark"]) .sigPicker>span {
+    color: #93C5FD;
+}
+
+:global([data-theme="dark"]) .sigPickerItem {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="dark"]) .sigPickerItem:hover,
+:global([data-theme="dark"]) .sigPickerItem.active {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+:global([data-theme="dark"]) .activeSigPreview {
+    background: rgba(76, 175, 80, 0.15);
+}
+
+:global([data-theme="dark"]) .docScroll {
+    background: #1E293B;
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .pageNumber {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .btnPageAction {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .btnReset {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+:global([data-theme="dark"]) .btnReset:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+:global([data-theme="dark"]) .uploadArea {
+    border-color: rgba(71, 85, 105, 0.5);
+}
+
+:global([data-theme="dark"]) .uploadArea:hover {
+    background: rgba(51, 65, 85, 0.3);
+}
+
+:global([data-theme="dark"]) .uploadIcon {
+    background: var(--bg-secondary);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .uploadFormats span {
+    background: var(--bg-secondary);
+}
+
+:global([data-theme="dark"]) .savedItem {
+    background: var(--bg-secondary);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .savedItem:hover {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .savedSignatures {
+    border-top-color: rgba(71, 85, 105, 0.4);
+}

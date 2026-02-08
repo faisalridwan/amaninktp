@@ -409,3 +409,57 @@
         min-width: 100%;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .sidebarSticky {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4), -4px -4px 10px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .sidebarNav li a:hover {
+    background: rgba(51, 65, 85, 0.5);
+}
+
+:global([data-theme="dark"]) .cardHeader {
+    border-bottom-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .cardFooter {
+    border-top-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .stepNumber {
+    background: linear-gradient(135deg, #334155, #475569);
+    color: #93C5FD;
+    box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.1), 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .stepImageWrapper {
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+:global([data-theme="dark"]) .btnAlt {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(51, 65, 85, 0.15);
+}
+
+/* Tips Cards - Dark Mode */
+:global([data-theme="dark"]) .tipCard {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(71, 85, 105, 0.5);
+}
+
+:global([data-theme="dark"]) .iconWarning {
+    color: #FBBF24;
+}
+
+/* FAQ Items - Dark Mode */
+:global([data-theme="dark"]) .faqItem {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .faqItem.open {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="dark"]) .faqHeader:hover {
+    background: rgba(51, 65, 85, 0.3);
+}

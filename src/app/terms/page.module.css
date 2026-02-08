@@ -122,3 +122,14 @@
         margin: 36px 0 16px;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .important {
+    background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(245, 158, 11, 0.1));
+    border-left-color: #F59E0B;
+    color: #FCD34D !important;
+}
+
+:global([data-theme="dark"]) .termsText h3 {
+    border-bottom-color: rgba(71, 85, 105, 0.4);
+}

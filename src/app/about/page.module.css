@@ -344,3 +344,25 @@
         padding: 48px 24px;
     }
 }
+
+/* ===== Dark Mode Styles ===== */
+:global([data-theme="dark"]) .ctaBtn {
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4), -4px -4px 12px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .ctaBtn:hover {
+    box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.5), -6px -6px 20px rgba(51, 65, 85, 0.2);
+}
+
+:global([data-theme="dark"]) .ctaBtnAlt {
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4), -4px -4px 12px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .featureCard {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3), -3px -3px 10px rgba(51, 65, 85, 0.15);
+}
+
+:global([data-theme="dark"]) .featureIcon {
+    background: linear-gradient(135deg, #1E3A5F, #2D4A7C);
+    box-shadow: inset 0 0 0 1px rgba(71, 85, 105, 0.3);
+}
