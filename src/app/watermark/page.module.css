@@ -1,0 +1,211 @@
+.pageHeader {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    margin-bottom: var(--space-xl);
+}
+
+.pageHeader h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.pageHeader p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.workspaceMain {
+    flex: 2;
+}
+
+.workspaceSidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.canvasContainer {
+    position: relative;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.canvasContainer canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    cursor: grab;
+}
+
+.canvasContainer canvas:active {
+    cursor: grabbing;
+}
+
+.canvasPlaceholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: var(--text-muted);
+    text-align: center;
+    gap: var(--space-md);
+}
+
+.placeholderIcon {
+    font-size: 4rem;
+    opacity: 0.6;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.stepHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.stepNumber {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--primary-dark);
+    background: var(--bg-primary);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+}
+
+.stepTitle {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.fileInputWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-height: 80px;
+    text-align: center;
+    gap: var(--space-sm);
+}
+
+.fileInputWrapper:hover {
+    background-color: var(--primary-light);
+}
+
+.fileIcon {
+    font-size: 1.5rem;
+}
+
+.fileText {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.settingsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.controlGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.controlLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.controlValue {
+    font-weight: 600;
+    color: var(--primary-dark);
+    background: var(--bg-secondary);
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    font-size: var(--font-size-xs);
+}
+
+.colorRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.colorValue {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-family: monospace;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-dark);
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.buttonGroup .neu-btn {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .workspace {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .workspaceSidebar {
+        position: sticky;
+        top: 100px;
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pageHeader h1 {
+        font-size: var(--font-size-2xl);
+    }
+}

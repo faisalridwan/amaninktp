@@ -1,0 +1,141 @@
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(244, 246, 248, 0.92);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: var(--space-lg);
+    animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    animation: scaleIn 0.3s ease;
+}
+
+.closeModal {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+    transition: all var(--transition-normal);
+    border: none;
+}
+
+.closeModal:hover {
+    color: var(--accent-dark);
+    transform: rotate(90deg);
+}
+
+.modalTitle {
+    font-size: var(--font-size-xl);
+    text-align: center;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.modalSubtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.qrisContainer {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    margin-bottom: var(--space-lg);
+}
+
+.qrisPlaceholder {
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.qrisIcon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-sm);
+}
+
+.qrisHint {
+    font-size: var(--font-size-xs);
+    margin-top: var(--space-xs);
+}
+
+.orText {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-md);
+}
+
+.rekeningContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    margin-bottom: var(--space-lg);
+}
+
+.rekeningContainer span {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.copyBtn {
+    white-space: nowrap;
+}
+
+.thankYou {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

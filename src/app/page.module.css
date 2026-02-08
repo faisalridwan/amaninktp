@@ -1,0 +1,206 @@
+.hero {
+    padding: var(--space-3xl) 0;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+}
+
+.heroTitle {
+    font-size: var(--font-size-5xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: var(--space-lg);
+    animation: fadeInUp 0.8s ease;
+}
+
+.heroTitle span {
+    color: var(--primary-dark);
+}
+
+.heroSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto var(--space-2xl);
+    animation: fadeInUp 0.8s ease 0.2s backwards;
+}
+
+.ctaGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    justify-content: center;
+    animation: fadeInUp 0.8s ease 0.4s backwards;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+    padding: var(--space-2xl) 0;
+}
+
+.featureCard {
+    text-align: center;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.featureCard:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.featureCard:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.featureIcon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-dark), var(--shadow-light);
+    transition: all var(--transition-normal);
+}
+
+.featureCard:hover .featureIcon {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 10px 10px 20px rgba(174, 186, 202, 0.45), -10px -10px 20px rgba(255, 255, 255, 0.95);
+}
+
+.featureCard h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+
+.featureCard p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+}
+
+.trustSection {
+    text-align: center;
+    padding: var(--space-3xl) 0;
+    background: linear-gradient(180deg, transparent, var(--bg-secondary), transparent);
+}
+
+.trustSection h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-xl);
+    color: var(--text-primary);
+}
+
+.trustBadges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-md);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+    transition: all var(--transition-normal);
+}
+
+.trustBadge:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-dark), var(--shadow-light);
+    color: var(--primary-dark);
+}
+
+.emoji {
+    font-size: 1.2rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: var(--space-2xl) 0;
+    }
+
+    .heroTitle {
+        font-size: var(--font-size-3xl);
+    }
+
+    .heroSubtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .ctaGroup {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+
+    .ctaGroup .neu-btn {
+        width: 100%;
+    }
+
+    .featuresGrid {
+        gap: var(--space-lg);
+    }
+
+    .trustBadges {
+        gap: var(--space-sm);
+    }
+
+    .trustBadge {
+        padding: 10px 16px;
+        font-size: var(--font-size-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: var(--font-size-2xl);
+    }
+
+    .featureIcon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
+    .trustBadge {
+        width: 100%;
+        justify-content: center;
+    }
+}

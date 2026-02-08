@@ -1,0 +1,152 @@
+.pageHeader {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    margin-bottom: var(--space-xl);
+}
+
+.pageHeader h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.pageHeader p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-lg);
+}
+
+.signatureContainer {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background: #FFFFFF;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    cursor: crosshair;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.signatureContainer canvas {
+    display: block;
+    touch-action: none;
+}
+
+.canvasHint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.canvasHint p {
+    color: var(--text-muted);
+    font-size: var(--font-size-lg);
+    opacity: 0.5;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-xl);
+    align-items: end;
+}
+
+.controlGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.controlLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.controlValue {
+    font-weight: 600;
+    color: var(--primary-dark);
+    background: var(--bg-secondary);
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    font-size: var(--font-size-xs);
+}
+
+.colorOptions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.colorBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    border: 3px solid transparent;
+    cursor: pointer;
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+    transition: all var(--transition-normal);
+}
+
+.colorBtn:hover {
+    transform: scale(1.1);
+}
+
+.colorBtn.active {
+    border-color: var(--text-primary);
+    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-light);
+    transform: scale(1.05);
+}
+
+.buttonGroup {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.buttonGroup .neu-btn {
+    flex: 1;
+}
+
+.tips {
+    text-align: center;
+    padding: var(--space-lg);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.tips strong {
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .pageHeader h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .signatureContainer {
+        height: 280px;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,135 @@
+.pageHeader {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    margin-bottom: var(--space-xl);
+}
+
+.pageHeader h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.pageHeader p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.guideGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.guideCard {
+    display: flex;
+    flex-direction: column;
+}
+
+.guideHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.guideIcon {
+    font-size: 2rem;
+}
+
+.guideHeader h2 {
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.guideIntro {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+}
+
+.stepsList {
+    padding-left: 0;
+    margin-bottom: var(--space-xl);
+    counter-reset: step-counter;
+    flex: 1;
+}
+
+.stepsList li {
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: var(--space-md);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.stepsList li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: var(--font-size-sm);
+}
+
+.stepsList li strong {
+    color: var(--text-primary);
+}
+
+.tipsSection {
+    margin-bottom: var(--space-2xl);
+}
+
+.tipsSection h3 {
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+    margin-bottom: var(--space-lg);
+}
+
+.tipsList {
+    padding-left: 0;
+    list-style: none;
+}
+
+.tipsList li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: var(--space-md);
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.tipsList li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary-dark);
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+.tipsList li strong {
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .pageHeader h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .guideGrid {
+        grid-template-columns: 1fr;
+    }
+}
