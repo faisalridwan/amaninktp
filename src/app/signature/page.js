@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { PenTool, Upload, Trash2, Download, Plus, Move, Lock, X, RotateCcw, FileText, Image as ImageIcon } from 'lucide-react'
+import { PenTool, Upload, Trash2, Download, Plus, Move, Lock, X, RotateCcw, FileText, Image as ImageIcon, ChevronDown } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DonationModal from '@/components/DonationModal'
@@ -21,19 +21,21 @@ export default function SignaturePage() {
     const [savedSignatures, setSavedSignatures] = useState([])
 
     // Document States
-    const [documentImg, setDocumentImg] = useState(null)
+    const [documentPages, setDocumentPages] = useState([]) // Array of page images
     const [documentName, setDocumentName] = useState('')
-    const [placedSignatures, setPlacedSignatures] = useState([])
+    const [placedSignatures, setPlacedSignatures] = useState([]) // {id, pageIndex, dataUrl, x, y, width, height}
     const [selectedSigIndex, setSelectedSigIndex] = useState(null)
     const [dragging, setDragging] = useState(false)
     const [resizing, setResizing] = useState(false)
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+    const [isLoadingPdf, setIsLoadingPdf] = useState(false)
 
     const canvasRef = useRef(null)
     const containerRef = useRef(null)
-    const docCanvasRef = useRef(null)
-    const docContainerRef = useRef(null)
+    const pageCanvasRefs = useRef([])
+    const pageContainerRefs = useRef([])
     const fileInputRef = useRef(null)
+    const docScrollRef = useRef(null)
 
     const colors = [
         { value: '#000000', label: 'Hitam' },
@@ -41,7 +43,7 @@ export default function SignaturePage() {
         { value: '#dc2626', label: 'Merah' },
     ]
 
-    // Initialize canvas
+    // Initialize signature canvas
     useEffect(() => {
         const canvas = canvasRef.current
         const container = containerRef.current
@@ -51,13 +53,9 @@ export default function SignaturePage() {
             const rect = container.getBoundingClientRect()
             const ctx = canvas.getContext('2d')
 
-            // Save current drawing
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
             canvas.width = rect.width
             canvas.height = rect.height
-
-            // Restore drawing
             ctx.putImageData(imageData, 0, 0)
         }
 
@@ -83,10 +81,7 @@ export default function SignaturePage() {
             clientY = e.clientY
         }
 
-        return {
-            x: clientX - rect.left,
-            y: clientY - rect.top
-        }
+        return { x: clientX - rect.left, y: clientY - rect.top }
     }, [])
 
     const startDrawing = useCallback((e) => {
@@ -96,7 +91,6 @@ export default function SignaturePage() {
 
         const coords = getCoords(e, canvas)
         const ctx = canvas.getContext('2d')
-
         ctx.beginPath()
         ctx.moveTo(coords.x, coords.y)
 
@@ -118,7 +112,6 @@ export default function SignaturePage() {
         ctx.lineWidth = lineWidth
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
-
         ctx.lineTo(coords.x, coords.y)
         ctx.stroke()
         ctx.beginPath()
@@ -193,37 +186,46 @@ export default function SignaturePage() {
         if (!file) return
 
         setDocumentName(file.name)
+        setPlacedSignatures([])
 
         if (file.type === 'application/pdf') {
-            // Handle PDF using PDF.js from CDN
+            setIsLoadingPdf(true)
             try {
                 const pdfjsLib = await loadPdfJs()
-
                 const arrayBuffer = await file.arrayBuffer()
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
-                const page = await pdf.getPage(1)
 
-                const scale = 2
-                const viewport = page.getViewport({ scale })
+                const pages = []
+                const scale = 2 // High quality
 
-                const canvas = document.createElement('canvas')
-                const ctx = canvas.getContext('2d')
-                canvas.width = viewport.width
-                canvas.height = viewport.height
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i)
+                    const viewport = page.getViewport({ scale })
 
-                await page.render({ canvasContext: ctx, viewport }).promise
+                    const canvas = document.createElement('canvas')
+                    const ctx = canvas.getContext('2d')
+                    canvas.width = viewport.width
+                    canvas.height = viewport.height
 
-                const img = new Image()
-                img.onload = () => {
-                    setDocumentImg(img)
-                    setPlacedSignatures([])
+                    await page.render({ canvasContext: ctx, viewport }).promise
+
+                    const img = new Image()
+                    await new Promise((resolve) => {
+                        img.onload = resolve
+                        img.src = canvas.toDataURL('image/png')
+                    })
+
+                    pages.push(img)
                 }
-                img.src = canvas.toDataURL('image/png')
+
+                setDocumentPages(pages)
             } catch (err) {
                 console.error('PDF error:', err)
-                alert('Gagal membaca PDF. Pastikan file tidak corrupt dan coba lagi.')
+                alert('Gagal membaca PDF. Pastikan file tidak corrupt.')
                 if (fileInputRef.current) fileInputRef.current.value = ''
                 setDocumentName('')
+            } finally {
+                setIsLoadingPdf(false)
             }
             return
         }
@@ -233,33 +235,33 @@ export default function SignaturePage() {
         reader.onload = (ev) => {
             const img = new Image()
             img.onload = () => {
-                setDocumentImg(img)
-                setPlacedSignatures([])
+                setDocumentPages([img])
             }
             img.src = ev.target?.result
         }
         reader.readAsDataURL(file)
     }
 
-    const addSignatureToDoc = (sig) => {
+    const addSignatureToPage = (sig, pageIndex) => {
         const newSig = {
             id: Date.now(),
+            pageIndex,
             dataUrl: sig.dataUrl,
-            x: 50,
-            y: 50,
-            width: 150,
-            height: 60
+            x: 100,
+            y: 100,
+            width: 200,
+            height: 80
         }
         setPlacedSignatures(prev => [...prev, newSig])
     }
 
-    const handleDocMouseDown = (e, sigIndex) => {
+    const handleSigMouseDown = (e, sigIndex, pageIndex) => {
         e.preventDefault()
         e.stopPropagation()
         setSelectedSigIndex(sigIndex)
 
         const sig = placedSignatures[sigIndex]
-        const canvas = docCanvasRef.current
+        const canvas = pageCanvasRefs.current[pageIndex]
         if (!canvas) return
 
         const rect = canvas.getBoundingClientRect()
@@ -278,7 +280,7 @@ export default function SignaturePage() {
         const x = (clientX - rect.left) * scaleX
         const y = (clientY - rect.top) * scaleY
 
-        const handleSize = 20
+        const handleSize = 30
         const isOnHandle =
             x >= sig.x + sig.width - handleSize &&
             y >= sig.y + sig.height - handleSize
@@ -291,11 +293,15 @@ export default function SignaturePage() {
         }
     }
 
-    const handleDocMouseMove = (e) => {
+    const handleSigMouseMove = (e, pageIndex) => {
         if (selectedSigIndex === null || (!dragging && !resizing)) return
+
+        const sig = placedSignatures[selectedSigIndex]
+        if (sig.pageIndex !== pageIndex) return
+
         e.preventDefault()
 
-        const canvas = docCanvasRef.current
+        const canvas = pageCanvasRefs.current[pageIndex]
         if (!canvas) return
 
         const rect = canvas.getBoundingClientRect()
@@ -316,22 +322,22 @@ export default function SignaturePage() {
 
         setPlacedSignatures(prev => {
             const updated = [...prev]
-            const sig = { ...updated[selectedSigIndex] }
+            const updatedSig = { ...updated[selectedSigIndex] }
 
             if (dragging) {
-                sig.x = Math.max(0, Math.min(x - dragOffset.x, canvas.width - sig.width))
-                sig.y = Math.max(0, Math.min(y - dragOffset.y, canvas.height - sig.height))
+                updatedSig.x = Math.max(0, Math.min(x - dragOffset.x, canvas.width - updatedSig.width))
+                updatedSig.y = Math.max(0, Math.min(y - dragOffset.y, canvas.height - updatedSig.height))
             } else if (resizing) {
-                sig.width = Math.max(50, x - sig.x)
-                sig.height = Math.max(20, y - sig.y)
+                updatedSig.width = Math.max(60, x - updatedSig.x)
+                updatedSig.height = Math.max(30, y - updatedSig.y)
             }
 
-            updated[selectedSigIndex] = sig
+            updated[selectedSigIndex] = updatedSig
             return updated
         })
     }
 
-    const handleDocMouseUp = () => {
+    const handleMouseUp = () => {
         setDragging(false)
         setResizing(false)
     }
@@ -341,73 +347,87 @@ export default function SignaturePage() {
         setSelectedSigIndex(null)
     }
 
-    // Draw document with signatures
+    // Draw pages with signatures
     useEffect(() => {
-        const canvas = docCanvasRef.current
-        const container = docContainerRef.current
-        if (!canvas || !container || !documentImg) return
+        documentPages.forEach((pageImg, pageIndex) => {
+            const canvas = pageCanvasRefs.current[pageIndex]
+            const container = pageContainerRefs.current[pageIndex]
+            if (!canvas || !container) return
 
-        const maxWidth = container.clientWidth
-        const maxHeight = 600
-        let width = documentImg.width
-        let height = documentImg.height
+            // Full width display
+            const containerWidth = container.clientWidth
+            const aspectRatio = pageImg.height / pageImg.width
+            const displayWidth = containerWidth
+            const displayHeight = containerWidth * aspectRatio
 
-        if (width > maxWidth) {
-            height = (maxWidth / width) * height
-            width = maxWidth
-        }
-        if (height > maxHeight) {
-            width = (maxHeight / height) * width
-            height = maxHeight
-        }
+            canvas.width = pageImg.width
+            canvas.height = pageImg.height
+            canvas.style.width = `${displayWidth}px`
+            canvas.style.height = `${displayHeight}px`
 
-        canvas.width = documentImg.width
-        canvas.height = documentImg.height
-        canvas.style.width = `${width}px`
-        canvas.style.height = `${height}px`
+            const ctx = canvas.getContext('2d')
+            if (!ctx) return
 
-        const ctx = canvas.getContext('2d')
-        if (!ctx) return
+            ctx.drawImage(pageImg, 0, 0, pageImg.width, pageImg.height)
 
-        ctx.drawImage(documentImg, 0, 0, documentImg.width, documentImg.height)
+            // Draw signatures for this page
+            placedSignatures
+                .filter(sig => sig.pageIndex === pageIndex)
+                .forEach((sig, localIndex) => {
+                    const globalIndex = placedSignatures.findIndex(s => s.id === sig.id)
+                    const sigImg = new Image()
+                    sigImg.src = sig.dataUrl
+                    ctx.drawImage(sigImg, sig.x, sig.y, sig.width, sig.height)
 
-        placedSignatures.forEach((sig, index) => {
-            const sigImg = new Image()
-            sigImg.src = sig.dataUrl
-            ctx.drawImage(sigImg, sig.x, sig.y, sig.width, sig.height)
+                    if (selectedSigIndex === globalIndex) {
+                        ctx.strokeStyle = '#4CAF50'
+                        ctx.lineWidth = 4
+                        ctx.setLineDash([10, 10])
+                        ctx.strokeRect(sig.x - 4, sig.y - 4, sig.width + 8, sig.height + 8)
+                        ctx.setLineDash([])
 
-            if (selectedSigIndex === index) {
-                ctx.strokeStyle = '#4CAF50'
-                ctx.lineWidth = 3
-                ctx.setLineDash([8, 8])
-                ctx.strokeRect(sig.x - 3, sig.y - 3, sig.width + 6, sig.height + 6)
-                ctx.setLineDash([])
-
-                ctx.fillStyle = '#4CAF50'
-                ctx.fillRect(sig.x + sig.width - 12, sig.y + sig.height - 12, 16, 16)
-            }
+                        ctx.fillStyle = '#4CAF50'
+                        ctx.fillRect(sig.x + sig.width - 16, sig.y + sig.height - 16, 20, 20)
+                    }
+                })
         })
-    }, [documentImg, placedSignatures, selectedSigIndex])
+    }, [documentPages, placedSignatures, selectedSigIndex])
 
     const downloadDocumentAsPDF = async () => {
-        const canvas = docCanvasRef.current
-        if (!canvas) return
+        if (documentPages.length === 0) return
 
         const { jsPDF } = await import('jspdf')
 
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF({
-            orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-            unit: 'px',
-            format: [canvas.width, canvas.height]
-        })
+        let pdf = null
 
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
-        pdf.save(`dokumen-bertandatangan-${Date.now()}.pdf`)
+        for (let i = 0; i < documentPages.length; i++) {
+            const canvas = pageCanvasRefs.current[i]
+            if (!canvas) continue
+
+            const imgData = canvas.toDataURL('image/png')
+            const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait'
+
+            if (i === 0) {
+                pdf = new jsPDF({
+                    orientation,
+                    unit: 'px',
+                    format: [canvas.width, canvas.height]
+                })
+            } else {
+                pdf.addPage([canvas.width, canvas.height], orientation)
+            }
+
+            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
+        }
+
+        if (pdf) {
+            pdf.save(`dokumen-bertandatangan-${Date.now()}.pdf`)
+        }
     }
 
     const downloadDocumentAsPNG = () => {
-        const canvas = docCanvasRef.current
+        // Download first page as PNG
+        const canvas = pageCanvasRefs.current[0]
         if (!canvas) return
 
         const link = document.createElement('a')
@@ -417,7 +437,7 @@ export default function SignaturePage() {
     }
 
     const clearDocument = () => {
-        setDocumentImg(null)
+        setDocumentPages([])
         setDocumentName('')
         setPlacedSignatures([])
         setSelectedSigIndex(null)
@@ -463,7 +483,7 @@ export default function SignaturePage() {
                             <canvas ref={canvasRef} />
                             {!hasDrawn && (
                                 <div className={styles.canvasHint}>
-                                    <PenTool size={24} />
+                                    <PenTool size={28} />
                                     <span>Gambar tanda tangan di sini</span>
                                 </div>
                             )}
@@ -497,24 +517,15 @@ export default function SignaturePage() {
                                 <button className={styles.btnIcon} onClick={clearCanvas} title="Hapus">
                                     <RotateCcw size={18} />
                                 </button>
-                                <button
-                                    className={styles.btnSave}
-                                    onClick={saveSignature}
-                                    disabled={!hasDrawn}
-                                >
+                                <button className={styles.btnSave} onClick={saveSignature} disabled={!hasDrawn}>
                                     <Plus size={16} /> Simpan
                                 </button>
-                                <button
-                                    className={styles.btnDownload}
-                                    onClick={downloadSignature}
-                                    disabled={!hasDrawn}
-                                >
+                                <button className={styles.btnDownload} onClick={downloadSignature} disabled={!hasDrawn}>
                                     <Download size={16} />
                                 </button>
                             </div>
                         </div>
 
-                        {/* Saved Signatures */}
                         {savedSignatures.length > 0 && (
                             <div className={styles.savedSignatures}>
                                 <span className={styles.savedLabel}>Tersimpan:</span>
@@ -543,23 +554,32 @@ export default function SignaturePage() {
                         </div>
                     </div>
 
-                    {!documentImg ? (
+                    {documentPages.length === 0 ? (
                         <div
                             className={styles.uploadArea}
                             onClick={() => fileInputRef.current?.click()}
                         >
-                            <div className={styles.uploadIcon}>
-                                <Upload size={32} />
-                            </div>
-                            <div className={styles.uploadText}>
-                                <h3>Upload Dokumen</h3>
-                                <p>PDF, PNG, JPG (maks. 10MB)</p>
-                            </div>
-                            <div className={styles.uploadFormats}>
-                                <span><FileText size={14} /> PDF</span>
-                                <span><ImageIcon size={14} /> PNG</span>
-                                <span><ImageIcon size={14} /> JPG</span>
-                            </div>
+                            {isLoadingPdf ? (
+                                <div className={styles.loading}>
+                                    <div className={styles.spinner}></div>
+                                    <p>Memproses PDF...</p>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className={styles.uploadIcon}>
+                                        <Upload size={32} />
+                                    </div>
+                                    <div className={styles.uploadText}>
+                                        <h3>Upload Dokumen</h3>
+                                        <p>PDF (multi-halaman didukung), PNG, JPG</p>
+                                    </div>
+                                    <div className={styles.uploadFormats}>
+                                        <span><FileText size={14} /> PDF</span>
+                                        <span><ImageIcon size={14} /> PNG</span>
+                                        <span><ImageIcon size={14} /> JPG</span>
+                                    </div>
+                                </>
+                            )}
                             <input
                                 ref={fileInputRef}
                                 type="file"
@@ -570,27 +590,27 @@ export default function SignaturePage() {
                         </div>
                     ) : (
                         <div className={styles.documentWorkspace}>
-                            {/* Document Info */}
                             <div className={styles.docInfo}>
                                 <FileText size={16} />
-                                <span>{documentName}</span>
+                                <span>{documentName} ({documentPages.length} halaman)</span>
                                 <button onClick={clearDocument}>
                                     <X size={14} /> Ganti
                                 </button>
                             </div>
 
-                            {/* Signature Picker */}
                             {savedSignatures.length > 0 && (
                                 <div className={styles.sigPicker}>
-                                    <span>Klik untuk tambah:</span>
+                                    <span>Pilih tanda tangan, lalu klik pada halaman:</span>
                                     {savedSignatures.map((sig) => (
                                         <button
                                             key={sig.id}
                                             className={styles.sigPickerItem}
-                                            onClick={() => addSignatureToDoc(sig)}
+                                            onClick={() => {
+                                                // Add to first visible page (page 0 by default)
+                                                addSignatureToPage(sig, 0)
+                                            }}
                                         >
                                             <img src={sig.dataUrl} alt="Signature" />
-                                            <Plus size={12} />
                                         </button>
                                     ))}
                                 </div>
@@ -602,63 +622,89 @@ export default function SignaturePage() {
                                 </div>
                             )}
 
-                            {/* Document Canvas */}
-                            <div
-                                ref={docContainerRef}
-                                className={styles.docContainer}
-                                onMouseMove={handleDocMouseMove}
-                                onMouseUp={handleDocMouseUp}
-                                onMouseLeave={handleDocMouseUp}
-                                onTouchMove={handleDocMouseMove}
-                                onTouchEnd={handleDocMouseUp}
-                            >
-                                <canvas
-                                    ref={docCanvasRef}
-                                    className={styles.docCanvas}
-                                    onMouseDown={(e) => {
-                                        if (selectedSigIndex !== null) {
-                                            setSelectedSigIndex(null)
-                                        }
-                                    }}
-                                />
-
-                                {/* Interactive overlays for signatures */}
-                                {placedSignatures.map((sig, index) => {
-                                    const canvas = docCanvasRef.current
-                                    if (!canvas) return null
-
-                                    const rect = canvas.getBoundingClientRect()
-                                    const scaleX = rect.width / canvas.width
-                                    const scaleY = rect.height / canvas.height
-
-                                    return (
+                            {/* Scrollable Document Pages */}
+                            <div ref={docScrollRef} className={styles.docScroll}>
+                                {documentPages.map((_, pageIndex) => (
+                                    <div
+                                        key={pageIndex}
+                                        className={styles.pageWrapper}
+                                        ref={el => pageContainerRefs.current[pageIndex] = el}
+                                    >
+                                        <div className={styles.pageNumber}>Halaman {pageIndex + 1}</div>
                                         <div
-                                            key={sig.id}
-                                            className={`${styles.sigOverlay} ${selectedSigIndex === index ? styles.selected : ''}`}
-                                            style={{
-                                                left: sig.x * scaleX,
-                                                top: sig.y * scaleY,
-                                                width: sig.width * scaleX,
-                                                height: sig.height * scaleY
+                                            className={styles.pageContainer}
+                                            onMouseMove={(e) => handleSigMouseMove(e, pageIndex)}
+                                            onMouseUp={handleMouseUp}
+                                            onMouseLeave={handleMouseUp}
+                                            onTouchMove={(e) => handleSigMouseMove(e, pageIndex)}
+                                            onTouchEnd={handleMouseUp}
+                                            onClick={() => {
+                                                // Add signature to this page if one is saved
+                                                if (savedSignatures.length > 0 && placedSignatures.filter(s => s.pageIndex === pageIndex).length === 0) {
+                                                    // Show hint that user can add signature
+                                                }
                                             }}
-                                            onMouseDown={(e) => handleDocMouseDown(e, index)}
-                                            onTouchStart={(e) => handleDocMouseDown(e, index)}
                                         >
-                                            <button
-                                                className={styles.removeSig}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    removePlacedSignature(index)
-                                                }}
-                                            >
-                                                <X size={10} />
-                                            </button>
-                                            <div className={styles.resizeHandle}>
-                                                <Move size={8} />
-                                            </div>
+                                            <canvas
+                                                ref={el => pageCanvasRefs.current[pageIndex] = el}
+                                                className={styles.pageCanvas}
+                                            />
+
+                                            {/* Signature overlays for this page */}
+                                            {placedSignatures
+                                                .map((sig, globalIndex) => ({ sig, globalIndex }))
+                                                .filter(({ sig }) => sig.pageIndex === pageIndex)
+                                                .map(({ sig, globalIndex }) => {
+                                                    const canvas = pageCanvasRefs.current[pageIndex]
+                                                    if (!canvas) return null
+
+                                                    const rect = canvas.getBoundingClientRect?.() || { width: canvas.offsetWidth, height: canvas.offsetHeight }
+                                                    const scaleX = rect.width / canvas.width
+                                                    const scaleY = rect.height / canvas.height
+
+                                                    return (
+                                                        <div
+                                                            key={sig.id}
+                                                            className={`${styles.sigOverlay} ${selectedSigIndex === globalIndex ? styles.selected : ''}`}
+                                                            style={{
+                                                                left: sig.x * scaleX,
+                                                                top: sig.y * scaleY,
+                                                                width: sig.width * scaleX,
+                                                                height: sig.height * scaleY
+                                                            }}
+                                                            onMouseDown={(e) => handleSigMouseDown(e, globalIndex, pageIndex)}
+                                                            onTouchStart={(e) => handleSigMouseDown(e, globalIndex, pageIndex)}
+                                                        >
+                                                            <button
+                                                                className={styles.removeSig}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    removePlacedSignature(globalIndex)
+                                                                }}
+                                                            >
+                                                                <X size={10} />
+                                                            </button>
+                                                            <div className={styles.resizeHandle}>
+                                                                <Move size={8} />
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+
+                                            {/* Add signature button for this page */}
+                                            {savedSignatures.length > 0 && (
+                                                <div className={styles.addSigToPage}>
+                                                    <button
+                                                        onClick={() => addSignatureToPage(savedSignatures[0], pageIndex)}
+                                                        title="Tambah tanda tangan ke halaman ini"
+                                                    >
+                                                        <Plus size={14} /> Tambah TTD
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                ))}
                             </div>
 
                             {placedSignatures.length > 0 && (
@@ -667,7 +713,6 @@ export default function SignaturePage() {
                                 </div>
                             )}
 
-                            {/* Download Buttons */}
                             <div className={styles.downloadActions}>
                                 <button
                                     className={styles.btnPrimary}
@@ -681,7 +726,7 @@ export default function SignaturePage() {
                                     onClick={downloadDocumentAsPNG}
                                     disabled={placedSignatures.length === 0}
                                 >
-                                    <Download size={18} /> Download PNG
+                                    <Download size={18} /> Download PNG (Halaman 1)
                                 </button>
                             </div>
                         </div>
