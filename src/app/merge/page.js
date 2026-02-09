@@ -154,13 +154,11 @@ export default function MergePDF() {
                     <h1 className={styles.title}>📑 Gabung PDF & Gambar</h1>
                     <p className={styles.subtitle}>
                         Satukan file PDF dan gambar (JPG/PNG) menjadi satu dokumen PDF secara urut.
-
                     </p>
 
                 </div>
 
                 <div className={styles.workspace}>
-                    {/* Upload Area */}
                     {/* Upload Area */}
                     <div
                         className={`${styles.uploadArea} ${dragActive ? styles.dragActive : ''}`}
@@ -302,7 +300,7 @@ export default function MergePDF() {
 
                 {/* Cara Pakai / How To Use */}
                 <GuideSection
-                    linkHref="/guide#merge-pdf"
+                    linkHref="/guide#merge"
                 />
 
                 {/* New Advantages Section */}

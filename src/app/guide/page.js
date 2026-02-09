@@ -213,7 +213,7 @@ export default function GuidePage() {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#merge-pdf">
+                                    <a href="#merge">
                                         <FileStack size={16} /> Gabung PDF
                                     </a>
                                 </li>
@@ -317,7 +317,7 @@ export default function GuidePage() {
                             </div>
 
                             {/* Merge PDF Guide */}
-                            <div id="merge-pdf" className={`neu-card no-hover ${styles.guideCard}`}>
+                            <div id="merge" className={`neu-card no-hover ${styles.guideCard}`}>
                                 <div className={styles.cardHeader}>
                                     <FileStack size={24} className={styles.iconBlue} />
                                     <h2>Panduan Gabung PDF</h2>
@@ -334,7 +334,7 @@ export default function GuidePage() {
                                     ))}
                                 </div>
                                 <div className={styles.cardFooter}>
-                                    <a href="/merge-pdf" className={`${styles.actionBtn} ${styles.btnAlt}`}>Gabung PDF Sekarang</a>
+                                    <a href="/merge" className={`${styles.actionBtn} ${styles.btnAlt}`}>Gabung PDF Sekarang</a>
                                 </div>
                             </div>
 

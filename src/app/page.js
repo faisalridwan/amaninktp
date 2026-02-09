@@ -39,6 +39,7 @@ export default function Home() {
     const [textScale, setTextScale] = useState(1)
     const [textDimensions, setTextDimensions] = useState({ width: 0, height: 0 })
     const [canvasMetrics, setCanvasMetrics] = useState({ width: 0, height: 0, scale: 1 })
+    const [isLoadingPdf, setIsLoadingPdf] = useState(false)
 
     // Removed old interactive states (isDragging etc) since handled by overlay
 
@@ -162,8 +163,66 @@ export default function Home() {
         }
     }, [uploadedImage, croppedImage, watermarkType])
 
+    const loadPdfJs = () => {
+        return new Promise((resolve, reject) => {
+            if (window.pdfjsLib) {
+                resolve(window.pdfjsLib)
+                return
+            }
+
+            const script = document.createElement('script')
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'
+            script.onload = () => {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+                resolve(window.pdfjsLib)
+            }
+            script.onerror = reject
+            document.head.appendChild(script)
+        })
+    }
+
     const loadImage = (file) => {
         setOriginalFileName(file.name.replace(/\.[^/.]+$/, ''))
+
+        if (file.type === 'application/pdf') {
+            setIsLoadingPdf(true)
+            loadPdfJs().then(async (pdfjsLib) => {
+                try {
+                    const arrayBuffer = await file.arrayBuffer()
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+                    const page = await pdf.getPage(1) // Render first page only for now
+                    const scale = 2
+                    const viewport = page.getViewport({ scale })
+
+                    const canvas = document.createElement('canvas')
+                    const ctx = canvas.getContext('2d')
+                    canvas.width = viewport.width
+                    canvas.height = viewport.height
+
+                    await page.render({ canvasContext: ctx, viewport }).promise
+
+                    const img = new Image()
+                    img.onload = () => {
+                        setUploadedImage(img)
+                        setCroppedImage(null)
+                        setImageLoaded(true)
+                        setTextPosition({ x: img.width / 2, y: img.height / 2 })
+                        setTextScale(1)
+                        setIsLoadingPdf(false)
+                    }
+                    img.src = canvas.toDataURL('image/png')
+                } catch (error) {
+                    console.error('Error rendering PDF:', error)
+                    alert('Gagal memproses PDF. Pastikan file valid.')
+                    setIsLoadingPdf(false)
+                }
+            }).catch(err => {
+                console.error('Failed to load PDF.js:', err)
+                setIsLoadingPdf(false)
+            })
+            return
+        }
+
         const reader = new FileReader()
         reader.onload = (event) => {
             const img = new Image()
@@ -189,7 +248,7 @@ export default function Home() {
         e.preventDefault()
         e.stopPropagation()
         const file = e.dataTransfer?.files?.[0]
-        if (file?.type.startsWith('image/')) loadImage(file)
+        if (file?.type.startsWith('image/') || file?.type === 'application/pdf') loadImage(file)
     }
 
     useEffect(() => {
@@ -197,7 +256,7 @@ export default function Home() {
             const items = e.clipboardData?.items
             if (!items) return
             for (let item of items) {
-                if (item.type.startsWith('image/')) {
+                if (item.type.startsWith('image/') || item.type === 'application/pdf') {
                     const file = item.getAsFile()
                     if (file) loadImage(file)
                     break
@@ -591,19 +650,7 @@ export default function Home() {
                     {/* Controls */}
                     <div className={styles.controls}>
                         {/* Upload */}
-                        <div className={styles.section}>
-                            <label className={styles.label}><Upload size={14} /> Upload Gambar</label>
-                            <div className={styles.uploadBox} onClick={() => fileInputRef.current?.click()}>
-                                <FileImage size={24} />
-                                <span>{imageLoaded ? originalFileName : 'Pilih / Drag / Paste'}</span>
-                                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} hidden />
-                            </div>
-                            {imageLoaded && !isCropping && (
-                                <button className={styles.cropBtn} onClick={startCrop}>
-                                    <Crop size={14} /> Crop
-                                </button>
-                            )}
-                        </div>
+
 
                         {/* Type */}
                         <div className={styles.section}>
@@ -763,11 +810,12 @@ export default function Home() {
                                             <FileImage size={40} />
                                         </div>
                                         <div className={styles.uploadContent}>
-                                            <h3>Upload Gambar</h3>
-                                            <p>Drag & drop gambar, paste (Ctrl+V), atau klik untuk memilih</p>
+                                            <h3>{isLoadingPdf ? 'Memproses PDF...' : 'Upload Gambar atau Dokumen'}</h3>
+                                            <p>{isLoadingPdf ? 'Mohon tunggu sebentar...' : 'Drag & drop gambar/PDF, paste (Ctrl+V), atau klik untuk memilih'}</p>
                                             <div className={styles.supportedTypes}>
                                                 <span>JPG</span>
-                                                <span>WEBP</span>
+                                                <span>PNG</span>
+                                                <span>PDF</span>
                                             </div>
                                             <span className={styles.safeTag}>🔒 100% Client-Side</span>
                                         </div>

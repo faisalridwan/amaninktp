@@ -56,7 +56,7 @@ export default function Footer() {
                                 <Link href="/redact"><EyeOff size={14} /> Sensor Data</Link>
                             </li>
                             <li>
-                                <Link href="/merge-pdf"><FileImage size={14} /> Gabung PDF</Link>
+                                <Link href="/merge"><FileImage size={14} /> Gabung PDF</Link>
                             </li>
                             <li>
                                 <Link href="/nik-parser"><User size={14} /> Cek NIK</Link>
