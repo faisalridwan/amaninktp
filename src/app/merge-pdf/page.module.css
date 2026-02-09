@@ -127,15 +127,36 @@
 }
 
 .btnClear {
-    color: var(--text-muted);
-    background: none;
-    border: none;
+    color: #EF4444;
+    /* Red */
+    background: #FEF2F2;
+    /* Light Red BG */
+    border: 1px solid #FECACA;
+    padding: 6px 16px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+:global([data-theme="dark"]) .btnClear {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .btnClear:hover {
-    color: var(--text-error);
+    background: #FEE2E2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.15);
+}
+
+:global([data-theme="dark"]) .btnClear:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #EF4444;
 }
 
 .filesGrid {
@@ -281,17 +302,18 @@
     width: 100%;
 }
 
+/* Gabungkan File - Blue */
 .btnPrimary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    /* Bright Blue */
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    /* Added Border */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px 32px;
     border-radius: 12px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: var(--shadow-primary);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
     transition: all 0.3s;
     display: flex;
     align-items: center;
@@ -300,28 +322,32 @@
 
 /* Dark mode specific for primary button */
 :global([data-theme="dark"]) .btnPrimary {
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(135deg, #3B82F6, #1E40AF);
-    /* Ensure visible gradient */
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .btnPrimary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 15px rgba(37, 99, 235, 0.4);
+    filter: brightness(1.1);
 }
 
 .btnPrimary:disabled {
     opacity: 0.7;
     cursor: not-allowed;
     transform: none;
+    filter: grayscale(0.5);
 }
 
+/* Tambah File - Orange */
 .btnAddMore {
-    background: var(--bg-white);
-    /* Solid background for visibility */
-    color: var(--primary);
-    border: 2px solid var(--primary);
+    background: #FFF7ED;
+    /* Light Orange BG */
+    color: #EA580C;
+    /* Orange Text */
+    border: 1px solid #FDBA74;
+    /* Orange Border */
     padding: 12px 32px;
     border-radius: 12px;
     font-size: 1rem;
@@ -331,26 +357,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: var(--shadow-sm);
-    /* Add shadow */
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.1);
 }
 
 /* Dark mode specific for add more button */
 :global([data-theme="dark"]) .btnAddMore {
-    background: rgba(255, 255, 255, 0.05);
-    color: #60A5FA;
-    /* Lighter blue for dark mode */
-    border-color: #60A5FA;
+    background: rgba(234, 88, 12, 0.15);
+    color: #FB923C;
+    /* Lighter Orange */
+    border-color: #F97316;
 }
 
 .btnAddMore:hover {
-    background: var(--bg-secondary);
+    background: #FFEDD5;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+    border-color: #EA580C;
 }
 
 :global([data-theme="dark"]) .btnAddMore:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(234, 88, 12, 0.25);
+    border-color: #FB923C;
 }
 
 .loading {
