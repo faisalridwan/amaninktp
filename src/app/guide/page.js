@@ -18,7 +18,7 @@ export default function GuidePage() {
         {
             title: 'Upload Dokumen',
             desc: <>Klik <strong>area upload</strong> di tengah layar, atau tarik dan lepas (<em>drag & drop</em>) file gambar Anda ke area tersebut. Sistem akan memproses dokumen di browser Anda (aman, tidak diupload ke server).</>,
-            image: '/images/guide/watermark-2.png'
+            image: ''
         },
         {
             title: 'Crop & Potong (Opsional)',
@@ -262,7 +262,7 @@ export default function GuidePage() {
                                     ))}
                                 </div>
                                 <div className={styles.cardFooter}>
-                                    <a href="/" className={styles.actionBtn}>Coba Watermark Sekarang</a>
+                                    <a href="/" className={`${styles.actionBtn} ${styles.btnAlt}`}>Coba Watermark Sekarang</a>
                                 </div>
                             </div>
 

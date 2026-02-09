@@ -237,3 +237,41 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Primary Action Button (Matches Cek NIK style) */
+.btnCheck {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #10B981, #059669);
+    /* Green Theme */
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.btnCheck:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.4);
+    filter: brightness(1.05);
+}
+
+.btnCheck:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Constrain width of Guide section */
+.howToUse {
+    max-width: 800px;
+    margin: 80px auto 40px;
+}
