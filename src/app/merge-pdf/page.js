@@ -2,64 +2,120 @@
 
 import { useState, useRef } from 'react'
 import { PDFDocument } from 'pdf-lib'
-import { FileText, Upload, X, ArrowUp, ArrowDown, Download, Check, AlertCircle, Trash2, Plus } from 'lucide-react'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import { FileUp, Trash2, ArrowUp, ArrowDown, Download, FileText, X, AlertCircle, Eye, Image as ImageIcon } from 'lucide-react'
 import styles from './page.module.css'
 
-export default function MergePdfPage() {
+export default function MergePDF() {
     const [files, setFiles] = useState([])
     const [isMerging, setIsMerging] = useState(false)
     const [mergedPdfUrl, setMergedPdfUrl] = useState(null)
-    const [error, setError] = useState(null)
+    const [error, setError] = useState('')
+    const [dragActive, setDragActive] = useState(false)
     const fileInputRef = useRef(null)
 
+    // Handle File Upload (PDF & Images)
     const handleFileUpload = (e) => {
-        const newFiles = Array.from(e.target.files).filter(f => f.type === 'application/pdf')
-        if (newFiles.length > 0) {
-            setFiles(prev => [...prev, ...newFiles])
-            setMergedPdfUrl(null) // Reset previous merge
-            setError(null)
+        const uploadedFiles = Array.from(e.target.files || [])
+        // Filter for PDF, JPG, PNG
+        const validFiles = uploadedFiles.filter(file =>
+            file.type === 'application/pdf' ||
+            file.type === 'image/jpeg' ||
+            file.type === 'image/png'
+        )
+
+        if (validFiles.length < uploadedFiles.length) {
+            setError('Beberapa file diabaikan. Hanya PDF, JPG, dan PNG yang didukung.')
         } else {
-            setError('Mohon upload file PDF saja.')
+            setError('')
         }
-        // Reset input value to allow re-uploading same file if needed (though unlikely for merge)
-        e.target.value = ''
+
+        const newFiles = validFiles.map(file => ({
+            id: Math.random().toString(36).substr(2, 9),
+            file,
+            name: file.name,
+            size: (file.size / 1024 / 1024).toFixed(2) + ' MB',
+            type: file.type.includes('image') ? 'image' : 'pdf',
+            preview: file.type.includes('image') ? URL.createObjectURL(file) : null
+        }))
+
+        setFiles(prev => [...prev, ...newFiles])
     }
 
-    const removeFile = (index) => {
-        setFiles(prev => prev.filter((_, i) => i !== index))
+    const handleDrag = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true)
+        } else if (e.type === "dragleave") {
+            setDragActive(false)
+        }
+    }
+
+    const handleDrop = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setDragActive(false)
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            handleFileUpload({ target: { files: e.dataTransfer.files } })
+        }
+    }
+
+    const removeFile = (id) => {
+        setFiles(files.filter(f => f.id !== id))
         setMergedPdfUrl(null)
     }
 
     const moveFile = (index, direction) => {
+        if ((direction === -1 && index === 0) || (direction === 1 && index === files.length - 1)) return
+
         const newFiles = [...files]
-        if (direction === 'up' && index > 0) {
-            [newFiles[index], newFiles[index - 1]] = [newFiles[index - 1], newFiles[index]]
-        } else if (direction === 'down' && index < newFiles.length - 1) {
-            [newFiles[index], newFiles[index + 1]] = [newFiles[index + 1], newFiles[index]]
-        }
+        const temp = newFiles[index]
+        newFiles[index] = newFiles[index + direction]
+        newFiles[index + direction] = temp
         setFiles(newFiles)
         setMergedPdfUrl(null)
     }
 
     const mergePDFs = async () => {
-        if (files.length < 2) {
-            setError('Minimal 2 file PDF untuk digabungkan.')
-            return
+        if (files.length < 2 && files[0]?.type === 'pdf') {
+            // Allow 1 file if it's an image we want to convert to PDF, but typically merge implies 2+
+            // But user arguably might want to convert 1 image to PDF here too.
+            // Let's stick to standard behavior: if only 1 PDF, warning. If 1 image, allow.
+            if (files.length === 0) return
         }
 
         setIsMerging(true)
-        setError(null)
+        setError('')
+        setMergedPdfUrl(null)
 
         try {
             const mergedPdf = await PDFDocument.create()
 
-            for (const file of files) {
-                const arrayBuffer = await file.arrayBuffer()
-                const pdf = await PDFDocument.load(arrayBuffer)
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices())
-                copiedPages.forEach((page) => mergedPdf.addPage(page))
+            for (const fileObj of files) {
+                const fileBytes = await fileObj.file.arrayBuffer()
+
+                if (fileObj.type === 'pdf') {
+                    const pdf = await PDFDocument.load(fileBytes)
+                    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices())
+                    copiedPages.forEach((page) => mergedPdf.addPage(page))
+                } else if (fileObj.type === 'image') {
+                    let image
+                    if (fileObj.file.type === 'image/jpeg') {
+                        image = await mergedPdf.embedJpg(fileBytes)
+                    } else {
+                        image = await mergedPdf.embedPng(fileBytes)
+                    }
+
+                    // Define page size based on image size, or standard A4? 
+                    // Usually for "Image to PDF", matching image size is best to preserve quality.
+                    const page = mergedPdf.addPage([image.width, image.height])
+                    page.drawImage(image, {
+                        x: 0,
+                        y: 0,
+                        width: image.width,
+                        height: image.height,
+                    })
+                }
             }
 
             const pdfBytes = await mergedPdf.save()
@@ -67,136 +123,141 @@ export default function MergePdfPage() {
             const url = URL.createObjectURL(blob)
             setMergedPdfUrl(url)
         } catch (err) {
-            console.error(err)
-            setError('Gagal menggabungkan PDF. Pastikan file tidak rusak atau terproteksi password.')
+            console.error('Merge error:', err)
+            setError('Gagal menggabungkan file. Pastikan file tidak rusak atau terlindungi password.')
         } finally {
             setIsMerging(false)
         }
     }
 
     return (
-        <>
-            <Navbar />
-            <main className="container">
-                <div className={styles.hero}>
-                    <h1 className={styles.heroTitle}>Gabung <span>PDF</span></h1>
-                    <p className={styles.heroSubtitle}>Satukan banyak file PDF menjadi satu dokumen dengan urutan yang Anda inginkan.</p>
-                </div>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Gabung PDF & Gambar</h1>
+                <p className={styles.subtitle}>
+                    Satukan file PDF dan gambar (JPG/PNG) menjadi satu dokumen PDF secara urut.
+                    <br />Semua proses berjalan di browser Anda (Offline), privasi terjaga.
+                </p>
+            </div>
 
-                <div className={styles.workspace}>
-                    {/* Upload Area */}
-                    <div
-                        className={styles.uploadArea}
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <div className={styles.secureBadge}>
-                            <Check size={12} /> 100% Client-Side
-                        </div>
-                        <div className={styles.iconCircle}>
-                            <Upload size={32} />
-                        </div>
-                        <div className={styles.uploadText}>
-                            <h3>Klik untuk Upload PDF</h3>
-                            <p>atau drag & drop file di sini</p>
-                        </div>
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            multiple
-                            ref={fileInputRef}
-                            onChange={handleFileUpload}
-                            hidden
-                        />
+            <div className={styles.workspace}>
+                {/* Upload Area */}
+                <div
+                    className={`${styles.uploadArea} ${dragActive ? styles.dragActive : ''}`}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                >
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        multiple
+                        accept="application/pdf,image/jpeg,image/png"
+                        onChange={handleFileUpload}
+                        style={{ display: 'none' }}
+                    />
+                    <div className={styles.uploadIcon}>
+                        <FileUp size={48} />
                     </div>
-
-                    {/* Error Message */}
+                    <h3>Klik atau Tarik File ke Sini</h3>
+                    <p>PDF, JPG, atau PNG</p>
+                    <button className={styles.btnSecondary}>Pilih File</button>
                     {error && (
-                        <div style={{ color: 'var(--error-color)', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-                            <AlertCircle size={16} /> {error}
+                        <div className={styles.error} onClick={(e) => e.stopPropagation()}>
+                            <AlertCircle size={16} />
+                            <span>{error}</span>
                         </div>
                     )}
+                </div>
 
-                    {/* File List */}
-                    {files.length > 0 && (
-                        <div className={styles.fileList}>
+                {/* File List */}
+                {files.length > 0 && (
+                    <div className={styles.fileList}>
+                        <div className={styles.listHeader}>
+                            <span>File yang akan digabung ({files.length})</span>
+                            <button className={styles.btnClear} onClick={() => { setFiles([]); setMergedPdfUrl(null); }}>
+                                Hapus Semua
+                            </button>
+                        </div>
+
+                        <div className={styles.filesGrid}>
                             {files.map((file, index) => (
-                                <div key={index} className={styles.fileItem}>
+                                <div key={file.id} className={styles.fileCard}>
+                                    <div className={styles.filePreview}>
+                                        {file.type === 'image' ? (
+                                            <img src={file.preview} alt={file.name} className={styles.thumbImage} />
+                                        ) : (
+                                            <div className={styles.thumbPdf}>
+                                                <FileText size={32} />
+                                                <span className={styles.pdfLabel}>PDF</span>
+                                            </div>
+                                        )}
+                                        <button className={styles.btnRemove} onClick={() => removeFile(file.id)}>
+                                            <X size={14} />
+                                        </button>
+                                    </div>
                                     <div className={styles.fileInfo}>
-                                        <FileText size={20} className={styles.fileIcon} />
-                                        <span className={styles.fileName}>
-                                            {index + 1}. {file.name}
-                                        </span>
-                                        <span className={styles.fileSize}>
-                                            ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                                        </span>
+                                        <p className={styles.fileName}>{file.name}</p>
+                                        <p className={styles.fileSize}>{file.size}</p>
                                     </div>
                                     <div className={styles.fileActions}>
                                         <button
-                                            className={`${styles.actionBtn} ${styles.moveBtn}`}
-                                            onClick={() => moveFile(index, 'up')}
+                                            onClick={() => moveFile(index, -1)}
                                             disabled={index === 0}
-                                            title="Move Up"
+                                            title="Geser Kiri/Atas"
                                         >
-                                            <ArrowUp size={16} />
+                                            <ArrowUp size={16} style={{ transform: 'rotate(-90deg)' }} />
                                         </button>
+                                        <span className={styles.orderBadge}>{index + 1}</span>
                                         <button
-                                            className={`${styles.actionBtn} ${styles.moveBtn}`}
-                                            onClick={() => moveFile(index, 'down')}
+                                            onClick={() => moveFile(index, 1)}
                                             disabled={index === files.length - 1}
-                                            title="Move Down"
+                                            title="Geser Kanan/Bawah"
                                         >
-                                            <ArrowDown size={16} />
-                                        </button>
-                                        <button
-                                            className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                                            onClick={() => removeFile(index)}
-                                            title="Remove"
-                                        >
-                                            <Trash2 size={16} />
+                                            <ArrowDown size={16} style={{ transform: 'rotate(-90deg)' }} />
                                         </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    )}
 
-                    {/* Action Bar */}
-                    {files.length > 0 && (
-                        <div className={styles.actionBar}>
-                            <button className={styles.addMoreBtn} onClick={() => fileInputRef.current?.click()}>
-                                <Plus size={18} /> Tambah File Lagi
+                        {/* Merge Action */}
+                        <div className={styles.actionSection}>
+                            <button
+                                className={`${styles.btnPrimary} ${isMerging ? styles.loading : ''}`}
+                                onClick={mergePDFs}
+                                disabled={isMerging || files.length === 0}
+                            >
+                                {isMerging ? 'Memproses...' : 'Gabungkan File'}
                             </button>
+                        </div>
+                    </div>
+                )}
 
-                            {mergedPdfUrl ? (
+                {/* Result Preview */}
+                {mergedPdfUrl && (
+                    <div className={styles.resultSection}>
+                        <div className={styles.resultHeader}>
+                            <h2>Hasil Penggabungan</h2>
+                            <div className={styles.resultActions}>
                                 <a
                                     href={mergedPdfUrl}
-                                    download="merged-document.pdf"
-                                    className={`${styles.mergeBtn} ${styles.downloadBtn}`}
-                                    style={{ background: 'var(--success-color)' }}
+                                    download={`merged_document_${new Date().getTime()}.pdf`}
+                                    className={styles.btnDownload}
                                 >
-                                    <Download size={18} /> Download PDF
+                                    <Download size={18} />
+                                    Download PDF
                                 </a>
-                            ) : (
-                                <button
-                                    className={styles.mergeBtn}
-                                    onClick={mergePDFs}
-                                    disabled={files.length < 2 || isMerging}
-                                >
-                                    {isMerging ? 'Memproses...' : 'Gabungkan PDF'}
-                                </button>
-                            )}
+                            </div>
                         </div>
-                    )}
-                </div>
-
-                {/* Features / Trust (Optional/Reused) */}
-                <section className={styles.trust} style={{ textAlign: 'center', marginTop: '3rem', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>🔒 100% Client-Side</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>⚡ Proses Kilat</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>🚫 Tanpa Upload Server</div>
-                </section>
-            </main>
-            <Footer />
-        </>
+                        <div className={styles.pdfPreviewFrame}>
+                            <iframe src={mergedPdfUrl} title="PDF Preview" width="100%" height="600px" />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }
