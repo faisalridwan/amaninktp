@@ -62,7 +62,7 @@
 .uploadArea {
     max-width: 600px;
     margin: 0 auto;
-    padding: 60px 40px;
+    padding: 80px 40px;
     background: var(--bg-secondary);
     border: 3px dashed rgba(168, 197, 240, 0.4);
     border-radius: 24px;

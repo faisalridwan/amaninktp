@@ -19,6 +19,8 @@ import {
 import styles from './page.module.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import GuideSection from '@/components/GuideSection';
+import TrustSection from '@/components/TrustSection';
 
 export default function RedactionTool() {
     const [file, setFile] = useState(null);
@@ -301,6 +303,7 @@ export default function RedactionTool() {
                 <div className={styles.header}>
                     <h1>🙈 Sensor <span>Data</span></h1>
                     <p>Tutupi data sensitif (NIK, Nama, Foto) dengan Black-out atau Blur.</p>
+
                 </div>
 
                 {!file ? (
@@ -448,15 +451,12 @@ export default function RedactionTool() {
                     </div>
                 )}
 
+                <TrustSection />
+
                 {/* Cara Pakai / How To Use */}
-                {/* Cara Pakai Link */}
-                <div className={styles.howToUse} style={{ marginTop: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara menyensor data pribadi.</p>
-                    <a href="/guide#redact" className={styles.btnPrimary} style={{ display: 'inline-flex', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                        Panduan Lengkap
-                    </a>
-                </div>
+                <GuideSection
+                    linkHref="/guide#redact"
+                />
 
                 {/* Features Detail */}
                 <section className={styles.featuresSection}>
@@ -480,12 +480,7 @@ export default function RedactionTool() {
                     </div>
                 </section>
 
-                {/* Trust Section */}
-                <section className={styles.trust}>
-                    <div className={styles.trustItem}>🔒 100% Client-Side</div>
-                    <div className={styles.trustItem}>🚫 Tanpa Upload Server</div>
-                    <div className={styles.trustItem}>🇮🇩 Karya Lokal</div>
-                </section>
+
             </div>
             <Footer />
         </>

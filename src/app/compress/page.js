@@ -16,6 +16,8 @@ import imageCompression from 'browser-image-compression';
 import styles from './page.module.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import GuideSection from '@/components/GuideSection';
+import TrustSection from '@/components/TrustSection';
 
 export default function ImageCompressor() {
     const [file, setFile] = useState(null);
@@ -311,6 +313,7 @@ export default function ImageCompressor() {
                 <div className={styles.header}>
                     <h1>⚡ Kompres <span>File</span></h1>
                     <p>Kecilkan ukuran Foto atau PDF secara instan tanpa upload ke server.</p>
+                    <TrustSection />
                 </div>
 
                 {!file ? (
@@ -516,14 +519,9 @@ export default function ImageCompressor() {
                 )}
 
                 {/* Cara Pakai / How To Use */}
-                {/* Cara Pakai Link */}
-                <div className={styles.howToUse} style={{ marginTop: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara mengompres file.</p>
-                    <a href="/guide#compress" className={styles.btnPrimary} style={{ display: 'inline-flex', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                        Panduan Lengkap
-                    </a>
-                </div>
+                <GuideSection
+                    linkHref="/guide#compress"
+                />
 
                 {/* Features Detail */}
                 <section className={styles.featuresSection}>
@@ -547,11 +545,7 @@ export default function ImageCompressor() {
                     </div>
                 </section>
 
-                <section className={styles.trust}>
-                    <div className={styles.trustItem}>🔒 100% Client-Side</div>
-                    <div className={styles.trustItem}>🚫 Tanpa Upload Server</div>
-                    <div className={styles.trustItem}>🇮🇩 Karya Lokal</div>
-                </section>
+
             </div>
             <Footer />
         </>

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Search, Shield, Info, MapPin, Calendar, User, Clock, CheckCircle, AlertCircle, Trash2 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import GuideSection from '@/components/GuideSection'
+import TrustSection from '@/components/TrustSection'
 import styles from './page.module.css'
 
 export default function NikParserPage() {
@@ -127,6 +129,7 @@ export default function NikParserPage() {
                 <div className={styles.hero}>
                     <h1 className={styles.heroTitle}>🔍 Cek NIK <span>Parser</span></h1>
                     <p className={styles.heroSubtitle}>Cek daerah, tanggal lahir, dan usia dari NIK KTP Anda. Detail & Akurat.</p>
+
                 </div>
 
                 <div className={styles.workspace}>
@@ -215,16 +218,13 @@ export default function NikParserPage() {
 
 
                 </div>
+                <TrustSection />
 
                 {/* Cara Pakai / How To Use */}
-                {/* Cara Pakai Link */}
-                <div className={styles.howToUse} style={{ marginTop: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara membaca data NIK.</p>
-                    <a href="/guide#nik-parser" className={styles.btnCheck} style={{ display: 'inline-flex', width: 'auto', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                        Panduan Lengkap
-                    </a>
-                </div>
+                <GuideSection
+                    linkHref="/guide#nik-parser"
+                    btnColor="green"
+                />
             </main>
             <Footer />
         </>

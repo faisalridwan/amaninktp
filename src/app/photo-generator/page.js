@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 import { Upload, Download, Check, RefreshCw, Scissors, Image as ImageIcon, Camera } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import GuideSection from '@/components/GuideSection'
+import TrustSection from '@/components/TrustSection'
 import styles from './page.module.css'
 
 export default function PhotoGeneratorPage() {
@@ -221,6 +223,7 @@ export default function PhotoGeneratorPage() {
                     <div className={styles.hero}>
                         <h1 className={styles.heroTitle}>📸 Photo <span>Generator</span></h1>
                         <p className={styles.heroSubtitle}>Buat pas foto ukuran 2x3, 3x4, dan 4x6 secara instan. Crop presisi dan ganti background warna.</p>
+                        <TrustSection />
                     </div>
 
                     {!image ? (
@@ -322,14 +325,9 @@ export default function PhotoGeneratorPage() {
                     )}
 
                     {/* Cara Pakai / How To Use */}
-                    {/* Cara Pakai Link */}
-                    <div className={styles.howToUse} style={{ marginTop: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                        <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara menggunakan Photo Generator.</p>
-                        <a href="/guide#photo-generator" className={styles.btnPrimary} style={{ display: 'inline-flex', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                            Panduan Lengkap
-                        </a>
-                    </div>
+                    <GuideSection
+                        linkHref="/guide#photo-generator"
+                    />
                 </div>
             </main>
             <Footer />

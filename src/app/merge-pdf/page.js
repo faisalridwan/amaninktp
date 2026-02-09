@@ -5,6 +5,8 @@ import { PDFDocument } from 'pdf-lib'
 import { FileUp, Trash2, ArrowUp, ArrowDown, Download, FileText, X, AlertCircle, Eye, Image as ImageIcon, Plus, Shield, Zap, Lock, Smartphone } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import GuideSection from '@/components/GuideSection'
+import TrustSection from '@/components/TrustSection'
 import styles from './page.module.css'
 
 export default function MergePDF() {
@@ -154,6 +156,7 @@ export default function MergePDF() {
                         Satukan file PDF dan gambar (JPG/PNG) menjadi satu dokumen PDF secara urut.
                         <br />Semua proses berjalan di browser Anda (Offline), privasi terjaga.
                     </p>
+                    <TrustSection />
                 </div>
 
                 <div className={styles.workspace}>
@@ -295,31 +298,12 @@ export default function MergePDF() {
                     )}
                 </div>
 
-                {/* Trust Badges - Moved Outside */}
-                <div className={styles.trustSection}>
-                    <div className={styles.trustBadge}>
-                        <Lock size={16} />
-                        <span>100% Client-Side</span>
-                    </div>
-                    <div className={styles.trustBadge}>
-                        <Zap size={16} />
-                        <span>Proses Kilat</span>
-                    </div>
-                    <div className={styles.trustBadge}>
-                        <Shield size={16} />
-                        <span>Tanpa Upload Server</span>
-                    </div>
-                </div>
+
 
                 {/* Cara Pakai / How To Use */}
-                {/* Cara Pakai Link */}
-                <div className={styles.howToUse} style={{ marginTop: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara menggabungkan file PDF.</p>
-                    <a href="/guide#merge-pdf" className={styles.btnPrimary} style={{ display: 'inline-flex', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                        Panduan Lengkap
-                    </a>
-                </div>
+                <GuideSection
+                    linkHref="/guide#merge-pdf"
+                />
 
                 {/* New Advantages Section */}
                 <section className={styles.advantagesSection}>

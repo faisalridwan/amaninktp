@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { PenTool, Upload, Trash2, Download, Plus, Move, Lock, X, RotateCcw, FileText, Image as ImageIcon, ChevronDown, ZoomIn, ZoomOut, Check } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import GuideSection from '@/components/GuideSection'
+import TrustSection from '@/components/TrustSection'
 import styles from './page.module.css'
 
 export default function SignaturePage() {
@@ -778,10 +780,7 @@ export default function SignaturePage() {
                 <div className={styles.pageHeader}>
                     <h1>✍️ Tanda Tangan <span>Digital</span></h1>
                     <p>Buat tanda tangan dan tambahkan langsung ke dokumen Anda</p>
-                    <div className={styles.securityBadge}>
-                        <Lock size={14} />
-                        <span>100% Aman & Lokal — Data Anda tidak pernah meninggalkan perangkat ini</span>
-                    </div>
+                    <TrustSection />
                 </div>
 
                 {/* SECTION 1: Create Signature */}
@@ -1123,14 +1122,9 @@ export default function SignaturePage() {
                     )}
                 </section>
                 {/* Cara Pakai / How To Use */}
-                {/* Cara Pakai Link */}
-                <div className={styles.howToUse} style={{ marginTop: '80px', marginBottom: '80px', padding: '40px', background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--bg-secondary)', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.75rem', marginBottom: '16px', fontWeight: '800', color: 'var(--text-primary)' }}>Bingung Caranya?</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Lihat panduan lengkap cara menggunakan tanda tangan digital.</p>
-                    <a href="/guide#signature-guide" className={styles.btnPrimary} style={{ display: 'inline-flex', padding: '12px 32px', borderRadius: '50px', textDecoration: 'none' }}>
-                        Panduan Lengkap
-                    </a>
-                </div>
+                <GuideSection
+                    linkHref="/guide#signature-guide"
+                />
             </main >
 
             <Footer />
