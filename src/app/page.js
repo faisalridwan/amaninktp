@@ -50,6 +50,8 @@ export default function Home() {
     const cropCanvasRef = useRef(null)
     const cropWrapperRef = useRef(null)
     const fileInputRef = useRef(null)
+    const docScrollRef = useRef(null)
+    const pageContainerRefs = useRef([])
 
     const fonts = [
         { value: 'Arial', label: 'Arial' },
@@ -586,6 +588,22 @@ export default function Home() {
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
+    const truncateFilename = (name, maxLength = 25) => {
+        if (!name) return ''
+        if (name.length <= maxLength) return name
+        return name.substring(0, maxLength - 3) + '...'
+    }
+
+    const downloadPageAsPNG = (index) => {
+        const canvas = canvasRefs.current[index]
+        if (!canvas) return
+        const link = document.createElement('a')
+        link.download = `halaman-${index + 1}-${getFileName('png')}`
+        link.href = canvas.toDataURL('image/png')
+        link.click()
+    }
+
+
     // Crop overlay - draw with proper sizing
     useEffect(() => {
         if (!isCropping || !uploadedImage) return
@@ -849,37 +867,78 @@ export default function Home() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={styles.canvasWrap} ref={cropWrapperRef} style={{ padding: '20px 0' }}>
-                                {/* Zoom Controls - Only for PDF */}
-                                {imageLoaded && isPdf && (
-                                    <div className={styles.zoomControls}>
-                                        <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))} aria-label="Zoom Out"><ZoomOut size={16} /></button>
-                                        <span>{Math.round(zoomLevel * 100)}%</span>
-                                        <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))} aria-label="Zoom In"><ZoomIn size={16} /></button>
+                            <div className={styles.canvasWrap} ref={cropWrapperRef} style={{ padding: 0, background: 'transparent', boxShadow: 'none' }}>
+                                {imageLoaded && (
+                                    <div className={styles.documentWorkspace}>
+                                        <div className={styles.workspaceHeader}>
+                                            <div className={styles.docInfo}>
+                                                <FileText size={16} />
+                                                <span>{truncateFilename(originalFileName)} ({pdfPages.length} Halaman)</span>
+                                            </div>
+                                            <div className={styles.docActions}>
+                                                {isPdf && (
+                                                    <div className={styles.zoomControls} style={{ position: 'static', transform: 'none', margin: 0, padding: '4px 8px', boxShadow: 'none', border: '1px solid rgba(0,0,0,0.1)' }}>
+                                                        <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))} aria-label="Zoom Out"><ZoomOut size={16} /></button>
+                                                        <span style={{ fontSize: '11px', minWidth: '40px' }}>{Math.round(zoomLevel * 100)}%</span>
+                                                        <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))} aria-label="Zoom In"><ZoomIn size={16} /></button>
+                                                    </div>
+                                                )}
+                                                <button onClick={handleReset} className={styles.btnResetDoc}>
+                                                    <RotateCcw size={14} /> Ganti Dokumen
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div ref={docScrollRef} className={styles.docScroll}>
+                                            {pdfPages.map((page, i) => (
+                                                <div key={page.id} className={styles.pageWrapper}>
+                                                    <div className={styles.pageHeaderItem}>
+                                                        <div className={styles.pageNumber}>Halaman {i + 1}</div>
+                                                        <div className={styles.pageActions}>
+                                                            <button className={styles.btnPageAction} onClick={() => downloadPageAsPNG(i)}>
+                                                                <Download size={14} /> PNG
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        className={styles.pageContainer}
+                                                        ref={el => pageContainerRefs.current[i] = el}
+                                                        style={{ width: canvasMetrics.width > 0 ? canvasMetrics.width * zoomLevel : 'auto' }}
+                                                    >
+                                                        <canvas
+                                                            ref={el => canvasRefs.current[i] = el}
+                                                            className={styles.canvas}
+                                                            style={{ display: imageLoaded ? 'block' : 'none', width: '100%' }}
+                                                        />
+
+                                                        {imageLoaded && watermarkType === 'single' && canvasMetrics.width > 0 && (
+                                                            <WatermarkControls
+                                                                position={textPosition}
+                                                                dimensions={textDimensions}
+                                                                rotation={rotation}
+                                                                scale={textScale}
+                                                                displayScale={canvasMetrics.scale * zoomLevel}
+                                                                onUpdate={handleWatermarkUpdate}
+                                                                isActive={true}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className={styles.downloadActions}>
+                                            <button
+                                                className={styles.btnPrimary}
+                                                onClick={handleDownloadPDF}
+                                                disabled={!imageLoaded}
+                                            >
+                                                <Download size={18} /> Download Semua Halaman (PDF)
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
 
-                                {pdfPages.map((page, i) => (
-                                    <div key={page.id} className={styles.pageContainer} style={{ width: canvasMetrics.width > 0 ? canvasMetrics.width * zoomLevel : 'auto' }}>
-                                        <canvas
-                                            ref={el => canvasRefs.current[i] = el}
-                                            className={styles.canvas}
-                                            style={{ display: imageLoaded ? 'block' : 'none', width: '100%' }}
-                                        />
-
-                                        {imageLoaded && watermarkType === 'single' && canvasMetrics.width > 0 && (
-                                            <WatermarkControls
-                                                position={textPosition}
-                                                dimensions={textDimensions}
-                                                rotation={rotation}
-                                                scale={textScale}
-                                                displayScale={canvasMetrics.scale * zoomLevel}
-                                                onUpdate={handleWatermarkUpdate}
-                                                isActive={true}
-                                            />
-                                        )}
-                                    </div>
-                                ))}
 
                                 {!imageLoaded && (
                                     <div className={styles.uploadArea} onClick={() => fileInputRef.current?.click()}>
@@ -899,6 +958,7 @@ export default function Home() {
                                     </div>
                                 )}
                             </div>
+
                         )}
                     </div>
                 </div>
