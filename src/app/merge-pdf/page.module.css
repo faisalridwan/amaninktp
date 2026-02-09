@@ -272,11 +272,13 @@
     gap: 1rem;
 }
 
+/* Button Group & Add More */
 .buttonGroup {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
 }
 
 .btnPrimary {
@@ -285,7 +287,6 @@
     border: none;
     padding: 12px 32px;
     border-radius: 12px;
-    /* Fixed border-radius as requested (tidak lonjong) */
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -294,6 +295,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    border: 1px solid transparent;
+    /* Maintain size with border on other buttons */
+}
+
+/* Dark mode specific for primary button */
+:global([data-theme="dark"]) .btnPrimary {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btnPrimary:hover {
@@ -308,7 +317,7 @@
 }
 
 .btnAddMore {
-    background: white;
+    background: transparent;
     color: var(--primary);
     border: 2px solid var(--primary);
     padding: 12px 32px;
@@ -322,9 +331,19 @@
     gap: 8px;
 }
 
+/* Dark mode specific for add more button */
+:global([data-theme="dark"]) .btnAddMore {
+    color: var(--primary-light);
+    border-color: var(--primary-light);
+}
+
 .btnAddMore:hover {
     background: var(--bg-secondary);
     transform: translateY(-2px);
+}
+
+:global([data-theme="dark"]) .btnAddMore:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .loading {
@@ -396,7 +415,8 @@
 }
 
 .modalContent {
-    background: white;
+    background: var(--bg-white);
+    /* Use theme bg */
     border-radius: var(--radius-lg);
     width: 100%;
     max-width: 900px;
@@ -418,6 +438,8 @@
 .modalTitle {
     font-weight: 600;
     font-size: 1.1rem;
+    color: var(--text-primary);
+    /* Use theme text */
 }
 
 .closeModal {
@@ -510,11 +532,110 @@
     }
 }
 
-/* Features & Trust Sections (Reused from other pages mostly via global or copy-paste if needed) */
-.featuresSection,
-.trust {
-    margin-top: 4rem;
+/* Trust Badges (New Style) */
+.trustSection {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 }
+
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--bg-white);
+    border: 1px solid var(--bg-secondary);
+    border-radius: 50px;
+    /* Pill shape */
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+}
+
+.trustBadge:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+    color: var(--primary);
+}
+
+/* Advantages Section */
+.advantagesSection {
+    margin-top: 5rem;
+    text-align: center;
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.advantagesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.advantageCard {
+    background: var(--bg-white);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--bg-secondary);
+    text-align: left;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.advantageCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+.cardIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.cardDesc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Two-tone accent for cards (optional subtle bg) */
+.advantageCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+    opacity: 0.5;
+}
+
+.advantageCard:nth-child(even)::before {
+    background: var(--secondary);
+    /* Assuming a secondary color exists or fallback */
+}
+
 
 /* File Preview Overlay */
 .previewOverlay {
