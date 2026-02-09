@@ -266,6 +266,17 @@
 .actionSection {
     text-align: center;
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .btnPrimary {
@@ -273,12 +284,16 @@
     color: white;
     border: none;
     padding: 12px 32px;
-    border-radius: var(--radius-full);
+    border-radius: 12px;
+    /* Fixed border-radius as requested (tidak lonjong) */
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow: var(--shadow-primary);
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btnPrimary:hover {
@@ -292,6 +307,26 @@
     transform: none;
 }
 
+.btnAddMore {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnAddMore:hover {
+    background: var(--bg-secondary);
+    transform: translateY(-2px);
+}
+
 .loading {
     cursor: wait;
 }
@@ -303,6 +338,7 @@
     padding: 2rem;
     box-shadow: var(--shadow-light);
     animation: fadeIn 0.5s ease;
+    margin-top: 2rem;
 }
 
 .resultHeader {
@@ -343,6 +379,87 @@
     transform: translateY(-2px);
 }
 
+/* Modal for File Preview */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    background: white;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+}
+
+.modalHeader {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--bg-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalTitle {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.closeModal {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeModal:hover {
+    background: var(--bg-secondary);
+    color: var(--text-error);
+}
+
+.previewBody {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.previewImage {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.previewFrame {
+    width: 100%;
+    height: 80vh;
+    border: none;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -370,6 +487,27 @@
         width: 100%;
         justify-content: center;
     }
+
+    .buttonGroup {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btnPrimary,
+    .btnAddMore {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modalOverlay {
+        padding: 0;
+    }
+
+    .modalContent {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+    }
 }
 
 /* Features & Trust Sections (Reused from other pages mostly via global or copy-paste if needed) */
@@ -378,22 +516,25 @@
     margin-top: 4rem;
 }
 
-/* ... (reusing global styles or other component styles) ... */
-
-/* Responsive */
-@media (max-width: 600px) {
-    .heroTitle {
-        font-size: 2rem;
-    }
-
-    .actionBar {
-        flex-direction: column-reverse;
-        gap: 1rem;
-    }
-
-    .addMoreBtn,
-    .mergeBtn {
-        width: 100%;
-        justify-content: center;
-    }
+/* File Preview Overlay */
+.previewOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: var(--radius-sm);
+    z-index: 10;
 }
+
+.filePreview:hover .previewOverlay {
+    opacity: 1;
+}
+
+/* ... (reusing global styles or other component styles) ... */

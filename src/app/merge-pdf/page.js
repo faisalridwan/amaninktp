@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { PDFDocument } from 'pdf-lib'
-import { FileUp, Trash2, ArrowUp, ArrowDown, Download, FileText, X, AlertCircle, Eye, Image as ImageIcon } from 'lucide-react'
+import { FileUp, Trash2, ArrowUp, ArrowDown, Download, FileText, X, AlertCircle, Eye, Image as ImageIcon, Plus } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -11,6 +11,7 @@ export default function MergePDF() {
     const [files, setFiles] = useState([])
     const [isMerging, setIsMerging] = useState(false)
     const [mergedPdfUrl, setMergedPdfUrl] = useState(null)
+    const [previewFile, setPreviewFile] = useState(null)
     const [error, setError] = useState('')
     const [dragActive, setDragActive] = useState(false)
     const fileInputRef = useRef(null)
@@ -41,6 +42,8 @@ export default function MergePDF() {
         }))
 
         setFiles(prev => [...prev, ...newFiles])
+        // Reset input value to allow selecting same file again if needed
+        e.target.value = null
     }
 
     const handleDrag = (e) => {
@@ -132,6 +135,15 @@ export default function MergePDF() {
         }
     }
 
+    const openPreview = (file) => {
+        const fileUrl = URL.createObjectURL(file.file)
+        setPreviewFile({ ...file, url: fileUrl })
+    }
+
+    const closePreview = () => {
+        setPreviewFile(null)
+    }
+
     return (
         <>
             <Navbar />
@@ -153,6 +165,7 @@ export default function MergePDF() {
                         onDragOver={handleDrag}
                         onDrop={handleDrop}
                         onClick={() => fileInputRef.current?.click()}
+                        style={{ display: files.length > 0 ? 'none' : 'block' }}
                     >
                         <input
                             ref={fileInputRef}
@@ -189,7 +202,7 @@ export default function MergePDF() {
                             <div className={styles.filesGrid}>
                                 {files.map((file, index) => (
                                     <div key={file.id} className={styles.fileCard}>
-                                        <div className={styles.filePreview}>
+                                        <div className={styles.filePreview} onClick={() => openPreview(file)} style={{ cursor: 'pointer' }}>
                                             {file.type === 'image' ? (
                                                 <img src={file.preview} alt={file.name} className={styles.thumbImage} />
                                             ) : (
@@ -198,7 +211,10 @@ export default function MergePDF() {
                                                     <span className={styles.pdfLabel}>PDF</span>
                                                 </div>
                                             )}
-                                            <button className={styles.btnRemove} onClick={() => removeFile(file.id)}>
+                                            <div className={styles.previewOverlay}>
+                                                <Eye size={20} color="white" />
+                                            </div>
+                                            <button className={styles.btnRemove} onClick={(e) => { e.stopPropagation(); removeFile(file.id); }}>
                                                 <X size={14} />
                                             </button>
                                         </div>
@@ -229,13 +245,22 @@ export default function MergePDF() {
 
                             {/* Merge Action */}
                             <div className={styles.actionSection}>
-                                <button
-                                    className={`${styles.btnPrimary} ${isMerging ? styles.loading : ''}`}
-                                    onClick={mergePDFs}
-                                    disabled={isMerging || files.length === 0}
-                                >
-                                    {isMerging ? 'Memproses...' : 'Gabungkan File'}
-                                </button>
+                                <div className={styles.buttonGroup}>
+                                    <button
+                                        className={styles.btnAddMore}
+                                        onClick={() => fileInputRef.current?.click()}
+                                    >
+                                        <Plus size={18} />
+                                        Tambah File
+                                    </button>
+                                    <button
+                                        className={`${styles.btnPrimary} ${isMerging ? styles.loading : ''}`}
+                                        onClick={mergePDFs}
+                                        disabled={isMerging || files.length === 0}
+                                    >
+                                        {isMerging ? 'Memproses...' : 'Gabungkan File'}
+                                    </button>
+                                </div>
                                 {/* Features / Trust (Optional) */}
                                 <div className={styles.trust} style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                     <span>🔒 100% Client-Side</span>
@@ -269,6 +294,28 @@ export default function MergePDF() {
                     )}
                 </div>
             </div>
+
+            {/* File Preview Modal */}
+            {previewFile && (
+                <div className={styles.modalOverlay} onClick={closePreview}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
+                            <h3 className={styles.modalTitle}>{previewFile.name}</h3>
+                            <button className={styles.closeModal} onClick={closePreview}>
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className={styles.previewBody}>
+                            {previewFile.type === 'image' ? (
+                                <img src={previewFile.url} alt="Preview" className={styles.previewImage} />
+                            ) : (
+                                <iframe src={previewFile.url} className={styles.previewFrame} title="PDF Preview" />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <Footer />
         </>
     )
