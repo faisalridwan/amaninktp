@@ -74,7 +74,8 @@
 }
 
 .navCta {
-    background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+    background: linear-gradient(135deg, #10B981, #059669);
+    /* Green */
     color: white !important;
     box-shadow: var(--shadow-dark-sm), var(--shadow-light-sm);
 }
@@ -82,7 +83,7 @@
 .navCta:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-dark), var(--shadow-light);
-    background: linear-gradient(135deg, #FF5252, #FF7979);
+    background: linear-gradient(135deg, #059669, #047857);
 }
 
 .themeToggleItem {

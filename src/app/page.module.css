@@ -338,7 +338,8 @@
 }
 
 .pdfBtn {
-    background: linear-gradient(135deg, #E53935, #EF5350);
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    /* Blue */
     color: white;
 }
 
