@@ -308,6 +308,22 @@
     color: #94A3B8;
 }
 
+.safeTag {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 6px 14px;
+    background: #DCFCE7;
+    color: #166534;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+:global([data-theme="dark"]) .safeTag {
+    background: #064E3B;
+    color: #D1FAE5;
+}
+
 /* Primary Button Styling (Matches Download Btn) */
 .btnPrimary {
     display: inline-flex;
