@@ -42,6 +42,7 @@ export default function Home() {
     const [isLoadingPdf, setIsLoadingPdf] = useState(false)
     const [pdfPages, setPdfPages] = useState([]) // Array of { img, id }
     const [zoomLevel, setZoomLevel] = useState(1)
+    const [isPdf, setIsPdf] = useState(false)
 
     // Removed old interactive states (isDragging etc) since handled by overlay
 
@@ -196,6 +197,7 @@ export default function Home() {
         setImageLoaded(false)
 
         if (file.type === 'application/pdf') {
+            setIsPdf(true)
             setIsLoadingPdf(true)
             loadPdfJs().then(async (pdfjsLib) => {
                 try {
@@ -545,9 +547,12 @@ export default function Home() {
         // Let's download the first page for now or zip if multiple.
         // For simplicity, download current view or simple valid PNG of 1st page.
         if (!canvasRefs.current[0] || !imageLoaded) return
+
+        // Handle image download specifically if not PDF
+        const sourceCanvas = canvasRefs.current[0]
         const link = document.createElement('a')
         link.download = getFileName('png')
-        link.href = canvasRefs.current[0].toDataURL('image/png')
+        link.href = sourceCanvas.toDataURL('image/png')
         link.click()
     }
 
@@ -556,6 +561,8 @@ export default function Home() {
         const { jsPDF } = await import('jspdf')
 
         const firstCanvas = canvasRefs.current[0]
+
+        // If it's a single image, we might want to use its dimensions
         const pdfW = firstCanvas.width * 0.264583
         const pdfH = firstCanvas.height * 0.264583
         const orientation = firstCanvas.width > firstCanvas.height ? 'landscape' : 'portrait'
@@ -574,7 +581,8 @@ export default function Home() {
     const handleReset = () => {
         setUploadedImage(null); setCroppedImage(null); setOriginalFileName(''); setImageLoaded(false)
         setWatermarkText(''); setFontSize(30); setFontFamily('Arial')
-        setRotation(-15); setOpacity(0.3); setColor('#080808'); setWatermarkType('tiled'); setTextScale(1); setGap(4)
+        setRotation(-15); setOpacity(0.3); setColor('#080808'); setWatermarkType('single'); setTextScale(1); setGapX(4); setGapY(4)
+        setIsPdf(false); setZoomLevel(1); setPdfPages([])
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
@@ -698,6 +706,11 @@ export default function Home() {
                                 </span>
                             </div>
                             <input ref={fileInputRef} type="file" accept="image/*,.pdf" onChange={handleImageUpload} hidden />
+                            {imageLoaded && !isCropping && !isPdf && (
+                                <button className={styles.cropBtn} onClick={startCrop} style={{ marginTop: '8px', width: '100%' }}>
+                                    <Crop size={14} /> Crop Gambar
+                                </button>
+                            )}
                         </div>
 
 
@@ -837,12 +850,12 @@ export default function Home() {
                             </div>
                         ) : (
                             <div className={styles.canvasWrap} ref={cropWrapperRef} style={{ padding: '20px 0' }}>
-                                {/* Zoom Controls */}
-                                {imageLoaded && (
+                                {/* Zoom Controls - Only for PDF */}
+                                {imageLoaded && isPdf && (
                                     <div className={styles.zoomControls}>
-                                        <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))}><ZoomOut size={16} /></button>
+                                        <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))} aria-label="Zoom Out"><ZoomOut size={16} /></button>
                                         <span>{Math.round(zoomLevel * 100)}%</span>
-                                        <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))}><ZoomIn size={16} /></button>
+                                        <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))} aria-label="Zoom In"><ZoomIn size={16} /></button>
                                     </div>
                                 )}
 
