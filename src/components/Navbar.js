@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, Grid } from 'lucide-react'
-import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, Grid } from 'lucide-react'
 import styles from './Navbar.module.css'
 import ThemeToggle from './ThemeToggle'
 
