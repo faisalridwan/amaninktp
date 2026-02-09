@@ -151,7 +151,7 @@ export default function MergePDF() {
             <Navbar />
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>📑 Gabung PDF & Gambar</h1>
+                    <h1 className={styles.title}>📑 Gabung Dokumen & Gambar</h1>
                     <p className={styles.subtitle}>
                         Satukan file PDF dan gambar (JPG/PNG) menjadi satu dokumen PDF secara urut.
                     </p>

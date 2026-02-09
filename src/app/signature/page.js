@@ -1125,7 +1125,7 @@ export default function SignaturePage() {
                 <TrustSection />
                 {/* Cara Pakai / How To Use */}
                 <GuideSection
-                    linkHref="/guide#signature-guide"
+                    linkHref="/guide#signature"
                 />
             </main >
 

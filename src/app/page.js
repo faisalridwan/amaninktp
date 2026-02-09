@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Upload, Crop, Type, Palette, Download, RotateCcw, FileImage, CreditCard, Users, FileText, Building, File, Check, Grid, Plus, Camera } from 'lucide-react'
+import { Upload, Crop, Type, Palette, Download, RotateCcw, FileImage, CreditCard, Users, FileText, Building, File, Check, Grid, Plus, Camera, ZoomIn, ZoomOut, Trash2 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GuideSection from '@/components/GuideSection'
@@ -40,10 +40,12 @@ export default function Home() {
     const [textDimensions, setTextDimensions] = useState({ width: 0, height: 0 })
     const [canvasMetrics, setCanvasMetrics] = useState({ width: 0, height: 0, scale: 1 })
     const [isLoadingPdf, setIsLoadingPdf] = useState(false)
+    const [pdfPages, setPdfPages] = useState([]) // Array of { img, id }
+    const [zoomLevel, setZoomLevel] = useState(1)
 
     // Removed old interactive states (isDragging etc) since handled by overlay
 
-    const canvasRef = useRef(null)
+    const canvasRefs = useRef([]) // Array of refs for each page
     const cropCanvasRef = useRef(null)
     const cropWrapperRef = useRef(null)
     const fileInputRef = useRef(null)
@@ -91,22 +93,25 @@ export default function Home() {
         return watermarkText.trim() || 'WATERMARK \n by amanindata.qreatip.com'
     }, [watermarkText])
 
-    // Main draw function
-    const draw = useCallback(() => {
-        const canvas = canvasRef.current
-        const sourceImage = croppedImage || uploadedImage
-        if (!canvas || !sourceImage) return
+    // Draw function that can target any canvas/image
+    const drawOnCanvas = useCallback((canvas, image) => {
+        if (!canvas || !image) return
 
         const ctx = canvas.getContext('2d')
-        canvas.width = sourceImage.width
-        canvas.height = sourceImage.height
+        // Only set dims if needed to avoid flicker, though usually we set it once
+        if (canvas.width !== image.width || canvas.height !== image.height) {
+            canvas.width = image.width
+            canvas.height = image.height
+        }
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(sourceImage, 0, 0)
+        ctx.drawImage(image, 0, 0)
 
         const text = getFinalWatermarkText()
+        if (!text) return
+
         const lines = text.split('\n')
-        const actualFontSize = fontSize * textScale
+        const actualFontSize = fontSize * textScale // Scale font based on interaction
         const lineHeight = actualFontSize * 1.3
 
         ctx.save()
@@ -144,24 +149,28 @@ export default function Home() {
                 const yOffset = index * lineHeight - ((lines.length - 1) * lineHeight) / 2
                 ctx.fillText(line, 0, yOffset)
             })
-
-
         }
-
         ctx.restore()
-        ctx.restore()
-    }, [uploadedImage, croppedImage, watermarkType, fontSize, fontFamily, rotation, opacity, color, gapX, gapY, textPosition, textScale, getFinalWatermarkText])
+    }, [watermarkType, fontSize, fontFamily, rotation, opacity, color, gapX, gapY, textPosition, textScale, getFinalWatermarkText])
 
+    // Effect to redraw ALL pages when watermark changes
     useEffect(() => {
-        if (imageLoaded && !isCropping) draw()
-    }, [draw, imageLoaded, isCropping])
+        if (!imageLoaded || isCropping) return
 
+        pdfPages.forEach((page, index) => {
+            const canvas = canvasRefs.current[index]
+            if (canvas) drawOnCanvas(canvas, page.img)
+        })
+    }, [drawOnCanvas, imageLoaded, isCropping, pdfPages]) // Redraw when these change
+
+    // Center text on new image load
     useEffect(() => {
-        const sourceImage = croppedImage || uploadedImage
-        if (sourceImage && watermarkType === 'single') {
-            setTextPosition({ x: sourceImage.width / 2, y: sourceImage.height / 2 })
+        if (pdfPages.length > 0 && watermarkType === 'single') {
+            const firstImg = pdfPages[0].img
+            // Only reset if position is 0,0 or we want to force reset on new file?
+            // Let's force reset for new file logic handled in loadImage
         }
-    }, [uploadedImage, croppedImage, watermarkType])
+    }, [pdfPages, watermarkType])
 
     const loadPdfJs = () => {
         return new Promise((resolve, reject) => {
@@ -183,6 +192,8 @@ export default function Home() {
 
     const loadImage = (file) => {
         setOriginalFileName(file.name.replace(/\.[^/.]+$/, ''))
+        setPdfPages([]) // Clear previous
+        setImageLoaded(false)
 
         if (file.type === 'application/pdf') {
             setIsLoadingPdf(true)
@@ -190,27 +201,37 @@ export default function Home() {
                 try {
                     const arrayBuffer = await file.arrayBuffer()
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
-                    const page = await pdf.getPage(1) // Render first page only for now
-                    const scale = 2
-                    const viewport = page.getViewport({ scale })
 
-                    const canvas = document.createElement('canvas')
-                    const ctx = canvas.getContext('2d')
-                    canvas.width = viewport.width
-                    canvas.height = viewport.height
+                    const pages = []
+                    const scale = 2 // High quality for rendering
 
-                    await page.render({ canvasContext: ctx, viewport }).promise
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i)
+                        const viewport = page.getViewport({ scale })
 
-                    const img = new Image()
-                    img.onload = () => {
-                        setUploadedImage(img)
-                        setCroppedImage(null)
-                        setImageLoaded(true)
-                        setTextPosition({ x: img.width / 2, y: img.height / 2 })
-                        setTextScale(1)
-                        setIsLoadingPdf(false)
+                        const canvas = document.createElement('canvas')
+                        const ctx = canvas.getContext('2d')
+                        canvas.width = viewport.width
+                        canvas.height = viewport.height
+
+                        await page.render({ canvasContext: ctx, viewport }).promise
+
+                        const img = new Image()
+                        await new Promise(resolve => {
+                            img.onload = resolve
+                            img.src = canvas.toDataURL('image/png')
+                        })
+
+                        pages.push({ img, id: i })
                     }
-                    img.src = canvas.toDataURL('image/png')
+
+                    setPdfPages(pages)
+                    setUploadedImage(pages[0].img) // Backward compat for crop etc (initially use first page)
+                    setCroppedImage(null)
+                    setImageLoaded(true)
+                    setTextPosition({ x: pages[0].img.width / 2, y: pages[0].img.height / 2 })
+                    setTextScale(1)
+                    setIsLoadingPdf(false)
                 } catch (error) {
                     console.error('Error rendering PDF:', error)
                     alert('Gagal memproses PDF. Pastikan file valid.')
@@ -227,6 +248,7 @@ export default function Home() {
         reader.onload = (event) => {
             const img = new Image()
             img.onload = () => {
+                setPdfPages([{ img, id: 1 }])
                 setUploadedImage(img)
                 setCroppedImage(null)
                 setImageLoaded(true)
@@ -476,7 +498,7 @@ export default function Home() {
 
     // Measure canvas display size
     useEffect(() => {
-        const canvas = canvasRef.current
+        const canvas = canvasRefs.current[0]
         if (!canvas || !imageLoaded) return
 
         const updateMetrics = () => {
@@ -518,20 +540,34 @@ export default function Home() {
     const getFileName = (ext) => `${originalFileName || 'ktp'}-watermark by amanindata.qreatip.com.${ext}`
 
     const handleDownloadPNG = () => {
-        if (!canvasRef.current || !imageLoaded) return
+        // Download all pages? Or zip? Or just first and alert?
+        // User didn't specify, but for PNG usually it's single file.
+        // Let's download the first page for now or zip if multiple.
+        // For simplicity, download current view or simple valid PNG of 1st page.
+        if (!canvasRefs.current[0] || !imageLoaded) return
         const link = document.createElement('a')
         link.download = getFileName('png')
-        link.href = canvasRef.current.toDataURL('image/png')
+        link.href = canvasRefs.current[0].toDataURL('image/png')
         link.click()
     }
 
     const handleDownloadPDF = async () => {
-        if (!canvasRef.current || !imageLoaded) return
+        if (!canvasRefs.current[0] || !imageLoaded) return
         const { jsPDF } = await import('jspdf')
-        const canvas = canvasRef.current
-        const pdfW = canvas.width * 0.264583, pdfH = canvas.height * 0.264583
-        const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? 'landscape' : 'portrait', unit: 'mm', format: [pdfW, pdfH] })
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfW, pdfH)
+
+        const firstCanvas = canvasRefs.current[0]
+        const pdfW = firstCanvas.width * 0.264583
+        const pdfH = firstCanvas.height * 0.264583
+        const orientation = firstCanvas.width > firstCanvas.height ? 'landscape' : 'portrait'
+
+        const pdf = new jsPDF({ orientation, unit: 'mm', format: [pdfW, pdfH] })
+
+        for (let i = 0; i < pdfPages.length; i++) {
+            const canvas = canvasRefs.current[i]
+            if (i > 0) pdf.addPage([pdfW, pdfH], orientation)
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfW, pdfH)
+        }
+
         pdf.save(getFileName('pdf'))
     }
 
@@ -650,6 +686,19 @@ export default function Home() {
                     {/* Controls */}
                     <div className={styles.controls}>
                         {/* Upload */}
+                        <div className={styles.section}>
+                            <label className={styles.label}><Upload size={14} /> Upload File</label>
+                            <div
+                                className={styles.uploadArea}
+                                style={{ padding: '12px', minHeight: 'auto', border: '2px dashed rgba(168, 197, 240, 0.6)', margin: 0 }}
+                                onClick={() => fileInputRef.current?.click()}
+                            >
+                                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                    {imageLoaded ? 'Ganti File' : 'Pilih File'}
+                                </span>
+                            </div>
+                            <input ref={fileInputRef} type="file" accept="image/*,.pdf" onChange={handleImageUpload} hidden />
+                        </div>
 
 
                         {/* Type */}
@@ -787,22 +836,37 @@ export default function Home() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={styles.canvasWrap} ref={cropWrapperRef}>
-                                <div className={styles.canvasContainer} style={canvasMetrics.width > 0 ? { width: canvasMetrics.width, height: canvasMetrics.height } : {}}>
-                                    <canvas ref={canvasRef} className={styles.canvas} style={{ display: imageLoaded ? 'block' : 'none' }} />
+                            <div className={styles.canvasWrap} ref={cropWrapperRef} style={{ padding: '20px 0' }}>
+                                {/* Zoom Controls */}
+                                {imageLoaded && (
+                                    <div className={styles.zoomControls}>
+                                        <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))}><ZoomOut size={16} /></button>
+                                        <span>{Math.round(zoomLevel * 100)}%</span>
+                                        <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))}><ZoomIn size={16} /></button>
+                                    </div>
+                                )}
 
-                                    {imageLoaded && watermarkType === 'single' && canvasMetrics.width > 0 && (
-                                        <WatermarkControls
-                                            position={textPosition}
-                                            dimensions={textDimensions}
-                                            rotation={rotation}
-                                            scale={textScale}
-                                            displayScale={canvasMetrics.scale}
-                                            onUpdate={handleWatermarkUpdate}
-                                            isActive={true}
+                                {pdfPages.map((page, i) => (
+                                    <div key={page.id} className={styles.pageContainer} style={{ width: canvasMetrics.width > 0 ? canvasMetrics.width * zoomLevel : 'auto' }}>
+                                        <canvas
+                                            ref={el => canvasRefs.current[i] = el}
+                                            className={styles.canvas}
+                                            style={{ display: imageLoaded ? 'block' : 'none', width: '100%' }}
                                         />
-                                    )}
-                                </div>
+
+                                        {imageLoaded && watermarkType === 'single' && canvasMetrics.width > 0 && (
+                                            <WatermarkControls
+                                                position={textPosition}
+                                                dimensions={textDimensions}
+                                                rotation={rotation}
+                                                scale={textScale}
+                                                displayScale={canvasMetrics.scale * zoomLevel}
+                                                onUpdate={handleWatermarkUpdate}
+                                                isActive={true}
+                                            />
+                                        )}
+                                    </div>
+                                ))}
 
                                 {!imageLoaded && (
                                     <div className={styles.uploadArea} onClick={() => fileInputRef.current?.click()}>
@@ -829,7 +893,7 @@ export default function Home() {
 
                 {/* Cara Pakai / How To Use */}
                 <GuideSection
-                    linkHref="/guide#watermark-guide"
+                    linkHref="/guide#watermark"
                 />
 
 

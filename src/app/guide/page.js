@@ -193,12 +193,12 @@ export default function GuidePage() {
                             <h3 className={styles.sidebarTitle}>Isi Konten</h3>
                             <ul className={styles.sidebarNav}>
                                 <li>
-                                    <a href="#watermark-guide">
+                                    <a href="#watermark">
                                         <Shield size={16} /> Watermark Dokumen
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#signature-guide">
+                                    <a href="#signature">
                                         <MousePointer size={16} /> Tanda Tangan
                                     </a>
                                 </li>
@@ -214,7 +214,7 @@ export default function GuidePage() {
                                 </li>
                                 <li>
                                     <a href="#merge">
-                                        <FileStack size={16} /> Gabung PDF
+                                        <FileStack size={16} /> Gabung Dokumen
                                     </a>
                                 </li>
                                 <li>
@@ -239,7 +239,7 @@ export default function GuidePage() {
                     <div className={styles.contentArea}>
                         <div className={styles.guidesGrid}>
                             {/* Watermark Guide */}
-                            <div id="watermark-guide" className={`neu-card no-hover ${styles.guideCard}`}>
+                            <div id="watermark" className={`neu-card no-hover ${styles.guideCard}`}>
                                 <div className={styles.cardHeader}>
                                     <Shield size={24} className={styles.iconBlue} />
                                     <h2>Panduan Watermark Dokumen</h2>
@@ -267,7 +267,7 @@ export default function GuidePage() {
                             </div>
 
                             {/* Signature Guide */}
-                            <div id="signature-guide" className={`neu-card no-hover ${styles.guideCard}`}>
+                            <div id="signature" className={`neu-card no-hover ${styles.guideCard}`}>
                                 <div className={styles.cardHeader}>
                                     <MousePointer size={24} className={styles.iconBlue} />
                                     <h2>Panduan Tanda Tangan</h2>
@@ -320,7 +320,7 @@ export default function GuidePage() {
                             <div id="merge" className={`neu-card no-hover ${styles.guideCard}`}>
                                 <div className={styles.cardHeader}>
                                     <FileStack size={24} className={styles.iconBlue} />
-                                    <h2>Panduan Gabung PDF</h2>
+                                    <h2>Panduan Gabung Dokumen</h2>
                                 </div>
                                 <div className={styles.stepList}>
                                     {mergePdfSteps.map((step, index) => (
@@ -334,7 +334,7 @@ export default function GuidePage() {
                                     ))}
                                 </div>
                                 <div className={styles.cardFooter}>
-                                    <a href="/merge" className={`${styles.actionBtn} ${styles.btnAlt}`}>Gabung PDF Sekarang</a>
+                                    <a href="/merge" className={`${styles.actionBtn} ${styles.btnAlt}`}>Gabung Dokumen Sekarang</a>
                                 </div>
                             </div>
 

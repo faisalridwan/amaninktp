@@ -25,7 +25,7 @@ export default function Navbar() {
         { href: '/signature', label: 'Tanda Tangan', icon: PenTool, desc: 'Buat tanda tangan digital transparan dan tambahkan langsung ke dokumen.' },
         { href: '/compress', label: 'Kompres Foto', icon: Minimize2, desc: 'Perkecil ukuran foto tanpa kurangi kualitas.' },
         { href: '/redact', label: 'Sensor Data', icon: EyeOff, desc: 'Sensor & blur data pribadi di dokumen.' },
-        { href: '/merge', label: 'Gabung PDF', icon: FileImage, desc: 'Satukan banyak file PDF dan gambar jadi satu.' },
+        { href: '/merge', label: 'Gabung Dokumen', icon: FileImage, desc: 'Satukan banyak file PDF dan gambar jadi satu.' },
         { href: '/nik-parser', label: 'Cek NIK', icon: User, desc: 'Cek informasi daerah & lahir dari NIK.' },
         { href: '/photo-generator', label: 'Pas Foto', icon: Camera, desc: 'Buat pas foto otomatis background merah/biru.' },
     ]

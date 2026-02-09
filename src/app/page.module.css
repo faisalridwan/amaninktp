@@ -855,3 +855,77 @@
     background: rgba(30, 41, 59, 0.95);
     color: var(--primary-light);
 }
+
+/* Zoom Controls */
+.zoomControls {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.zoomControls button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    box-shadow: 2px 2px 5px rgba(174, 186, 202, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
+}
+
+.zoomControls button:hover {
+    color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.zoomControls span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 48px;
+    text-align: center;
+}
+
+/* Page Container */
+.pageContainer {
+    margin: 0 auto 24px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    /* Better shadow for pages */
+    transition: width 0.3s ease;
+    background: white;
+    /* Ensure background behind transparent PNGs */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Dark Mode Zoom */
+:global([data-theme="dark"]) .zoomControls {
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+:global([data-theme="dark"]) .zoomControls button {
+    background: var(--bg-secondary);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Override padding/margin for better fit */
+.canvasWrap {
+    min-height: 200px;
+}
