@@ -69,9 +69,6 @@ export default function Home() {
         { icon: FileImage, label: 'NPWP' },
         { icon: FileText, label: 'PDF' },
         { icon: File, label: 'Dokumen Lain' },
-        { icon: File, label: 'Merge PDF' },
-        { icon: Users, label: 'NIK Parser' },
-        { icon: Camera, label: 'Pas Foto' },
     ]
 
     // Generate auto watermark text
@@ -211,31 +208,41 @@ export default function Home() {
 
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i)
-                        const viewport = page.getViewport({ scale })
+                        const viewport = page.getViewport({ scale: 2 }) // High quality render
+                        const logicalViewport = page.getViewport({ scale: 1 }) // Layout dimensions
 
                         const canvas = document.createElement('canvas')
-                        const ctx = canvas.getContext('2d')
+                        const context = canvas.getContext('2d')
                         canvas.width = viewport.width
                         canvas.height = viewport.height
 
-                        await page.render({ canvasContext: ctx, viewport }).promise
+                        await page.render({ canvasContext: context, viewport }).promise
 
+                        // Convert to image
                         const img = new Image()
                         await new Promise(resolve => {
                             img.onload = resolve
                             img.src = canvas.toDataURL('image/png')
                         })
 
-                        pages.push({ img, id: i })
+                        pages.push({
+                            img,
+                            id: i,
+                            width: logicalViewport.width,
+                            height: logicalViewport.height
+                        })
                     }
 
                     setPdfPages(pages)
-                    setUploadedImage(pages[0].img) // Backward compat for crop etc (initially use first page)
+                    setUploadedImage(pages[0].img)
                     setCroppedImage(null)
                     setImageLoaded(true)
-                    setTextPosition({ x: pages[0].img.width / 2, y: pages[0].img.height / 2 })
+                    setTextPosition({ x: pages[0].width / 2, y: pages[0].height / 2 })
                     setTextScale(1)
                     setIsLoadingPdf(false)
+                    // Initial zoom to fit width (approx 0.8 for desktop container)
+                    setZoomLevel(0.8)
+
                 } catch (error) {
                     console.error('Error rendering PDF:', error)
                     alert('Gagal memproses PDF. Pastikan file valid.')
@@ -247,6 +254,7 @@ export default function Home() {
             })
             return
         }
+
         setIsPdf(false)
         const reader = new FileReader()
         reader.onload = (event) => {
@@ -493,12 +501,82 @@ export default function Home() {
 
         ctx.font = `bold ${actualFontSize}px "${fontFamily}", sans-serif`
 
-        const maxWidth = Math.max(...lines.map(line => ctx.measureText(line).width))
-        const lineHeight = actualFontSize * 1.3
-        const totalHeight = lines.length * lineHeight
+        const metrics = ctx.measureText(text) // For single line or widest line logic
+        // For multiple lines, we need to handle height better
 
-        setTextDimensions({ width: maxWidth, height: totalHeight })
+        let calculatedWidth = 0
+        let calculatedHeight = 0
+
+        if (lines.length === 1) {
+            const m = ctx.measureText(lines[0])
+            calculatedWidth = m.width
+            // Tight height: Ascent + Descent
+            calculatedHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent
+        } else {
+            calculatedWidth = Math.max(...lines.map(line => ctx.measureText(line).width))
+            const lineHeight = actualFontSize * 1.2 // slightly tighter line height
+            calculatedHeight = lines.length * lineHeight
+        }
+
+        setTextDimensions({ width: calculatedWidth, height: calculatedHeight })
     }, [watermarkText, fontSize, fontFamily, watermarkType, getFinalWatermarkText])
+
+    // Draw Watermark on Canvas
+    useEffect(() => {
+        if (!imageLoaded) return
+
+        const draw = () => {
+            const pagesToDraw = isPdf ? pdfPages : [{ img: (croppedImage || uploadedImage), id: 0 }]
+
+            pagesToDraw.forEach((page, i) => {
+                const canvas = canvasRefs.current[i]
+                if (!canvas) return
+                const ctx = canvas.getContext('2d')
+
+                // 1. Draw Base Image
+                const source = page.img
+                if (!source) return
+
+                // Ensure canvas matches source size
+                if (canvas.width !== source.width) canvas.width = source.width
+                if (canvas.height !== source.height) canvas.height = source.height
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                ctx.drawImage(source, 0, 0)
+
+                // 2. Draw Watermark
+                if (watermarkType === 'single' && watermarkText) {
+                    ctx.save()
+                    ctx.globalAlpha = opacity
+                    ctx.translate(textPosition.x, textPosition.y)
+                    ctx.rotate((rotation * Math.PI) / 180)
+                    ctx.scale(textScale, textScale)
+
+                    ctx.font = `bold ${fontSize}px "${fontFamily}", sans-serif`
+                    ctx.fillStyle = color
+                    ctx.textAlign = 'center'
+                    ctx.textBaseline = 'middle'
+
+                    const text = getFinalWatermarkText()
+                    const lines = text.split('\n')
+                    const lineHeight = fontSize * 1.2
+                    const startY = -((lines.length - 1) * lineHeight) / 2
+
+                    lines.forEach((line, idx) => {
+                        ctx.fillText(line, 0, startY + (idx * lineHeight))
+                    })
+
+                    ctx.restore()
+                } else if (watermarkType === 'tiled' && watermarkText) {
+                    // Simple Tiled Logic (Optional: add if needed, but user focused on single)
+                    // For now, only single is requested to be fixed
+                }
+            })
+        }
+
+        requestAnimationFrame(draw)
+
+    }, [imageLoaded, isPdf, pdfPages, croppedImage, uploadedImage, watermarkType, watermarkText, textPosition, textScale, rotation, opacity, color, fontFamily, fontSize, getFinalWatermarkText])
 
     // Measure canvas display size
     useEffect(() => {
@@ -601,6 +679,20 @@ export default function Home() {
         link.download = `halaman-${index + 1}-${getFileName('png')}`
         link.href = canvas.toDataURL('image/png')
         link.click()
+    }
+
+    const downloadPageAsPDF = async (index) => {
+        const canvas = canvasRefs.current[index]
+        if (!canvas) return
+        const { jsPDF } = await import('jspdf')
+
+        const pdfW = canvas.width * 0.264583
+        const pdfH = canvas.height * 0.264583
+        const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait'
+
+        const pdf = new jsPDF({ orientation, unit: 'mm', format: [pdfW, pdfH] })
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdfW, pdfH)
+        pdf.save(`halaman-${index + 1}-${getFileName('pdf')}`)
     }
 
 
@@ -737,7 +829,7 @@ export default function Home() {
                             <label className={styles.label}><Type size={14} /> Jenis Watermark</label>
                             <div className={styles.typeRow}>
                                 <button className={`${styles.typeBtn} ${watermarkType === 'tiled' ? styles.active : ''}`} onClick={() => setWatermarkType('tiled')}>
-                                    <Grid size={16} /> Full Gambar
+                                    <Grid size={16} /> Full Area
                                 </button>
                                 <button className={`${styles.typeBtn} ${watermarkType === 'single' ? styles.active : ''}`} onClick={() => setWatermarkType('single')}>
                                     <Type size={16} /> Satu Teks
@@ -843,7 +935,7 @@ export default function Home() {
                         <div className={styles.section}>
                             <label className={styles.label}><Download size={14} /> Download</label>
                             <div className={styles.downloadRow}>
-                                <button className={styles.pngBtn} onClick={handleDownloadPNG} disabled={!imageLoaded}>PNG</button>
+                                <button className={styles.pngBtn} onClick={handleDownloadPNG} disabled={!imageLoaded || isPdf}>PNG</button>
                                 <button className={styles.pdfBtn} onClick={handleDownloadPDF} disabled={!imageLoaded}>PDF</button>
                             </div>
                             <button className={styles.resetBtn} onClick={handleReset}><RotateCcw size={14} /> Reset</button>
@@ -876,11 +968,12 @@ export default function Home() {
                                                 <span>{truncateFilename(originalFileName)} ({pdfPages.length} Halaman)</span>
                                             </div>
                                             <div className={styles.docActions}>
-                                                <div className={styles.zoomControls} style={{ position: 'static', transform: 'none', margin: 0, padding: '4px 8px', boxShadow: 'none', border: '1px solid rgba(0,0,0,0.1)' }}>
+                                                <div className={styles.zoomControls}>
                                                     <button onClick={() => setZoomLevel(prev => Math.max(0.5, prev - 0.1))} aria-label="Zoom Out"><ZoomOut size={16} /></button>
                                                     <span style={{ fontSize: '11px', minWidth: '40px' }}>{Math.round(zoomLevel * 100)}%</span>
-                                                    <button onClick={() => setZoomLevel(prev => Math.min(2, prev + 0.1))} aria-label="Zoom In"><ZoomIn size={16} /></button>
+                                                    <button onClick={() => setZoomLevel(prev => Math.min(1.5, prev + 0.1))} aria-label="Zoom In"><ZoomIn size={16} /></button>
                                                 </div>
+
                                             </div>
                                         </div>
 
@@ -890,8 +983,11 @@ export default function Home() {
                                                     <div className={styles.pageHeaderItem}>
                                                         <div className={styles.pageNumber}>Halaman {i + 1}</div>
                                                         <div className={styles.pageActions}>
-                                                            <button className={`${styles.btnPageAction} ${styles.green}`} onClick={() => downloadPageAsPNG(i)} disabled={true}>
+                                                            <button className={`${styles.btnPageAction} ${styles.green}`} onClick={() => downloadPageAsPNG(i)} title="Download Halaman ini sebagai PNG">
                                                                 <Download size={14} /> PNG
+                                                            </button>
+                                                            <button className={`${styles.btnPageAction} ${styles.blue}`} onClick={() => downloadPageAsPDF(i)} title="Download Halaman ini sebagai PDF">
+                                                                <FileText size={14} /> PDF
                                                             </button>
                                                         </div>
 
@@ -899,7 +995,7 @@ export default function Home() {
                                                     <div
                                                         className={styles.pageContainer}
                                                         ref={el => pageContainerRefs.current[i] = el}
-                                                        style={{ width: canvasMetrics.width > 0 ? canvasMetrics.width * zoomLevel : 'auto' }}
+                                                        style={{ width: page.width ? page.width * zoomLevel : 'auto' }}
                                                     >
                                                         <canvas
                                                             ref={el => canvasRefs.current[i] = el}
@@ -907,13 +1003,13 @@ export default function Home() {
                                                             style={{ display: imageLoaded ? 'block' : 'none', width: '100%' }}
                                                         />
 
-                                                        {imageLoaded && watermarkType === 'single' && canvasMetrics.width > 0 && (
+                                                        {imageLoaded && watermarkType === 'single' && (
                                                             <WatermarkControls
                                                                 position={textPosition}
                                                                 dimensions={textDimensions}
                                                                 rotation={rotation}
                                                                 scale={textScale}
-                                                                displayScale={canvasMetrics.scale * zoomLevel}
+                                                                displayScale={zoomLevel}
                                                                 onUpdate={handleWatermarkUpdate}
                                                                 isActive={true}
                                                             />

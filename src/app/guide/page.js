@@ -27,7 +27,7 @@ export default function GuidePage() {
         },
         {
             title: 'Pilih Mode Watermark',
-            desc: <>Pilih <strong>"Full Gambar"</strong> untuk watermark memenuhi seluruh halaman (lebih aman), atau <strong>"Satu Teks"</strong> untuk menempatkan satu tulisan saja di posisi tertentu.</>,
+            desc: <>Pilih <strong>"Full Area"</strong> untuk watermark memenuhi seluruh halaman (lebih aman), atau <strong>"Satu Teks"</strong> untuk menempatkan satu tulisan saja di posisi tertentu.</>,
             image: ''
         },
         {

@@ -306,7 +306,7 @@ export default function MergePDF() {
 
                 {/* New Advantages Section */}
                 <section className={styles.advantagesSection}>
-                    <h2 className={styles.sectionTitle}>Keunggulan Amanin Data ✨</h2>
+                    <h2 className={styles.sectionTitle}>Keunggulan Amanin Data</h2>
                     <div className={styles.advantagesGrid}>
                         <div className={styles.advantageCard}>
                             <span className={styles.cardIcon}>🔒</span>

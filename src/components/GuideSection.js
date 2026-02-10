@@ -18,7 +18,7 @@ export default function GuideSection({
             </Link>
 
             <p className={styles.disclaimer}>
-                dengan menggunakan tools ini kamu menyetujui <Link href="/privacy">Privacy Policy</Link> • <Link href="/terms">Terms of Service</Link>
+                dengan menggunakan tools ini kamu menyetujui <Link href="/privacy-policy">Privacy Policy</Link> • <Link href="/terms">Terms of Service</Link>
             </p>
         </div>
     )

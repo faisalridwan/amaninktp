@@ -599,7 +599,7 @@ export default function Home() {
                             <label className={styles.label}><Type size={14} /> Jenis Watermark</label>
                             <div className={styles.typeRow}>
                                 <button className={`${styles.typeBtn} ${watermarkType === 'tiled' ? styles.active : ''}`} onClick={() => setWatermarkType('tiled')}>
-                                    <Grid size={16} /> Full Gambar
+                                    <Grid size={16} /> Full Area
                                 </button>
                                 <button className={`${styles.typeBtn} ${watermarkType === 'single' ? styles.active : ''}`} onClick={() => setWatermarkType('single')}>
                                     <Type size={16} /> Satu Teks

@@ -115,8 +115,8 @@ export default function WatermarkControls({
             style={{
                 left: displayX,
                 top: displayY,
-                width: displayWidth + 24 * displayScale, // Padding compensation
-                height: displayHeight + 24 * displayScale,
+                width: displayWidth + 12 * displayScale, // Tighter padding
+                height: displayHeight + 12 * displayScale,
                 transform: `translate(-50%, -50%) rotate(${rotation}deg)`
             }}
             onMouseDown={(e) => handleMouseDown(e, 'drag')}
