@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2 } from 'lucide-react'
+import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2, Scissors } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -176,6 +176,25 @@ export default function GuidePage() {
         }
     ]
 
+    const removeBgSteps = [
+        {
+            title: 'Upload Foto',
+            desc: <>Upload foto yang ingin dihapus background-nya. Usahakan objek utama terlihat jelas.</>
+        },
+        {
+            title: 'Proses Otomatis',
+            desc: <>Tunggu sistem AI memisahkan objek dari latar belakang. Proses ini berjalan di browser Anda.</>
+        },
+        {
+            title: 'Cek Hasil',
+            desc: <>Lihat hasil foto tanpa background (transparan). Jika sudah sesuai, Anda bisa langsung mendownloadnya.</>
+        },
+        {
+            title: 'Download',
+            desc: <>Download file dalam format PNG (transparan) untuk digunakan di desain lain.</>
+        }
+    ]
+
     return (
         <>
             <Navbar />
@@ -221,6 +240,11 @@ export default function GuidePage() {
                                 <li>
                                     <a href="#redact">
                                         <Eraser size={16} /> Sensor Data
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#remove-background">
+                                        <Scissors size={16} /> Hapus Background
                                     </a>
                                 </li>
                                 <li>
@@ -402,6 +426,28 @@ export default function GuidePage() {
                                 </div>
                                 <div className={styles.cardFooter}>
                                     <a href="/compress" className={`${styles.actionBtn} ${styles.btnAlt}`}>Kompres File</a>
+                                </div>
+                            </div>
+
+                            {/* Remove Background Guide */}
+                            <div id="remove-background" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Scissors size={24} className={styles.iconBlue} />
+                                    <h2>Panduan Hapus Background</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {removeBgSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/remove-background" className={`${styles.actionBtn} ${styles.btnAlt}`}>Hapus Background Sekarang</a>
                                 </div>
                             </div>
                         </div>

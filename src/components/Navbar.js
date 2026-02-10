@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, FileStack, Grid } from 'lucide-react'
+import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, FileStack, Grid, Scissors } from 'lucide-react'
 import styles from './Navbar.module.css'
 import ThemeToggle from './ThemeToggle'
 
@@ -28,6 +28,7 @@ export default function Navbar() {
         { href: '/merge', label: 'Gabung Dokumen', icon: FileStack, desc: 'Satukan banyak file PDF dan gambar jadi satu.' },
         { href: '/nik-parser', label: 'Cek NIK', icon: User, desc: 'Cek informasi daerah & lahir dari NIK.' },
         { href: '/photo-generator', label: 'Photo Generator', icon: Camera, desc: 'Ubah ukuran, format photo, dan atur DPI foto.' },
+        { href: '/remove-background', label: 'Hapus Background', icon: Scissors, desc: 'Hapus background foto otomatis dengan AI.' },
     ]
 
     // Info/Footer Items in Dropdown

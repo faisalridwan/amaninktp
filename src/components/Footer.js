@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User } from 'lucide-react'
+import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User, Scissors } from 'lucide-react'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -63,6 +63,9 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link href="/photo-generator"><FileImage size={14} /> Pas Foto</Link>
+                            </li>
+                            <li>
+                                <Link href="/remove-background"><Scissors size={14} /> Hapus Background</Link>
                             </li>
                         </ul>
                     </div>
