@@ -410,6 +410,33 @@
     margin-bottom: 12px;
 }
 
+.btnUploadPremium {
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--primary), #4834d4);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2),
+        0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.btnUploadPremium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3),
+        0 6px 10px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #7d6cf5, #6c5ce7);
+}
+
 /* Logo Customization */
 .presetIconsGrid {
     display: grid;
@@ -483,6 +510,22 @@
     font-weight: 700;
     color: var(--text-secondary);
     margin-bottom: 12px;
+}
+
+.designSubBlock {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gradientControls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
 }
 
 .colorControlBlock {
@@ -581,6 +624,15 @@
     transform: translateX(-50%);
     border: 5px solid transparent;
     border-top-color: #1e293b;
+}
+
+/* Ensure pickers don't clip tooltips */
+.accordionContent {
+    overflow: visible !important;
+}
+
+.customCardBody {
+    overflow: visible !important;
 }
 
 .shapeActive {

@@ -51,6 +51,11 @@ export default function QRCodePage() {
     const [cornerDotColor, setCornerDotColor] = useState('#000000')
     const [cornerDotGradient, setCornerDotGradient] = useState({ enabled: false, type: 'linear', rotation: 0, color1: '#000000', color2: '#4a4a4a' })
 
+    // Advanced Styling
+    const [eyeBorderThickness, setEyeBorderThickness] = useState(1)
+    const [eyeSpacing, setEyeSpacing] = useState(0)
+    const [eyeBorderColor, setEyeBorderColor] = useState('#000000')
+
     const [margin, setMargin] = useState(10)
     const [size, setSize] = useState(500)
     const [logo, setLogo] = useState(null)
@@ -189,14 +194,28 @@ export default function QRCodePage() {
         const margin = options.margin;
 
         const drawEye = (x, y, rotation) => {
+            // Adjust for spacing (margin within the eye area)
+            const eyeSize = 7 * size_mod;
+            const innerSpacing = (eyeSpacing / 10) * size_mod;
+            const effectiveSize = eyeSize - (innerSpacing * 2);
+            const scaleFactor = effectiveSize / 7;
+
             if (isSvg) {
                 const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                group.setAttribute("transform", `translate(${margin + x * size_mod}, ${margin + y * size_mod}) rotate(${rotation}, ${3.5 * size_mod}, ${3.5 * size_mod}) scale(${size_mod})`);
+                // Center-based translate for spacing
+                const xPos = margin + x * size_mod + innerSpacing;
+                const yPos = margin + y * size_mod + innerSpacing;
+
+                group.setAttribute("transform", `translate(${xPos}, ${yPos}) rotate(${rotation}, ${3.5 * scaleFactor}, ${3.5 * scaleFactor}) scale(${scaleFactor})`);
 
                 if (EYE_SHAPE_PATHS[cornerType]) {
                     const frame = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     frame.setAttribute("d", EYE_SHAPE_PATHS[cornerType].frame);
                     frame.setAttribute("fill", cornerColor);
+                    if (eyeBorderThickness > 1) {
+                        frame.setAttribute("stroke", cornerColor);
+                        frame.setAttribute("stroke-width", (eyeBorderThickness - 1).toString());
+                    }
                     group.appendChild(frame);
                 }
 
@@ -214,13 +233,20 @@ export default function QRCodePage() {
                 ctx.save();
                 ctx.translate(margin + x * size_mod + 3.5 * size_mod, margin + y * size_mod + 3.5 * size_mod);
                 ctx.rotate((rotation * Math.PI) / 180);
-                ctx.scale(size_mod, size_mod);
+
+                // Adjust for scale
+                ctx.scale(scaleFactor, scaleFactor);
                 ctx.translate(-3.5, -3.5);
 
                 if (EYE_SHAPE_PATHS[cornerType]) {
                     ctx.fillStyle = cornerColor;
                     const p = new Path2D(EYE_SHAPE_PATHS[cornerType].frame);
                     ctx.fill(p);
+                    if (eyeBorderThickness > 1) {
+                        ctx.strokeStyle = cornerColor;
+                        ctx.lineWidth = eyeBorderThickness - 1;
+                        ctx.stroke(p);
+                    }
                 }
                 if (EYE_SHAPE_PATHS[cornerDotType]) {
                     ctx.fillStyle = cornerDotColor;
@@ -603,7 +629,7 @@ export default function QRCodePage() {
                                                             ))}
                                                         </div>
                                                         <div className={styles.inputGroup}>
-                                                            <button className={styles.btnUpload} onClick={() => document.getElementById('logo-upload').click()}>
+                                                            <button className={styles.btnUploadPremium} onClick={() => document.getElementById('logo-upload').click()}>
                                                                 <ImageIcon size={16} /> Upload Logo Sendiri
                                                             </button>
                                                             <input id="logo-upload" type="file" accept="image/*" onChange={handleLogoUpload} hidden />
@@ -646,7 +672,7 @@ export default function QRCodePage() {
                                                         </div>
 
                                                         <div className={styles.designBlock}>
-                                                            <p className={styles.blockTitle}>Warna & Gradient</p>
+                                                            <p className={styles.blockTitle}>Warna & Gradient (Body)</p>
                                                             <div className={styles.fieldsGrid}>
                                                                 <div className={styles.inputGroup}>
                                                                     <label>Utama</label>
@@ -668,9 +694,15 @@ export default function QRCodePage() {
                                                                 <label htmlFor="dots-grad">Gunakan Gradient pada Titik</label>
                                                             </div>
                                                             {dotsGradient.enabled && (
-                                                                <div className={styles.fieldsGrid}>
-                                                                    <input type="color" value={dotsGradient.color1} onChange={(e) => setDotsGradient({ ...dotsGradient, color1: e.target.value })} />
-                                                                    <input type="color" value={dotsGradient.color2} onChange={(e) => setDotsGradient({ ...dotsGradient, color2: e.target.value })} />
+                                                                <div className={styles.gradientControls}>
+                                                                    <div className={styles.fieldsGrid}>
+                                                                        <input type="color" value={dotsGradient.color1} onChange={(e) => setDotsGradient({ ...dotsGradient, color1: e.target.value })} />
+                                                                        <input type="color" value={dotsGradient.color2} onChange={(e) => setDotsGradient({ ...dotsGradient, color2: e.target.value })} />
+                                                                    </div>
+                                                                    <div className={styles.inputGroupSmall}>
+                                                                        <label>Rotasi: {dotsGradient.rotation}°</label>
+                                                                        <input type="range" min="0" max="360" value={dotsGradient.rotation} onChange={(e) => setDotsGradient({ ...dotsGradient, rotation: parseInt(e.target.value) })} />
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         </div>
@@ -699,6 +731,25 @@ export default function QRCodePage() {
                                                                     </button>
                                                                 ))}
                                                             </div>
+                                                            <div className={styles.designSubBlock}>
+                                                                <div className={styles.inputGroup}>
+                                                                    <label>Warna Bingkai</label>
+                                                                    <div className={styles.colorInputWrapper}>
+                                                                        <input type="color" value={cornerColor} onChange={(e) => setCornerColor(e.target.value)} />
+                                                                        <span className={styles.colorHex}>{cornerColor.toUpperCase()}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className={styles.checkboxGroupInline}>
+                                                                    <input type="checkbox" id="frame-grad" checked={cornerGradient.enabled} onChange={(e) => setCornerGradient({ ...cornerGradient, enabled: e.target.checked })} />
+                                                                    <label htmlFor="frame-grad">Gradient pada Bingkai</label>
+                                                                </div>
+                                                                {cornerGradient.enabled && (
+                                                                    <div className={styles.fieldsGrid}>
+                                                                        <input type="color" value={cornerGradient.color1} onChange={(e) => setCornerGradient({ ...cornerGradient, color1: e.target.value })} />
+                                                                        <input type="color" value={cornerGradient.color2} onChange={(e) => setCornerGradient({ ...cornerGradient, color2: e.target.value })} />
+                                                                    </div>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                         <div className={styles.designBlock}>
                                                             <p className={styles.blockTitle}>Titik Mata (Eye Ball)</p>
@@ -713,6 +764,38 @@ export default function QRCodePage() {
                                                                         <span className={styles.hoverLabel}>{t.name}</span>
                                                                     </button>
                                                                 ))}
+                                                            </div>
+                                                            <div className={styles.designSubBlock}>
+                                                                <div className={styles.inputGroup}>
+                                                                    <label>Warna Titik Mata</label>
+                                                                    <div className={styles.colorInputWrapper}>
+                                                                        <input type="color" value={cornerDotColor} onChange={(e) => setCornerDotColor(e.target.value)} />
+                                                                        <span className={styles.colorHex}>{cornerDotColor.toUpperCase()}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className={styles.checkboxGroupInline}>
+                                                                    <input type="checkbox" id="ball-grad" checked={cornerDotGradient.enabled} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, enabled: e.target.checked })} />
+                                                                    <label htmlFor="ball-grad">Gradient pada Titik Mata</label>
+                                                                </div>
+                                                                {cornerDotGradient.enabled && (
+                                                                    <div className={styles.fieldsGrid}>
+                                                                        <input type="color" value={cornerDotGradient.color1} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color1: e.target.value })} />
+                                                                        <input type="color" value={cornerDotGradient.color2} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color2: e.target.value })} />
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div className={styles.designBlock}>
+                                                            <p className={styles.blockTitle}>Detail Bingkai & Jarak</p>
+                                                            <div className={styles.fieldsGrid}>
+                                                                <div className={styles.inputGroupSmall}>
+                                                                    <label>Thickness: {eyeBorderThickness}</label>
+                                                                    <input type="range" min="1" max="10" step="1" value={eyeBorderThickness} onChange={(e) => setEyeBorderThickness(parseInt(e.target.value))} />
+                                                                </div>
+                                                                <div className={styles.inputGroupSmall}>
+                                                                    <label>Spacing: {eyeSpacing}</label>
+                                                                    <input type="range" min="0" max="10" step="1" value={eyeSpacing} onChange={(e) => setEyeSpacing(parseInt(e.target.value))} />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
