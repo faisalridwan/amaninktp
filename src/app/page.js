@@ -90,7 +90,7 @@ export default function Home() {
 
     // Get final watermark text - all from textarea
     const getFinalWatermarkText = useCallback(() => {
-        return watermarkText.trim() || 'WATERMARK \n by amanindata.qreatip.com'
+        return watermarkText || 'WATERMARK\namanindata.qreatip.com'
     }, [watermarkText])
 
     // Draw function that can target any canvas/image
@@ -545,7 +545,8 @@ export default function Home() {
                 ctx.drawImage(source, 0, 0)
 
                 // 2. Draw Watermark
-                if (watermarkType === 'single' && watermarkText) {
+                // Allow drawing even if watermarkText is empty (it will use default)
+                if (watermarkType === 'single') {
                     ctx.save()
 
                     // CRITICAL FIX: Scale context to match High-DPI canvas (e.g., PDF Scale 2 vs Logical 1)
@@ -1010,7 +1011,7 @@ export default function Home() {
                                                         />
 
 
-                                                        {imageLoaded && watermarkType === 'single' && watermarkText && (
+                                                        {imageLoaded && watermarkType === 'single' && (
                                                             <WatermarkControls
                                                                 position={textPosition}
                                                                 dimensions={textDimensions}
@@ -1038,7 +1039,7 @@ export default function Home() {
                                             style={{ display: 'block', width: '100%' }}
                                         />
 
-                                        {watermarkType === 'single' && watermarkText && canvasMetrics.width > 0 && (
+                                        {watermarkType === 'single' && canvasMetrics.width > 0 && (
                                             <WatermarkControls
                                                 position={textPosition}
                                                 dimensions={textDimensions}

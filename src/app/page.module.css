@@ -1144,7 +1144,7 @@
     position: relative;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     /* Better shadow for pages */
-    transition: width 0.3s ease;
+    /* transition: width 0.3s ease; REMOVED to prevent watermark drift */
     background: white;
     /* Ensure background behind transparent PNGs */
     border-radius: 8px;
