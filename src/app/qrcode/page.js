@@ -57,6 +57,46 @@ export default function QRCodePage() {
     const [logoSize, setLogoSize] = useState(0.4)
     const [logoMargin, setLogoMargin] = useState(0)
     const [removeLogoBackground, setRemoveLogoBackground] = useState(true)
+
+    // Advanced Shapes Constants
+    const EYE_SHAPE_PATHS = {
+        leaf: {
+            frame: "M 0 0 C 7 0 7 7 7 7 C 0 7 0 0 0 0 Z M 1 1 Q 6 1 6 6 Q 1 6 1 1 Z",
+            ball: "M 3.5 1.5 C 5 1.5 5.5 2 5.5 3.5 C 5.5 5 5 5.5 3.5 5.5 C 2 5.5 1.5 5 1.5 3.5 C 1.5 2 2 1.5 3.5 1.5 Z"
+        },
+        shield: {
+            frame: "M 0 0 H 7 V 5 L 3.5 7 L 0 5 V 0 Z M 1 1 V 4.5 L 3.5 6 L 6 4.5 V 1 H 1 Z",
+            ball: "M 2 2 H 5 V 4 L 3.5 5 L 2 4 V 2 Z"
+        },
+        star: {
+            frame: "M 3.5 0 L 4.5 2.5 H 7 L 5 4 L 6 7 L 3.5 5.5 L 1 7 L 2 4 L 0 2.5 H 2.5 Z M 3.5 1.5 L 2.8 3.2 H 1.2 L 2.4 4.2 L 2 6 L 3.5 4.8 L 5 6 L 4.6 4.2 L 5.8 3.2 H 4.2 Z",
+            ball: "M 3.5 2.5 L 4 3.5 H 5 L 4.2 4 L 4.5 5 L 3.5 4.3 L 2.5 5 L 2.8 4 L 2 3.5 H 3 Z"
+        },
+        heart: {
+            frame: "M 3.5 7 L 3.1 6.6 C 1.2 4.9 0 3.8 0 2.5 C 0 1.1 1.1 0 2.5 0 C 3.3 0 4.1 0.4 4.5 1 C 4.9 0.4 5.7 0 6.5 0 C 7.9 0 9 1.1 9 2.5 C 9 3.8 7.8 4.9 5.9 6.6 L 5.5 7 Z", // Simplified
+            ball: "M 3.5 5 L 3.3 4.8 C 2.5 4.1 2 3.6 2 3 C 2 2.5 2.5 2 3 2 C 3.3 2 3.6 2.2 3.8 2.5 C 4 2.2 4.3 2 4.6 2 C 5.1 2 5.6 2.5 5.6 3 C 5.6 3.6 5.1 4.1 4.3 4.8 L 4.1 5 Z"
+        },
+        diamond: {
+            frame: "M 3.5 0 L 7 3.5 L 3.5 7 L 0 3.5 Z M 3.5 1.4 L 5.6 3.5 L 3.5 5.6 L 1.4 3.5 Z",
+            ball: "M 3.5 2.5 L 4.5 3.5 L 3.5 4.5 L 2.5 3.5 Z"
+        },
+        hexagon: {
+            frame: "M 3.5 0 L 6.5 1.7 V 5.3 L 3.5 7 L 0.5 5.3 V 1.7 Z M 3.5 1 L 5.5 2.2 V 4.8 L 3.5 6 L 1.5 4.8 V 2.2 Z",
+            ball: "M 3.5 2 L 4.8 2.8 V 4.2 L 3.5 5 L 2.2 4.2 V 2.8 Z"
+        },
+        flower: {
+            frame: "M 3.5 0 C 5 0 6 1 6 2.5 Q 7 3.5 6 4.5 C 6 6 5 7 3.5 7 C 2 7 1 6 1 4.5 Q 0 3.5 1 2.5 C 1 1 2 0 3.5 0 Z M 3.5 1.5 C 2.5 1.5 2.1 2.1 2.1 3 Q 1.5 3.5 2.1 4 C 2.1 4.9 2.5 5.5 3.5 5.5 C 4.5 5.5 4.9 4.9 4.9 4 Q 5.5 3.5 4.9 3 C 4.9 2.1 4.5 1.5 3.5 1.5 Z",
+            ball: "M 3.5 2 L 4.5 2.5 L 5 3.5 L 4.5 4.5 L 3.5 5 L 2.5 4.5 L 2 3.5 L 2.5 2.5 Z"
+        },
+        liquid: {
+            frame: "M 0 0 C 4 0 7 2 7 5 C 7 7 5 7 3 7 C 0 7 0 4 0 0 Z M 1 1 C 1 3 1 6 2.5 6 C 4 6 6 6 6 4.5 C 6 2.5 4 1 1 1 Z",
+            ball: "M 2 2 C 4 2 5 3 5 4 C 5 5 4 5 3 5 C 2 5 2 4 2 2 Z"
+        },
+        japanese: {
+            frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z",
+            ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z"
+        }
+    }
     const [errorCorrection, setErrorCorrection] = useState('Q')
     const [qrVersion, setQrVersion] = useState(0)
     const [activeTab, setActiveTab] = useState('content') // content, style, technical
@@ -86,15 +126,13 @@ export default function QRCodePage() {
     useEffect(() => {
         if (qrCode) {
             qrCode.update(getOptions());
+            if (EYE_SHAPE_PATHS[cornerType] || EYE_SHAPE_PATHS[cornerDotType]) {
+                qrCode.applyExtension(applyCustomEyes);
+            } else {
+                qrCode.deleteExtension();
+            }
         }
-    }, [
-        url, text, wifi, vcard, email, phone, sms, location, facebook, youtube, event, crypto, contentType,
-        dotsColor, dotsGradient, dotsType,
-        bgColor, bgGradient,
-        cornerType, cornerColor, cornerGradient,
-        cornerDotType, cornerDotColor, cornerDotGradient,
-        margin, size, logo, logoSize, logoMargin, removeLogoBackground, errorCorrection, qrVersion
-    ]);
+    }, [contentType, url, text, wifi, vcard, email, phone, sms, location, facebook, youtube, event, crypto, dotsColor, bgColor, cornerColor, cornerDotColor, dotsType, cornerType, cornerDotType, size, margin, logo, logoSize, logoMargin, removeLogoBackground, dotsGradient, bgGradient, cornerGradient, cornerDotGradient, qrVersion, errorCorrection]);
 
     function getOptions() {
         return {
@@ -123,18 +161,18 @@ export default function QRCodePage() {
                 } : undefined
             },
             cornersSquareOptions: {
-                color: cornerColor,
-                type: cornerType,
-                gradient: cornerGradient.enabled ? {
+                color: EYE_SHAPE_PATHS[cornerType] ? 'transparent' : cornerColor,
+                type: EYE_SHAPE_PATHS[cornerType] ? undefined : cornerType,
+                gradient: (!EYE_SHAPE_PATHS[cornerType] && cornerGradient.enabled) ? {
                     type: cornerGradient.type,
                     rotation: (cornerGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: cornerGradient.color1 }, { offset: 1, color: cornerGradient.color2 }]
                 } : undefined
             },
             cornersDotOptions: {
-                color: cornerDotColor,
-                type: cornerDotType,
-                gradient: cornerDotGradient.enabled ? {
+                color: EYE_SHAPE_PATHS[cornerDotType] ? 'transparent' : cornerDotColor,
+                type: EYE_SHAPE_PATHS[cornerDotType] ? undefined : cornerDotType,
+                gradient: (!EYE_SHAPE_PATHS[cornerDotType] && cornerDotGradient.enabled) ? {
                     type: cornerDotGradient.type,
                     rotation: (cornerDotGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: cornerDotGradient.color1 }, { offset: 1, color: cornerDotGradient.color2 }]
@@ -143,6 +181,63 @@ export default function QRCodePage() {
             image: logo
         };
     }
+
+    const applyCustomEyes = (content, options) => {
+        const isSvg = content instanceof SVGElement;
+        const count = qrCode._qr.getModuleCount();
+        const size_mod = options.width / count;
+        const margin = options.margin;
+
+        const drawEye = (x, y, rotation) => {
+            if (isSvg) {
+                const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                group.setAttribute("transform", `translate(${margin + x * size_mod}, ${margin + y * size_mod}) rotate(${rotation}, ${3.5 * size_mod}, ${3.5 * size_mod}) scale(${size_mod})`);
+
+                if (EYE_SHAPE_PATHS[cornerType]) {
+                    const frame = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    frame.setAttribute("d", EYE_SHAPE_PATHS[cornerType].frame);
+                    frame.setAttribute("fill", cornerColor);
+                    group.appendChild(frame);
+                }
+
+                if (EYE_SHAPE_PATHS[cornerDotType]) {
+                    const ball = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    ball.setAttribute("d", EYE_SHAPE_PATHS[cornerDotType].ball);
+                    ball.setAttribute("fill", cornerDotColor);
+                    group.appendChild(ball);
+                }
+
+                content.appendChild(group);
+            } else {
+                // Canvas support
+                const ctx = content;
+                ctx.save();
+                ctx.translate(margin + x * size_mod + 3.5 * size_mod, margin + y * size_mod + 3.5 * size_mod);
+                ctx.rotate((rotation * Math.PI) / 180);
+                ctx.scale(size_mod, size_mod);
+                ctx.translate(-3.5, -3.5);
+
+                if (EYE_SHAPE_PATHS[cornerType]) {
+                    ctx.fillStyle = cornerColor;
+                    const p = new Path2D(EYE_SHAPE_PATHS[cornerType].frame);
+                    ctx.fill(p);
+                }
+                if (EYE_SHAPE_PATHS[cornerDotType]) {
+                    ctx.fillStyle = cornerDotColor;
+                    const p = new Path2D(EYE_SHAPE_PATHS[cornerDotType].ball);
+                    ctx.fill(p);
+                }
+                ctx.restore();
+            }
+        };
+
+        // Top Left
+        drawEye(0, 0, 0);
+        // Top Right
+        drawEye(count - 7, 0, 0);
+        // Bottom Left
+        drawEye(0, count - 7, 0);
+    };
 
     function getQRData() {
         switch (contentType) {
@@ -208,12 +303,32 @@ export default function QRCodePage() {
     const cornerTypes = [
         { id: 'square', name: 'Square', icon: <div className={styles.frameSquare}></div> },
         { id: 'dot', name: 'Dot', icon: <div className={styles.frameCircle}></div> },
-        { id: 'extra-rounded', name: 'Extra Rounded', icon: <div className={styles.frameRounded}></div> }
+        { id: 'extra-rounded', name: 'Extra Rounded', icon: <div className={styles.frameRounded}></div> },
+        { id: 'rounded', name: 'Rounded', icon: <div className={styles.frameCornerRounded}></div> },
+        { id: 'leaf', name: 'Leaf', icon: <div className={styles.frameLeaf}></div> },
+        { id: 'shield', name: 'Shield', icon: <div className={styles.frameShield}></div> },
+        { id: 'star', name: 'Star', icon: <div className={styles.frameStar}></div> },
+        { id: 'heart', name: 'Heart', icon: <div className={styles.frameHeart}></div> },
+        { id: 'diamond', name: 'Diamond', icon: <div className={styles.frameDiamond}></div> },
+        { id: 'hexagon', name: 'Hexagon', icon: <div className={styles.frameHexagon}></div> },
+        { id: 'flower', name: 'Flower', icon: <div className={styles.frameFlower}></div> },
+        { id: 'liquid', name: 'Liquid', icon: <div className={styles.frameLiquid}></div> },
+        { id: 'japanese', name: 'Japanese', icon: <div className={styles.frameJapanese}></div> }
     ];
 
     const cornerDotTypes = [
         { id: 'square', name: 'Square', icon: <div className={styles.ballSquare}></div> },
-        { id: 'dot', name: 'Dot', icon: <div className={styles.ballCircle}></div> }
+        { id: 'dot', name: 'Dot', icon: <div className={styles.ballCircle}></div> },
+        { id: 'rounded', name: 'Rounded', icon: <div className={styles.ballRounded}></div> },
+        { id: 'leaf', name: 'Leaf', icon: <div className={styles.ballLeaf}></div> },
+        { id: 'shield', name: 'Shield', icon: <div className={styles.ballShield}></div> },
+        { id: 'star', name: 'Star', icon: <div className={styles.ballStar}></div> },
+        { id: 'heart', name: 'Heart', icon: <div className={styles.ballHeart}></div> },
+        { id: 'diamond', name: 'Diamond', icon: <div className={styles.ballDiamond}></div> },
+        { id: 'hexagon', name: 'Hexagon', icon: <div className={styles.ballHexagon}></div> },
+        { id: 'flower', name: 'Flower', icon: <div className={styles.ballFlower}></div> },
+        { id: 'liquid', name: 'Liquid', icon: <div className={styles.ballLiquid}></div> },
+        { id: 'japanese', name: 'Japanese', icon: <div className={styles.ballJapanese}></div> }
     ];
 
     const toggleSection = (section) => {
