@@ -2,7 +2,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileImage, Shield, CreditCard, Users, FileText, Building, File, Upload, Crop, Type, Palette, Download, Move, RotateCcw, PenTool, Eraser, Lock, Server, Zap, Trash2, Heart, Code, Camera, Scissors, FileStack, EyeOff, User, Minimize2, CheckCircle, Smartphone, Globe } from 'lucide-react'
+import { FileImage, Shield, CreditCard, Users, FileText, Building, File, Upload, Crop, Type, Palette, Download, Move, RotateCcw, PenTool, Eraser, Lock, Server, Zap, Trash2, Heart, Code, Camera, Scissors, FileStack, EyeOff, User, Minimize2, CheckCircle, Smartphone, Globe, QrCode, RotateCw, ScissorsLineDashed } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -11,7 +11,7 @@ export default function AboutPage() {
     const stats = [
         { value: '100%', label: 'Gratis Selamanya' },
         { value: '0', label: 'Data Disimpan' },
-        { value: '8+', label: 'Tools Produktif' },
+        { value: '12+', label: 'Tools Produktif' },
     ]
 
     const tools = [
@@ -62,6 +62,30 @@ export default function AboutPage() {
             title: 'Cek NIK',
             desc: 'Cek informasi daerah, tanggal lahir, dan jenis kelamin dari nomor NIK KTP.',
             href: '/nik-parser'
+        },
+        {
+            icon: QrCode,
+            title: 'QR Generator',
+            desc: 'Buat kode QR kustom untuk URL, teks, atau WiFi secara instan dan aman.',
+            href: '/qrcode'
+        },
+        {
+            icon: ScissorsLineDashed,
+            title: 'Split PDF',
+            desc: 'Pisahkan halaman PDF menjadi dokumen baru secara mandiri di browser.',
+            href: '/split'
+        },
+        {
+            icon: Move,
+            title: 'Rearrange PDF',
+            desc: 'Ubah urutan halaman PDF dengan mudah melalui antarmuka visual.',
+            href: '/rearrange'
+        },
+        {
+            icon: RotateCw,
+            title: 'Rotate PDF',
+            desc: 'Putar halaman PDF yang miring atau terbalik secara permanen & aman.',
+            href: '/rotate'
         }
     ]
 
@@ -123,7 +147,7 @@ export default function AboutPage() {
                 {/* All Tools Section */}
                 <section className={styles.featureSection}>
                     <h2 className={styles.sectionTitle}>
-                        <Zap size={24} /> 8 Tools dalam 1 Aplikasi
+                        <Zap size={24} /> 12 Tools dalam 1 Aplikasi
                     </h2>
                     <p className={styles.sectionDesc}>
                         Tidak perlu install banyak aplikasi. Semua kebutuhan dokumen digital Anda ada di sini.
@@ -172,7 +196,7 @@ export default function AboutPage() {
                         <p>
                             Amanin Data dibangun menggunakan <strong>Next.js 16</strong> dan teknologi web modern lainnya.
                             Kami memanfaatkan library canggih seperti <code>pdf-lib</code>, <code>jspdf</code>, <code>sharp</code>,
-                            dan <code>@imgly/background-removal</code> untuk menghadirkan fitur desktop-class langsung di browser.
+                            dan <code>background-removal</code> untuk menghadirkan fitur desktop-class langsung di browser.
                         </p>
                         <div className={styles.techTags}>
                             <span>React</span>
@@ -181,7 +205,7 @@ export default function AboutPage() {
                             <span>PWA Ready</span>
                         </div>
                         <br />
-                        <Link href="/libraries" className={styles.textLink}>Lihat Daftar Pustaka →</Link>
+                        <Link href="/libraries" className={styles.textLink}>Lihat Perpustakaan →</Link>
                     </div>
                 </section>
             </main>

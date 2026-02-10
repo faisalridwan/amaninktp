@@ -1,0 +1,320 @@
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 1rem;
+}
+
+.heroTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.heroTitle span {
+    color: var(--primary-dark);
+}
+
+.heroSubtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.trustBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #DCFCE7;
+    color: #166534;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+:global([data-theme="dark"]) .trustBadge {
+    background: #064E3B;
+    color: #D1FAE5;
+}
+
+/* Upload Area */
+.uploadArea {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 80px 40px;
+    background: var(--bg-secondary);
+    border: 3px dashed rgba(168, 197, 240, 0.4);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploadArea:hover {
+    border-color: var(--primary-dark);
+    background: rgba(168, 197, 240, 0.1);
+    transform: scale(1.01);
+}
+
+.dragActive {
+    border-color: var(--primary-dark);
+    background: rgba(168, 197, 240, 0.2);
+}
+
+.iconCircle {
+    width: 90px;
+    height: 90px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    box-shadow: 6px 6px 15px rgba(174, 186, 202, 0.4), -6px -6px 15px rgba(255, 255, 255, 0.9);
+    color: var(--primary-dark);
+}
+
+:global([data-theme="dark"]) .iconCircle {
+    background: linear-gradient(145deg, #1E293B, #0F172A);
+    color: #818CF8;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), -6px -6px 15px rgba(255, 255, 255, 0.05);
+}
+
+.uploadContent h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.uploadContent p {
+    color: var(--text-muted);
+}
+
+.supportedTypes {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.supportedTypes span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    color: var(--text-muted);
+}
+
+.safeTag {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 6px 14px;
+    background: #DCFCE7;
+    color: #166534;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Workspace */
+.workspace {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+}
+
+.workspaceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px 30px;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.fileMeta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.headerActions {
+    display: flex;
+    gap: 15px;
+}
+
+.btnSecondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+:global([data-theme="dark"]) .btnSecondary {
+    background: var(--bg-primary);
+}
+
+.btnPrimary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 25px;
+    background: var(--primary-dark);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+/* Page Grid */
+.pageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+.pageCard {
+    background: var(--bg-secondary);
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.pageCard:hover {
+    border-color: var(--primary-dark);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.pageNumber {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 28px;
+    height: 28px;
+    background: var(--primary-dark);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.thumbnailWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Fixed box for rotating thumbnail */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rotateBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rotateBtn:hover {
+    background: var(--primary-dark);
+    color: white;
+    border-color: var(--primary-dark);
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+    gap: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--primary-dark);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .workspaceHeader {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .headerActions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .btnPrimary {
+        grid-column: span 2;
+    }
+}

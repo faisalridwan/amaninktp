@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User, Scissors } from 'lucide-react'
+import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User, Scissors, QrCode, Move, RotateCw, ScissorsLineDashed } from 'lucide-react'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -66,6 +66,18 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link href="/remove-background"><Scissors size={14} /> Hapus Background</Link>
+                            </li>
+                            <li>
+                                <Link href="/qrcode"><QrCode size={14} /> QR Code Generator</Link>
+                            </li>
+                            <li>
+                                <Link href="/split"><ScissorsLineDashed size={14} /> Split PDF</Link>
+                            </li>
+                            <li>
+                                <Link href="/rearrange"><Move size={14} /> Rearrange PDF</Link>
+                            </li>
+                            <li>
+                                <Link href="/rotate"><RotateCw size={14} /> Rotate PDF Pages</Link>
                             </li>
                         </ul>
                     </div>

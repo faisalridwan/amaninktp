@@ -1,12 +1,27 @@
 'use client'
 
-import { History, GitBranch, Sparkles, Shield, Monitor, Smartphone, Globe, Heart, Minimize2, EyeOff } from 'lucide-react'
+import { History, GitBranch, Sparkles, Shield, Monitor, Smartphone, Globe, Heart, Minimize2, EyeOff, Scissors, Layout, QrCode, ScissorsLineDashed, Move, RotateCw } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 export default function ChangelogPage() {
     const changelog = [
+        {
+            version: '1.2.0',
+            date: '10 Februari 2026',
+            title: 'AI Background Removal & Advanced Photo Gen',
+            description: 'Update besar untuk pengolahan gambar dan dokumen. Menghadirkan AI Background Remover dan fitur-fitur manipulasi PDF baru.',
+            changes: [
+                { icon: Scissors, text: 'Background Remover: Hapus latar belakang foto otomatis menggunakan AI langsung di browser.' },
+                { icon: Layout, text: 'Advanced Photo Gen: Fitur resize cerdas dengan DPI kontrol dan preset ukuran pas foto.' },
+                { icon: QrCode, text: 'QR Code Generator: Buat kode QR kustom untuk URL, teks, atau WiFi (Beta).' },
+                { icon: ScissorsLineDashed, text: 'Split PDF: Pisah halaman PDF menjadi dokumen terpisah dengan mudah.' },
+                { icon: Move, text: 'Rearrange PDF: Atur ulang urutan halaman PDF secara visual.' },
+                { icon: RotateCw, text: 'Rotate PDF: Putar halaman PDF yang miring atau terbalik permanen.' },
+                { icon: Globe, text: 'Tech Stack Upgrade: Migrasi ke Next.js 16.1.6 untuk performa maksimal.' }
+            ]
+        },
         {
             version: '1.1.0',
             date: '9 Februari 2026',

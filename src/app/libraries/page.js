@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Library, Package, ExternalLink, Code2, Globe, FileText, Image } from 'lucide-react'
+import { Library, Package, ExternalLink, Code2, Globe, FileText, Scissors, Image } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -70,7 +70,7 @@ export default function LibrariesPage() {
             desc: 'Penghapus latar belakang otomatis berbasis AI yang berjalan sepenuhnya di browser.',
             link: 'https://img.ly/showcases/cesdk/background-removal',
             github: 'https://github.com/imgly/background-removal-js',
-            icon: Image
+            icon: Scissors
         },
         {
             name: 'qrcode.react',

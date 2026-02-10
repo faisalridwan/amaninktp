@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, FileStack, Grid, Scissors } from 'lucide-react'
+import { FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2, EyeOff, User, Camera, ChevronDown, FileStack, Grid, Scissors, QrCode, Move, RotateCw, ScissorsLineDashed } from 'lucide-react'
 import styles from './Navbar.module.css'
 import ThemeToggle from './ThemeToggle'
 
@@ -29,6 +29,10 @@ export default function Navbar() {
         { href: '/nik-parser', label: 'Cek NIK', icon: User, desc: 'Cek informasi daerah & lahir dari NIK.' },
         { href: '/photo-generator', label: 'Photo Generator', icon: Camera, desc: 'Ubah ukuran, format photo, dan atur DPI foto.' },
         { href: '/remove-background', label: 'Hapus Background', icon: Scissors, desc: 'Hapus background foto otomatis dengan AI.' },
+        { href: '/qrcode', label: 'QR Generator', icon: QrCode, desc: 'Buat kode QR kustom instan & aman.' },
+        { href: '/split', label: 'Split PDF', icon: ScissorsLineDashed, desc: 'Pisahkan halaman PDF jadi dokumen baru.' },
+        { href: '/rearrange', label: 'Rearrange PDF', icon: Move, desc: 'Atur ulang urutan halaman PDF secara visual.' },
+        { href: '/rotate', label: 'Rotate PDF', icon: RotateCw, desc: 'Putar halaman PDF yang miring permanen.' },
     ]
 
     // Info/Footer Items in Dropdown
