@@ -116,7 +116,46 @@ export default function QRCodePage() {
         japanese: {
             frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z",
             ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z"
-        }
+        },
+        // Mapped Aliases for QRCode Monkey Sync
+        frame0: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Square
+        frame1: { frame: "M 2 0 H 5 Q 7 0 7 2 V 5 Q 7 7 5 7 H 2 Q 0 7 0 5 V 2 Q 0 0 2 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Rounded
+        frame2: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Dot
+        frame3: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Extra Rounded
+        frame4: { frame: "M 0 0 C 7 0 7 7 7 7 C 0 7 0 0 0 0 Z M 1 1 Q 6 1 6 6 Q 1 6 1 1 Z", ball: "M 3.5 1.5 C 5 1.5 5.5 2 5.5 3.5 C 5.5 5 5 5.5 3.5 5.5 C 2 5.5 1.5 5 1.5 3.5 C 1.5 2 2 1.5 3.5 1.5 Z" }, // Leaf
+        frame5: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Edge Cut (Placeholder: Square)
+        frame6: { frame: "M 0 0 H 7 V 5 L 3.5 7 L 0 5 V 0 Z M 1 1 V 4.5 L 3.5 6 L 6 4.5 V 1 H 1 Z", ball: "M 2 2 H 5 V 4 L 3.5 5 L 2 4 V 2 Z" }, // Shield
+        frame7: { frame: "M 3.5 0 L 4.5 2.5 H 7 L 5 4 L 6 7 L 3.5 5.5 L 1 7 L 2 4 L 0 2.5 H 2.5 Z M 3.5 1.5 L 2.8 3.2 H 1.2 L 2.4 4.2 L 2 6 L 3.5 4.8 L 5 6 L 4.6 4.2 L 5.8 3.2 H 4.2 Z", ball: "M 3.5 2.5 L 4 3.5 H 5 L 4.2 4 L 4.5 5 L 3.5 4.3 L 2.5 5 L 2.8 4 L 2 3.5 H 3 Z" }, // Star
+        frame8: { frame: "M 3.5 0 L 7 3.5 L 3.5 7 L 0 3.5 Z M 3.5 1.4 L 5.6 3.5 L 3.5 5.6 L 1.4 3.5 Z", ball: "M 3.5 2.5 L 4.5 3.5 L 3.5 4.5 L 2.5 3.5 Z" }, // Diamond
+        frame9: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Rotated (Placeholder: Square)
+        frame10: { frame: "M 2 0 H 5 Q 7 0 7 2 V 5 Q 7 7 5 7 H 2 Q 0 7 0 5 V 2 Q 0 0 2 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Hook (Placeholder: Rounded)
+        frame11: { frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z", ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z" }, // Japanese
+        frame12: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Bubble (Placeholder: Extra Rounded)
+        frame13: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Square Dot (Placeholder: Square)
+        frame14: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Small Dot (Placeholder: Dot)
+        frame15: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Empty (Placeholder: Square)
+        frame16: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Bold (Placeholder: Square)
+
+        ball0: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Square
+        ball1: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Dot
+        ball2: { frame: "M 2 0 H 5 Q 7 0 7 2 V 5 Q 7 7 5 7 H 2 Q 0 7 0 5 V 2 Q 0 0 2 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Rounded
+        ball3: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Extra Rounded
+        ball4: { frame: "M 0 0 C 7 0 7 7 7 7 C 0 7 0 0 0 0 Z M 1 1 Q 6 1 6 6 Q 1 6 1 1 Z", ball: "M 3.5 1.5 C 5 1.5 5.5 2 5.5 3.5 C 5.5 5 5 5.5 3.5 5.5 C 2 5.5 1.5 5 1.5 3.5 C 1.5 2 2 1.5 3.5 1.5 Z" }, // Leaf
+        ball5: { frame: "M 0 0 H 7 V 5 L 3.5 7 L 0 5 V 0 Z M 1 1 V 4.5 L 3.5 6 L 6 4.5 V 1 H 1 Z", ball: "M 2 2 H 5 V 4 L 3.5 5 L 2 4 V 2 Z" }, // Shield
+        ball6: { frame: "M 3.5 0 L 4.5 2.5 H 7 L 5 4 L 6 7 L 3.5 5.5 L 1 7 L 2 4 L 0 2.5 H 2.5 Z M 3.5 1.5 L 2.8 3.2 H 1.2 L 2.4 4.2 L 2 6 L 3.5 4.8 L 5 6 L 4.6 4.2 L 5.8 3.2 H 4.2 Z", ball: "M 3.5 2.5 L 4 3.5 H 5 L 4.2 4 L 4.5 5 L 3.5 4.3 L 2.5 5 L 2.8 4 L 2 3.5 H 3 Z" }, // Star
+        ball7: { frame: "M 3.5 0 L 7 3.5 L 3.5 7 L 0 3.5 Z M 3.5 1.4 L 5.6 3.5 L 3.5 5.6 L 1.4 3.5 Z", ball: "M 3.5 2.5 L 4.5 3.5 L 3.5 4.5 L 2.5 3.5 Z" }, // Diamond
+        ball8: { frame: "M 3.5 0 L 6.5 1.7 V 5.3 L 3.5 7 L 0.5 5.3 V 1.7 Z M 3.5 1 L 5.5 2.2 V 4.8 L 3.5 6 L 1.5 4.8 V 2.2 Z", ball: "M 3.5 2 L 4.8 2.8 V 4.2 L 3.5 5 L 2.2 4.2 V 2.8 Z" }, // Hexagon
+        ball9: { frame: "M 3.5 0 C 5 0 6 1 6 2.5 Q 7 3.5 6 4.5 C 6 6 5 7 3.5 7 C 2 7 1 6 1 4.5 Q 0 3.5 1 2.5 C 1 1 2 0 3.5 0 Z M 3.5 1.5 C 2.5 1.5 2.1 2.1 2.1 3 Q 1.5 3.5 2.1 4 C 2.1 4.9 2.5 5.5 3.5 5.5 C 4.5 5.5 4.9 4.9 4.9 4 Q 5.5 3.5 4.9 3 C 4.9 2.1 4.5 1.5 3.5 1.5 Z", ball: "M 3.5 2 L 4.5 2.5 L 5 3.5 L 4.5 4.5 L 3.5 5 L 2.5 4.5 L 2 3.5 L 2.5 2.5 Z" }, // Flower
+        ball10: { frame: "M 0 0 C 4 0 7 2 7 5 C 7 7 5 7 3 7 C 0 7 0 4 0 0 Z M 1 1 C 1 3 1 6 2.5 6 C 4 6 6 6 6 4.5 C 6 2.5 4 1 1 1 Z", ball: "M 2 2 C 4 2 5 3 5 4 C 5 5 4 5 3 5 C 2 5 2 4 2 2 Z" }, // Liquid
+        ball11: { frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z", ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z" }, // Japanese
+        ball12: { frame: "M 3.5 7 L 3.1 6.6 C 1.2 4.9 0 3.8 0 2.5 C 0 1.1 1.1 0 2.5 0 C 3.3 0 4.1 0.4 4.5 1 C 4.9 0.4 5.7 0 6.5 0 C 7.9 0 9 1.1 9 2.5 C 9 3.8 7.8 4.9 5.9 6.6 L 5.5 7 Z", ball: "M 3.5 5 L 3.3 4.8 C 2.5 4.1 2 3.6 2 3 C 2 2.5 2.5 2 3 2 C 3.3 2 3.6 2.2 3.8 2.5 C 4 2.2 4.3 2 4.6 2 C 5.1 2 5.6 2.5 5.6 3 C 5.6 3.6 5.1 4.1 4.3 4.8 L 4.1 5 Z" }, // Heart
+        ball13: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Pointed (Placeholder: Square)
+        ball14: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Thin (Placeholder: Square)
+        ball15: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Wide (Placeholder: Square)
+        ball16: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Small (Placeholder: Square)
+        ball17: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Ring (Placeholder: Square)
+        ball18: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Inverted (Placeholder: Square)
+        ball19: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Split (Placeholder: Square)
     }
     const [errorCorrection, setErrorCorrection] = useState('Q')
     const [qrVersion, setQrVersion] = useState(0)
@@ -384,43 +423,71 @@ export default function QRCodePage() {
     }
 
     const dotsTypes = [
-        { id: 'square', name: 'Square', icon: <div className={styles.sqSquare}></div> },
-        { id: 'dots', name: 'Dots', icon: <div className={styles.sqDots}></div> },
-        { id: 'rounded', name: 'Rounded', icon: <div className={styles.sqRounded}></div> },
-        { id: 'extra-rounded', name: 'Extra Rounded', icon: <div className={styles.sqExtraRounded}></div> },
-        { id: 'classy', name: 'Classy', icon: <div className={styles.sqClassy}></div> },
-        { id: 'classy-rounded', name: 'Classy Rounded', icon: <div className={styles.sqClassyRounded}></div> }
+        { id: 'square', name: 'Square', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteSquare}`}></div> },
+        { id: 'mosaic', name: 'Mosaic', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteMosaic}`}></div> },
+        { id: 'dot', name: 'Dot', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteDot}`}></div> },
+        { id: 'circle', name: 'Circle', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircle}`}></div> },
+        { id: 'circle-zebra', name: 'Circle Zebra', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircleZebra}`}></div> },
+        { id: 'circle-zebra-vertical', name: 'Zebra Vertical', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircleZebraVertical}`}></div> },
+        { id: 'circular', name: 'Circular', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircular}`}></div> },
+        { id: 'edge-cut', name: 'Edge Cut', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteEdgeCut}`}></div> },
+        { id: 'edge-cut-smooth', name: 'Edge Cut Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteEdgeCutSmooth}`}></div> },
+        { id: 'japanese', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteJapnese}`}></div> },
+        { id: 'leaf', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteLeaf}`}></div> },
+        { id: 'pointed', name: 'Pointed', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointed}`}></div> },
+        { id: 'pointed-edge-cut', name: 'Pointed Edge', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedEdgeCut}`}></div> },
+        { id: 'pointed-in', name: 'Pointed In', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedIn}`}></div> },
+        { id: 'pointed-in-smooth', name: 'Pointed Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedInSmooth}`}></div> },
+        { id: 'pointed-smooth', name: 'Pointed Smooth 2', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedSmooth}`}></div> },
+        { id: 'round', name: 'Round', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRound}`}></div> },
+        { id: 'rounded-in', name: 'Rounded In', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedIn}`}></div> },
+        { id: 'rounded-in-smooth', name: 'Rounded Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedInSmooth}`}></div> },
+        { id: 'rounded-pointed', name: 'Rounded Pointed', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedPointed}`}></div> },
+        { id: 'star', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteStar}`}></div> },
+        { id: 'diamond', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteDiamond}`}></div> }
     ];
 
     const cornerTypes = [
-        { id: 'square', name: 'Square', icon: <div className={styles.frameSquare}></div> },
-        { id: 'dot', name: 'Dot', icon: <div className={styles.frameCircle}></div> },
-        { id: 'extra-rounded', name: 'Extra Rounded', icon: <div className={styles.frameRounded}></div> },
-        { id: 'rounded', name: 'Rounded', icon: <div className={styles.frameCornerRounded}></div> },
-        { id: 'leaf', name: 'Leaf', icon: <div className={styles.frameLeaf}></div> },
-        { id: 'shield', name: 'Shield', icon: <div className={styles.frameShield}></div> },
-        { id: 'star', name: 'Star', icon: <div className={styles.frameStar}></div> },
-        { id: 'heart', name: 'Heart', icon: <div className={styles.frameHeart}></div> },
-        { id: 'diamond', name: 'Diamond', icon: <div className={styles.frameDiamond}></div> },
-        { id: 'hexagon', name: 'Hexagon', icon: <div className={styles.frameHexagon}></div> },
-        { id: 'flower', name: 'Flower', icon: <div className={styles.frameFlower}></div> },
-        { id: 'liquid', name: 'Liquid', icon: <div className={styles.frameLiquid}></div> },
-        { id: 'japanese', name: 'Japanese', icon: <div className={styles.frameJapanese}></div> }
+        { id: 'frame0', name: 'Simple', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame0}`}></div> },
+        { id: 'frame1', name: 'Rounded', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame1}`}></div> },
+        { id: 'frame2', name: 'Circle', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame2}`}></div> },
+        { id: 'frame3', name: 'Rounded In', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame3}`}></div> },
+        { id: 'frame4', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame4}`}></div> },
+        { id: 'frame5', name: 'Edge Cut', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame5}`}></div> },
+        { id: 'frame6', name: 'Shield', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame6}`}></div> },
+        { id: 'frame7', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame7}`}></div> },
+        { id: 'frame8', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame8}`}></div> },
+        { id: 'frame9', name: 'Rotated', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame9}`}></div> },
+        { id: 'frame10', name: 'Hook', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame10}`}></div> },
+        { id: 'frame11', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame11}`}></div> },
+        { id: 'frame12', name: 'Bubble', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame12}`}></div> },
+        { id: 'frame13', name: 'Square Dot', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame13}`}></div> },
+        { id: 'frame14', name: 'Small Dot', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame14}`}></div> },
+        { id: 'frame15', name: 'Empty', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame15}`}></div> },
+        { id: 'frame16', name: 'Bold', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame16}`}></div> }
     ];
 
     const cornerDotTypes = [
-        { id: 'square', name: 'Square', icon: <div className={styles.ballSquare}></div> },
-        { id: 'dot', name: 'Dot', icon: <div className={styles.ballCircle}></div> },
-        { id: 'rounded', name: 'Rounded', icon: <div className={styles.ballRounded}></div> },
-        { id: 'leaf', name: 'Leaf', icon: <div className={styles.ballLeaf}></div> },
-        { id: 'shield', name: 'Shield', icon: <div className={styles.ballShield}></div> },
-        { id: 'star', name: 'Star', icon: <div className={styles.ballStar}></div> },
-        { id: 'heart', name: 'Heart', icon: <div className={styles.ballHeart}></div> },
-        { id: 'diamond', name: 'Diamond', icon: <div className={styles.ballDiamond}></div> },
-        { id: 'hexagon', name: 'Hexagon', icon: <div className={styles.ballHexagon}></div> },
-        { id: 'flower', name: 'Flower', icon: <div className={styles.ballFlower}></div> },
-        { id: 'liquid', name: 'Liquid', icon: <div className={styles.ballLiquid}></div> },
-        { id: 'japanese', name: 'Japanese', icon: <div className={styles.ballJapanese}></div> }
+        { id: 'ball0', name: 'Square', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall0}`}></div> },
+        { id: 'ball1', name: 'Dot', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall1}`}></div> },
+        { id: 'ball2', name: 'Rounded', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall2}`}></div> },
+        { id: 'ball3', name: 'Extra Rounded', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall3}`}></div> },
+        { id: 'ball4', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall4}`}></div> },
+        { id: 'ball5', name: 'Shield', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall5}`}></div> },
+        { id: 'ball6', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall6}`}></div> },
+        { id: 'ball7', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall7}`}></div> },
+        { id: 'ball8', name: 'Hexagon', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall8}`}></div> },
+        { id: 'ball9', name: 'Flower', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall9}`}></div> },
+        { id: 'ball10', name: 'Liquid', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall10}`}></div> },
+        { id: 'ball11', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall11}`}></div> },
+        { id: 'ball12', name: 'Heart', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall12}`}></div> },
+        { id: 'ball13', name: 'Pointed', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall13}`}></div> },
+        { id: 'ball14', name: 'Thin', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall14}`}></div> },
+        { id: 'ball15', name: 'Wide', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall15}`}></div> },
+        { id: 'ball16', name: 'Small', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall16}`}></div> },
+        { id: 'ball17', name: 'Ring', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall17}`}></div> },
+        { id: 'ball18', name: 'Inverted', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall18}`}></div> },
+        { id: 'ball19', name: 'Split', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall19}`}></div> }
     ];
 
     const toggleSection = (section) => {
