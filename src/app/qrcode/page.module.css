@@ -577,8 +577,8 @@
 
 .shapePickerGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
     margin-bottom: 16px;
 }
 
@@ -594,8 +594,8 @@
     transition: all 0.2s;
     position: relative;
     padding: 0;
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 60px;
+    min-height: 60px;
 }
 
 :global([data-theme="dark"]) .shapeBtn {
@@ -667,7 +667,7 @@
 .spriteBody {
     width: 90px;
     height: 80px;
-    transform: scale(0.5);
+    transform: scale(0.55);
     /* Scale down for switcher */
     transform-origin: center;
 }
@@ -764,7 +764,7 @@
 .spriteFrame {
     width: 50px;
     height: 50px;
-    transform: scale(0.8);
+    transform: scale(0.9);
     /* Scale down slightly for switcher */
     transform-origin: center;
 }
@@ -841,7 +841,7 @@
 .spriteBall {
     width: 50px;
     height: 50px;
-    transform: scale(0.8);
+    transform: scale(0.9);
     /* Scale down slightly for switcher */
     transform-origin: center;
 }
