@@ -1255,7 +1255,8 @@ export default function QRCodePage() {
                         {/* Right: Preview (Sticky) */}
                         <div className={styles.previewSection}>
                             <div className={`neu-card no-hover ${styles.qrCard}`}>
-                                <div className={styles.qrWrapper} ref={qrRef}>
+                                <div className={styles.qrWrapper}>
+                                    <div ref={qrRef} style={{ width: '100%', height: '100%', display: qrCode ? 'block' : 'none' }}></div>
                                     {!qrCode && <div className={styles.qrPlaceholder}><RefreshCcw className="animate-spin" /></div>}
                                 </div>
                                 <div className={styles.previewActions}>
