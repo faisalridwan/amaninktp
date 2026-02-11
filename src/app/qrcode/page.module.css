@@ -91,6 +91,15 @@
     height: auto !important;
 }
 
+.qrPlaceholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-muted);
+}
+
 .previewActions {
     width: 100%;
     display: flex;

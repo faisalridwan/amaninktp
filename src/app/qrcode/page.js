@@ -57,7 +57,7 @@ export default function QRCodePage() {
     const [eyeBorderColor, setEyeBorderColor] = useState('#000000')
 
     const [margin, setMargin] = useState(10)
-    const [size, setSize] = useState(500)
+    const [size, setSize] = useState(400)
     const [logo, setLogo] = useState(null)
     const [logoSize, setLogoSize] = useState(0.4)
     const [logoMargin, setLogoMargin] = useState(0)
@@ -230,6 +230,10 @@ export default function QRCodePage() {
     const [frameThickness, setFrameThickness] = useState(10)
     const [frameMargin, setFrameMargin] = useState(0)
     const [frameRadius, setFrameRadius] = useState(0)
+    const [frameText, setFrameText] = useState('')
+    const [frameTextPosition, setFrameTextPosition] = useState('bottom') // top, bottom
+    const [frameTextSize, setFrameTextSize] = useState(20)
+    const [frameTextColor, setFrameTextColor] = useState('#000000')
 
     // UI States
     const [sections, setSections] = useState({
@@ -245,10 +249,11 @@ export default function QRCodePage() {
 
     useEffect(() => {
         import('qr-code-styling').then((module) => {
-            QRCodeStyling = module.default;
+            const QRCodeStyling = module.default;
             const newQrCode = new QRCodeStyling(getOptions());
             setQrCode(newQrCode);
             if (qrRef.current) {
+                qrRef.current.innerHTML = '';
                 newQrCode.append(qrRef.current);
             }
         });
@@ -263,7 +268,7 @@ export default function QRCodePage() {
                 qrCode.deleteExtension();
             }
         }
-    }, [contentType, url, text, wifi, vcard, email, phone, sms, location, facebook, youtube, event, crypto, dotsColor, bgColor, cornerColor, cornerDotColor, dotsType, cornerType, cornerDotType, size, margin, logo, logoSize, logoMargin, removeLogoBackground, dotsGradient, bgGradient, cornerGradient, cornerDotGradient, qrVersion, errorCorrection]);
+    }, [contentType, url, text, wifi, vcard, email, phone, sms, location, facebook, youtube, event, crypto, dotsColor, bgColor, cornerColor, cornerDotColor, dotsType, cornerType, cornerDotType, size, margin, logo, logoSize, logoMargin, removeLogoBackground, dotsGradient, bgGradient, cornerGradient, cornerDotGradient, qrVersion, errorCorrection, frameEnabled, frameStyle, frameColor, frameThickness, frameMargin, frameRadius, frameText, frameTextPosition, frameTextSize, frameTextColor]);
 
     function getOptions() {
         return {
@@ -271,7 +276,7 @@ export default function QRCodePage() {
             height: size,
             type: 'svg',
             data: getQRData(),
-            margin: margin + (frameEnabled ? frameThickness + frameMargin : 0),
+            margin: margin + (frameEnabled ? frameThickness + frameMargin + (frameText ? frameTextSize + 20 : 0) : 0),
             qrOptions: { typeNumber: qrVersion, mode: 'Byte', errorCorrectionLevel: errorCorrection },
             imageOptions: { hideBackgroundDots: removeLogoBackground, imageSize: logoSize, margin: logoMargin },
             dotsOptions: {
@@ -358,6 +363,65 @@ export default function QRCodePage() {
                 }
                 ctx.stroke();
                 ctx.restore();
+            }
+
+            // TEXT LOGIC
+            if (frameText) {
+                const fontSize = frameTextSize;
+                const textMargin = frameThickness + frameMargin + 10;
+
+                const drawText = (txt, pos) => {
+                    let x = totalSize / 2;
+                    let y = totalSize / 2; // Default to center, will be adjusted
+                    let rotation = 0;
+
+                    if (pos === 'top') { y = textMargin / 2 + (frameThickness / 2); }
+                    if (pos === 'bottom') { y = totalSize - (textMargin / 2) - (frameThickness / 2); }
+                    if (pos === 'left') {
+                        x = textMargin / 2 + (frameThickness / 2);
+                        y = totalSize / 2;
+                        rotation = -90;
+                    }
+                    if (pos === 'right') {
+                        x = totalSize - (textMargin / 2) - (frameThickness / 2);
+                        y = totalSize / 2;
+                        rotation = 90;
+                    }
+
+                    if (isSvg) {
+                        const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        textEl.setAttribute("fill", frameTextColor);
+                        textEl.setAttribute("font-size", fontSize);
+                        textEl.setAttribute("font-family", "sans-serif");
+                        textEl.setAttribute("text-anchor", "middle");
+                        textEl.setAttribute("dominant-baseline", "middle");
+                        textEl.setAttribute("font-weight", "bold");
+                        textEl.textContent = txt;
+                        textEl.setAttribute("x", x);
+                        textEl.setAttribute("y", y);
+                        if (rotation !== 0) {
+                            textEl.setAttribute("transform", `rotate(${rotation}, ${x}, ${y})`);
+                        }
+                        content.appendChild(textEl);
+                    } else {
+                        const ctx = content;
+                        ctx.save();
+                        ctx.fillStyle = frameTextColor;
+                        ctx.font = `bold ${fontSize}px sans-serif`;
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.translate(x, y);
+                        ctx.rotate(rotation * Math.PI / 180);
+                        ctx.fillText(txt, 0, 0);
+                        ctx.restore();
+                    }
+                };
+
+                if (frameTextPosition === 'all') {
+                    ['top', 'bottom', 'left', 'right'].forEach(p => drawText(frameText, p));
+                } else {
+                    drawText(frameText, frameTextPosition);
+                }
             }
         }
 
@@ -589,8 +653,8 @@ export default function QRCodePage() {
         { id: 'dots', name: 'Dots', icon: <ShapePreview path={BODY_SHAPE_PATHS['dot']} /> },
         { id: 'rounded', name: 'Rounded', icon: <ShapePreview path={BODY_SHAPE_PATHS['round']} /> },
         { id: 'extra-rounded', name: 'Extra Rounded', icon: <ShapePreview path={BODY_SHAPE_PATHS['extra-rounded'] || BODY_SHAPE_PATHS['round']} /> },
-        { id: 'classy', name: 'Classy', icon: <ShapePreview path="M 0.5 0.5 C 0.5 0.25 0.25 0.25 0.25 0.5 C 0.25 0.75 0.5 0.75 0.5 0.5 M 0.5 0.5 C 0.5 0.75 0.75 0.75 0.75 0.5 C 0.75 0.25 0.5 0.25 0.5 0.5" /> },
-        { id: 'classy-rounded', name: 'Classy Rounded', icon: <ShapePreview path="M 0.5 0.5 C 0.5 0.2 0.2 0.2 0.2 0.5 C 0.2 0.8 0.5 0.8 0.5 0.5 M 0.5 0.5 C 0.5 0.8 0.8 0.8 0.8 0.5 C 0.8 0.2 0.5 0.2 0.5 0.5" /> }
+        { id: 'classy', name: 'Classy', icon: <ShapePreview path="M 0.5 0 Q 1 0 1 0.5 Q 1 1 0.5 1 Q 0 1 0 0.5 Q 0 0 0.5 0 Z" /> },
+        { id: 'classy-rounded', name: 'Classy Rounded', icon: <ShapePreview path="M 0.5 0 Q 0.8 0 1 0.2 V 0.8 Q 1 1 0.8 1 H 0.2 Q 0 1 0 0.8 V 0.2 Q 0 0 0.2 0 Z" /> }
     ];
 
     const cornerTypes = [
@@ -678,10 +742,10 @@ export default function QRCodePage() {
                                                 <MapPin size={18} /> <span>Lokasi</span>
                                             </button>
                                             <button className={contentType === 'facebook' ? styles.typeActive : ''} onClick={() => setContentType('facebook')}>
-                                                <Facebook size={18} /> <span>FB</span>
+                                                <Facebook size={18} /> <span>Facebook</span>
                                             </button>
                                             <button className={contentType === 'youtube' ? styles.typeActive : ''} onClick={() => setContentType('youtube')}>
-                                                <Youtube size={18} /> <span>YT</span>
+                                                <Youtube size={18} /> <span>Youtube</span>
                                             </button>
                                             <button className={contentType === 'event' ? styles.typeActive : ''} onClick={() => setContentType('event')}>
                                                 <Calendar size={18} /> <span>Event</span>
@@ -1100,6 +1164,42 @@ export default function QRCodePage() {
                                                                         <button className={frameStyle === 'dashed' ? styles.typeActive : ''} onClick={() => setFrameStyle('dashed')}>Dashed</button>
                                                                     </div>
                                                                 </div>
+
+                                                                <div className={styles.designBlock}>
+                                                                    <p className={styles.blockTitle}>Teks pada Bingkai</p>
+                                                                    <div className={styles.inputGroup}>
+                                                                        <label>Isi Teks</label>
+                                                                        <input type="text" value={frameText} onChange={(e) => setFrameText(e.target.value)} placeholder="Contoh: SCAN ME" />
+                                                                    </div>
+                                                                    {frameText && (
+                                                                        <>
+                                                                            <div className={styles.fieldsGrid}>
+                                                                                <div className={styles.inputGroup}>
+                                                                                    <label>Posisi</label>
+                                                                                    <select value={frameTextPosition} onChange={(e) => setFrameTextPosition(e.target.value)}>
+                                                                                        <option value="bottom">Bawah</option>
+                                                                                        <option value="top">Atas</option>
+                                                                                        <option value="left">Kiri</option>
+                                                                                        <option value="right">Kanan</option>
+                                                                                        <option value="all">Seluruhnya</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div className={styles.inputGroup}>
+                                                                                    <label>Ukuran</label>
+                                                                                    <input type="number" value={frameTextSize} onChange={(e) => setFrameTextSize(parseInt(e.target.value))} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className={styles.inputGroup}>
+                                                                                <label>Warna Teks</label>
+                                                                                <div className={styles.colorInputWrapper}>
+                                                                                    <input type="color" value={frameTextColor} onChange={(e) => setFrameTextColor(e.target.value)} />
+                                                                                    <span className={styles.colorHex}>{frameTextColor.toUpperCase()}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </>
+                                                                    )}
+                                                                </div>
+
                                                                 <div className={styles.fieldsGrid}>
                                                                     <div className={styles.inputGroupSmall}>
                                                                         <label>Tebal: {frameThickness}</label>
@@ -1155,7 +1255,9 @@ export default function QRCodePage() {
                         {/* Right: Preview (Sticky) */}
                         <div className={styles.previewSection}>
                             <div className={`neu-card no-hover ${styles.qrCard}`}>
-                                <div className={styles.qrWrapper} ref={qrRef}></div>
+                                <div className={styles.qrWrapper} ref={qrRef}>
+                                    {!qrCode && <div className={styles.qrPlaceholder}><RefreshCcw className="animate-spin" /></div>}
+                                </div>
                                 <div className={styles.previewActions}>
                                     <div className={styles.downloadGroup}>
                                         <button onClick={() => downloadQR('png')} className={styles.btnPrimary}>
