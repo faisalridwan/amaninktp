@@ -147,18 +147,18 @@ export default function QRCodePage() {
         frame2: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Dot
         frame3: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Extra Rounded
         frame4: { frame: "M 0 0 C 7 0 7 7 7 7 C 0 7 0 0 0 0 Z M 1 1 Q 6 1 6 6 Q 1 6 1 1 Z", ball: "M 3.5 1.5 C 5 1.5 5.5 2 5.5 3.5 C 5.5 5 5 5.5 3.5 5.5 C 2 5.5 1.5 5 1.5 3.5 C 1.5 2 2 1.5 3.5 1.5 Z" }, // Leaf
-        frame5: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Edge Cut (Placeholder: Square)
+        frame5: { frame: "M 1 0 H 6 L 7 1 V 6 L 6 7 H 1 L 0 6 V 1 L 1 0 Z M 2 1.5 H 5 L 5.5 2 V 5 L 5 5.5 H 2 L 1.5 5 V 2 L 2 1.5 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Edge Cut
         frame6: { frame: "M 0 0 H 7 V 5 L 3.5 7 L 0 5 V 0 Z M 1 1 V 4.5 L 3.5 6 L 6 4.5 V 1 H 1 Z", ball: "M 2 2 H 5 V 4 L 3.5 5 L 2 4 V 2 Z" }, // Shield
         frame7: { frame: "M 3.5 0 L 4.5 2.5 H 7 L 5 4 L 6 7 L 3.5 5.5 L 1 7 L 2 4 L 0 2.5 H 2.5 Z M 3.5 1.5 L 2.8 3.2 H 1.2 L 2.4 4.2 L 2 6 L 3.5 4.8 L 5 6 L 4.6 4.2 L 5.8 3.2 H 4.2 Z", ball: "M 3.5 2.5 L 4 3.5 H 5 L 4.2 4 L 4.5 5 L 3.5 4.3 L 2.5 5 L 2.8 4 L 2 3.5 H 3 Z" }, // Star
         frame8: { frame: "M 3.5 0 L 7 3.5 L 3.5 7 L 0 3.5 Z M 3.5 1.4 L 5.6 3.5 L 3.5 5.6 L 1.4 3.5 Z", ball: "M 3.5 2.5 L 4.5 3.5 L 3.5 4.5 L 2.5 3.5 Z" }, // Diamond
-        frame9: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Rotated (Placeholder: Square)
-        frame10: { frame: "M 2 0 H 5 Q 7 0 7 2 V 5 Q 7 7 5 7 H 2 Q 0 7 0 5 V 2 Q 0 0 2 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Hook (Placeholder: Rounded)
+        frame9: { frame: "M 0 0 H 7 V 7 H 0 Z M 1.5 1.5 L 5.5 1.5 L 5.5 5.5 L 1.5 5.5 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Rotated (Simulated as Thicker Square for now)
+        frame10: { frame: "M 2 0 H 7 V 5 A 2 2 0 0 1 5 7 H 0 V 2 A 2 2 0 0 1 2 0 Z M 2 1 A 1 1 0 0 0 1 2 V 6 H 5 A 1 1 0 0 0 6 5 V 1 H 2 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Hook (Cross Rounded)
         frame11: { frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z", ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z" }, // Japanese
-        frame12: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 1 1 V 6 H 6 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Bubble (Placeholder: Extra Rounded)
-        frame13: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Square Dot (Placeholder: Square)
-        frame14: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Small Dot (Placeholder: Dot)
-        frame15: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Empty (Placeholder: Square)
-        frame16: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Bold (Placeholder: Square)
+        frame12: { frame: "M 0 0 H 5 A 2 2 0 0 1 7 2 V 5 A 2 2 0 0 1 5 7 H 2 A 2 2 0 0 1 0 5 V 0 Z M 1 1 H 5 A 1 1 0 0 1 6 2 V 5 A 1 1 0 0 1 5 6 H 2 A 1 1 0 0 1 1 5 V 1 Z", ball: "M 3.5 2 C 2.5 2 2 2.5 2 3.5 C 2 4.5 2.5 5 3.5 5 C 4.5 5 5 4.5 5 3.5 C 5 2.5 4.5 2 3.5 2 Z" }, // Bubble (3 Rounded)
+        frame13: { frame: "M 0 0 H 7 V 7 H 0 Z M 3.5 1 A 2.5 2.5 0 0 0 1 3.5 A 2.5 2.5 0 0 0 3.5 6 A 2.5 2.5 0 0 0 6 3.5 A 2.5 2.5 0 0 0 3.5 1 Z", ball: "M 3.5 2 C 4.3 2 5 2.7 5 3.5 C 5 4.3 4.3 5 3.5 5 C 2.7 5 2 4.3 2 3.5 C 2 2.7 2.7 2 3.5 2 Z" }, // Square with Circle Hold
+        frame14: { frame: "M 0.5 0.5 H 6.5 V 6.5 H 0.5 Z M 1.5 1.5 V 5.5 H 5.5 V 1.5 H 1.5 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Thin Frame
+        frame15: { frame: "M 0 0 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Empty Frame
+        frame16: { frame: "M 0 0 H 7 V 7 H 0 Z M 2 2 V 5 H 5 V 2 H 2 Z", ball: "M 2.5 2.5 H 4.5 V 4.5 H 2.5 Z" }, // Bold Frame
 
         ball0: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Square
         ball1: { frame: "M 3.5 0 C 1.5 0 0 1.5 0 3.5 C 0 5.5 1.5 7 3.5 7 C 5.5 7 7 5.5 7 3.5 C 7 1.5 5.5 0 3.5 0 Z M 3.5 1 C 5 1 6 2 6 3.5 C 6 5 5 6 3.5 6 C 2 6 1 5 1 3.5 C 1 2 2 1 3.5 1 Z", ball: "M 3.5 2 C 2.7 2 2 2.7 2 3.5 C 2 4.3 2.7 5 3.5 5 C 4.3 5 5 4.3 5 3.5 C 5 2.7 4.3 2 3.5 2 Z" }, // Dot
@@ -173,13 +173,13 @@ export default function QRCodePage() {
         ball10: { frame: "M 0 0 C 4 0 7 2 7 5 C 7 7 5 7 3 7 C 0 7 0 4 0 0 Z M 1 1 C 1 3 1 6 2.5 6 C 4 6 6 6 6 4.5 C 6 2.5 4 1 1 1 Z", ball: "M 2 2 C 4 2 5 3 5 4 C 5 5 4 5 3 5 C 2 5 2 4 2 2 Z" }, // Liquid
         ball11: { frame: "M 3.5 0 L 4.5 1 C 6 1 7 2 7 3.5 C 7 5 6 6 4.5 6 L 3.5 7 L 2.5 6 C 1 6 0 5 0 3.5 C 0 2 1 1 2.5 1 L 3.5 0 Z M 3.5 1.5 L 2.8 2.2 C 1.8 2.2 1.2 2.8 1.2 3.5 C 1.2 4.2 1.8 4.8 2.8 4.8 L 3.5 5.5 L 4.2 4.8 C 5.2 4.8 5.8 4.2 5.8 3.5 C 5.8 2.8 5.2 2.2 4.2 2.2 L 3.5 1.5 Z", ball: "M 3.5 2.5 L 4 3 L 4.5 3.5 L 4 4 L 3.5 4.5 L 3 4 L 2.5 3.5 L 3 3 Z" }, // Japanese
         ball12: { frame: "M 3.5 7 L 3.1 6.6 C 1.2 4.9 0 3.8 0 2.5 C 0 1.1 1.1 0 2.5 0 C 3.3 0 4.1 0.4 4.5 1 C 4.9 0.4 5.7 0 6.5 0 C 7.9 0 9 1.1 9 2.5 C 9 3.8 7.8 4.9 5.9 6.6 L 5.5 7 Z", ball: "M 3.5 5 L 3.3 4.8 C 2.5 4.1 2 3.6 2 3 C 2 2.5 2.5 2 3 2 C 3.3 2 3.6 2.2 3.8 2.5 C 4 2.2 4.3 2 4.6 2 C 5.1 2 5.6 2.5 5.6 3 C 5.6 3.6 5.1 4.1 4.3 4.8 L 4.1 5 Z" }, // Heart
-        ball13: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Pointed (Placeholder: Square)
-        ball14: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Thin (Placeholder: Square)
-        ball15: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Wide (Placeholder: Square)
-        ball16: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Small (Placeholder: Square)
-        ball17: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Ring (Placeholder: Square)
-        ball18: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Inverted (Placeholder: Square)
-        ball19: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z" }, // Split (Placeholder: Square)
+        ball13: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 3.5 0.5 Q 6.5 0.5 6.5 3.5 Q 6.5 6.5 3.5 6.5 Q 0.5 6.5 0.5 3.5 Q 0.5 0.5 3.5 0.5 Z" }, // Pointed (Superellipse)
+        ball14: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2.5 2.5 H 4.5 V 4.5 H 2.5 Z" }, // Thin (Small Square)
+        ball15: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 1.5 2.5 H 5.5 V 4.5 H 1.5 Z" }, // Wide (Horizontal Rect)
+        ball16: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 3 3 H 4 V 4 H 3 Z" }, // Small (Tiny Square)
+        ball17: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 5 V 5 H 2 Z M 3 3 V 4 H 4 V 3 H 3 Z" }, // Ring (Hollow Square)
+        ball18: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 3.5 V 3.5 H 2 Z M 3.5 3.5 H 5 V 5 H 3.5 Z" }, // Inverted (Checkers)
+        ball19: { frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z", ball: "M 2 2 H 3 V 5 H 2 Z M 4 2 H 5 V 5 H 4 Z" }, // Split (Vertical Stripes)
     }
     const [errorCorrection, setErrorCorrection] = useState('Q')
     const [qrVersion, setQrVersion] = useState(0)
