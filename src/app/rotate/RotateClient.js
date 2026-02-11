@@ -125,7 +125,7 @@ export default function RotatePDFPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <RotateCw size={32} /> Rotate <span>PDF</span>
+                        🔄 Rotate Dokumen<span> Digital</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Putar halaman PDF yang terbalik atau miring secara permanen dan aman di browser.
@@ -159,7 +159,7 @@ export default function RotatePDFPage() {
                             <Layers size={40} />
                         </div>
                         <div className={styles.uploadContent}>
-                            <h3>Upload PDF</h3>
+                            <h3>Upload Dokumen</h3>
                             <p>Tarik file atau klik untuk memilih</p>
                             <div className={styles.supportedTypes}>
                                 <span>PDF</span>

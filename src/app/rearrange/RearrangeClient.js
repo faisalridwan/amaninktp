@@ -127,7 +127,7 @@ export default function RearrangePDFPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Move size={32} /> Rearrange <span>PDF</span>
+                        📄 Rearrange Dokumen<span> Digital</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ubah urutan halaman PDF Anda dengan drag-and-drop visual yang mudah dan aman.
@@ -161,7 +161,7 @@ export default function RearrangePDFPage() {
                             <Layers size={40} />
                         </div>
                         <div className={styles.uploadContent}>
-                            <h3>Upload PDF</h3>
+                            <h3>Upload Dokumen</h3>
                             <p>Tarik file atau klik untuk memilih</p>
                             <div className={styles.supportedTypes}>
                                 <span>PDF</span>

@@ -114,7 +114,7 @@ export default function SplitPDFPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Scissors size={32} /> Split <span>PDF</span>
+                        ✂️ Split Dokumen<span> Digital</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Pisahkan halaman PDF menjadi dokumen baru secara instan dan aman di browser Anda.
@@ -148,7 +148,7 @@ export default function SplitPDFPage() {
                             <Layers size={40} />
                         </div>
                         <div className={styles.uploadContent}>
-                            <h3>Upload PDF</h3>
+                            <h3>Upload Dokumen</h3>
                             <p>Tarik file atau klik untuk memilih</p>
                             <div className={styles.supportedTypes}>
                                 <span>PDF</span>
