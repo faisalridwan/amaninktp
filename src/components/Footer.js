@@ -84,8 +84,8 @@ export default function Footer() {
                                     className={styles.dropdownBtn}
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <Grid size={16} /> Produk Lainnya
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                                        <Grid size={14} /> Produk Lainnya
                                     </div>
                                     <ChevronUp size={14} style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
                                 </button>

@@ -80,33 +80,30 @@
 /* Footer Dropdown (Dropup) */
 .footerDropdown {
     position: relative;
-    margin-top: 12px;
+    /* margin-top: 12px; Remove extra margin to align with list */
 }
 
 .dropdownBtn {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    background: var(--bg-white);
-    border: 1px solid rgba(168, 197, 240, 0.5);
-    padding: 10px 16px;
-    border-radius: 12px;
-    color: var(--text-primary);
-    font-weight: 500;
-    font-size: 14px;
+    gap: var(--space-xs);
+    /* Match .linkSection a */
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-secondary);
+    /* Match .linkSection a */
+    font-size: var(--font-size-sm);
+    /* Match .linkSection a */
     cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%;
-    max-width: 220px;
-    box-shadow: var(--shadow-sm);
+    transition: color var(--transition-fast);
+    width: auto;
+    font-family: inherit;
+    font-weight: normal;
 }
 
 .dropdownBtn:hover {
-    background: var(--bg-white);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-light);
+    color: var(--primary-dark);
 }
 
 .dropdownMenu {
@@ -117,11 +114,13 @@
     border: 1px solid rgba(168, 197, 240, 0.4);
     border-radius: 16px;
     padding: 16px;
-    width: 500px;
+    width: 320px;
+    /* Reduced width since simpler text */
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
     display: none;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    grid-template-columns: 1fr;
+    /* Single column for cleaner list */
+    gap: 4px;
     z-index: 20;
 }
 
