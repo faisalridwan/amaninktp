@@ -64,6 +64,30 @@ export default function QRCodePage() {
     const [removeLogoBackground, setRemoveLogoBackground] = useState(true)
 
     // Advanced Shapes Constants
+    const BODY_SHAPE_PATHS = {
+        'mosaic': "M 0.1 0.1 H 0.9 V 0.9 H 0.1 Z", // Placeholder: Small Square
+        'dot': "M 0.5 0.5 m -0.35, 0 a 0.35,0.35 0 1,0 0.7,0 a 0.35,0.35 0 1,0 -0.7,0",
+        'circle': "M 0.5 0.5 m -0.4, 0 a 0.4,0.4 0 1,0 0.8,0 a 0.4,0.4 0 1,0 -0.8,0",
+        'circle-zebra': "M 0.5 0.5 m -0.45, 0 a 0.45,0.45 0 1,0 0.9,0 a 0.45,0.45 0 1,0 -0.9,0 M 0.5 0.5 m -0.25, 0 a 0.25,0.25 0 1,0 0.5,0 a 0.25,0.25 0 1,0 -0.5,0",
+        'circle-zebra-vertical': "M 0.5 0.5 m -0.45, 0 a 0.45,0.45 0 1,0 0.9,0 a 0.45,0.45 0 1,0 -0.9,0 M 0.4 0.1 V 0.9 M 0.6 0.1 V 0.9",
+        'circular': "M 0.5 0.5 m -0.4, 0 a 0.4,0.4 0 1,0 0.8,0 a 0.4,0.4 0 1,0 -0.8,0",
+        'edge-cut': "M 0.2 0 H 0.8 L 1 0.2 V 0.8 L 0.8 1 H 0.2 L 0 0.8 V 0.2 L 0.2 0 Z",
+        'edge-cut-smooth': "M 0.2 0 H 0.8 Q 1 0 1 0.2 V 0.8 Q 1 1 0.8 1 H 0.2 Q 0 1 0 0.8 V 0.2 Q 0 0 0.2 0 Z",
+        'japanese': "M 0.1 0.2 H 0.9 V 0.3 H 0.1 Z M 0.2 0.3 V 0.9 H 0.3 V 0.3 Z M 0.7 0.3 V 0.9 H 0.8 V 0.3 Z M 0.2 0.6 H 0.8 V 0.7 H 0.2 Z",
+        'leaf': "M 0.5 1 C 0.5 1 0 1 0 0.5 C 0 0 0.5 0 0.5 0 C 0.5 0 1 0 1 0.5 C 1 1 0.5 1 0.5 1 Z",
+        'pointed': "M 0.5 0 L 1 0.5 L 0.5 1 L 0 0.5 Z",
+        'pointed-edge-cut': "M 0.5 0 L 1 0.2 L 1 0.8 L 0.5 1 L 0 0.8 L 0 0.2 Z",
+        'pointed-in': "M 0 0 L 0.5 0.2 L 1 0 L 0.8 0.5 L 1 1 L 0.5 0.8 L 0 1 L 0.2 0.5 Z",
+        'pointed-in-smooth': "M 0 0 Q 0.5 0.2 1 0 Q 0.8 0.5 1 1 Q 0.5 0.8 0 1 Q 0.2 0.5 0 0 Z",
+        'pointed-smooth': "M 0.5 0 Q 1 0 1 0.5 Q 1 1 0.5 1 Q 0 1 0 0.5 Q 0 0 0.5 0 Z", // Circle basically?
+        'round': "M 0.5 0.5 m -0.45, 0 a 0.45,0.45 0 1,0 0.9,0 a 0.45,0.45 0 1,0 -0.9,0",
+        'rounded-in': "M 0 0 Q 0.2 0.2 0.5 0.2 Q 0.8 0.2 1 0 V 1 H 0 V 0 Z", // Approximate
+        'rounded-in-smooth': "M 0 0 Q 0.3 0.3 0.5 0.3 Q 0.7 0.3 1 0 V 1 Q 0.7 0.7 0.5 0.7 Q 0.3 0.7 0 1 V 0 Z",
+        'rounded-pointed': "M 0.5 0 Q 1 0 1 0.5 L 1 1 L 0.5 1 L 0 1 L 0 0.5 Q 0 0 0.5 0 Z",
+        'star': "M 0.5 0 L 0.65 0.35 L 1 0.35 L 0.75 0.6 L 0.85 1 L 0.5 0.75 L 0.15 1 L 0.25 0.6 L 0 0.35 L 0.35 0.35 Z",
+        'diamond': "M 0.5 0 L 1 0.5 L 0.5 1 L 0 0.5 Z"
+    };
+
     const EYE_SHAPE_PATHS = {
         square: {
             frame: "M 0 0 H 7 V 7 H 0 Z M 1 1 V 6 H 6 V 1 H 1 Z",
@@ -225,7 +249,7 @@ export default function QRCodePage() {
     useEffect(() => {
         if (qrCode) {
             qrCode.update(getOptions());
-            if (EYE_SHAPE_PATHS[cornerType] || EYE_SHAPE_PATHS[cornerDotType]) {
+            if (EYE_SHAPE_PATHS[cornerType] || EYE_SHAPE_PATHS[cornerDotType] || BODY_SHAPE_PATHS[dotsType]) {
                 qrCode.applyExtension(applyCustomEyes);
             } else {
                 qrCode.deleteExtension();
@@ -243,9 +267,9 @@ export default function QRCodePage() {
             qrOptions: { typeNumber: qrVersion, mode: 'Byte', errorCorrectionLevel: errorCorrection },
             imageOptions: { hideBackgroundDots: removeLogoBackground, imageSize: logoSize, margin: logoMargin },
             dotsOptions: {
-                color: dotsColor,
-                type: getSafeDotType(dotsType),
-                gradient: dotsGradient.enabled ? {
+                color: BODY_SHAPE_PATHS[dotsType] ? 'transparent' : dotsColor,
+                type: BODY_SHAPE_PATHS[dotsType] ? 'square' : getSafeDotType(dotsType),
+                gradient: (!BODY_SHAPE_PATHS[dotsType] && dotsGradient.enabled) ? {
                     type: dotsGradient.type,
                     rotation: (dotsGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: dotsGradient.color1 }, { offset: 1, color: dotsGradient.color2 }]
@@ -284,7 +308,7 @@ export default function QRCodePage() {
     const applyCustomEyes = (content, options) => {
         const isSvg = content instanceof SVGElement;
         const count = qrCode._qr.getModuleCount();
-        const size_mod = options.width / count;
+        const size_mod = (options.width - (options.margin * 2)) / count;
 
         // FRAME LOGIC
         if (frameEnabled) {
@@ -359,6 +383,53 @@ export default function QRCodePage() {
             }
             return `url(#${id})`;
         };
+
+        // BODY LOGIC (Custom Shapes)
+        if (BODY_SHAPE_PATHS[dotsType]) {
+            const pathData = BODY_SHAPE_PATHS[dotsType];
+
+            for (let r = 0; r < count; r++) {
+                for (let c = 0; c < count; c++) {
+                    if (qrCode._qr.isDark(r, c)) {
+                        // Skip Eyes (7x7 corners)
+                        if ((r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7)) continue;
+
+                        const xPos = margin + c * size_mod;
+                        const yPos = margin + r * size_mod;
+
+                        if (isSvg) {
+                            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                            path.setAttribute("d", pathData);
+                            path.setAttribute("transform", `translate(${xPos}, ${yPos}) scale(${size_mod})`);
+
+                            if (dotsGradient.enabled) {
+                                path.setAttribute("fill", createSvgGradient('dot-body-grad-' + r + '-' + c, dotsGradient));
+                            } else {
+                                path.setAttribute("fill", dotsColor);
+                            }
+                            content.appendChild(path);
+                        } else {
+                            const ctx = content;
+                            ctx.save();
+                            ctx.translate(xPos, yPos);
+                            ctx.scale(size_mod, size_mod);
+                            const p = new Path2D(pathData);
+                            if (dotsGradient.enabled) {
+                                // Canvas Gradient (Local 0-1)
+                                const grad = ctx.createLinearGradient(0, 0, 1, 1);
+                                grad.addColorStop(0, dotsGradient.color1);
+                                grad.addColorStop(1, dotsGradient.color2);
+                                ctx.fillStyle = grad;
+                            } else {
+                                ctx.fillStyle = dotsColor;
+                            }
+                            ctx.fill(p);
+                            ctx.restore();
+                        }
+                    }
+                }
+            }
+        }
 
         const drawEye = (x, y, rotation) => {
             const eyeSize = 7 * size_mod;
