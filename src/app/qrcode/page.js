@@ -63,6 +63,14 @@ export default function QRCodePage() {
     const [logoMargin, setLogoMargin] = useState(0)
     const [removeLogoBackground, setRemoveLogoBackground] = useState(true)
 
+    const ShapePreview = ({ path, viewBox = "0 0 1 1" }) => (
+        <svg viewBox={viewBox} width="100%" height="100%" style={{ padding: '20%' }}>
+            <path d={path} fill="currentColor" />
+        </svg>
+    );
+
+    const SQUARE_BODY_PATH = "M 0 0 H 1 V 1 H 0 Z";
+
     // Advanced Shapes Constants
     const BODY_SHAPE_PATHS = {
         'mosaic': "M 0.1 0.1 H 0.9 V 0.9 H 0.1 Z", // Placeholder: Small Square
@@ -267,10 +275,10 @@ export default function QRCodePage() {
             qrOptions: { typeNumber: qrVersion, mode: 'Byte', errorCorrectionLevel: errorCorrection },
             imageOptions: { hideBackgroundDots: removeLogoBackground, imageSize: logoSize, margin: logoMargin },
             dotsOptions: {
-                color: BODY_SHAPE_PATHS[dotsType] ? 'transparent' : dotsColor,
-                type: BODY_SHAPE_PATHS[dotsType] ? 'square' : getSafeDotType(dotsType),
-                gradient: (!BODY_SHAPE_PATHS[dotsType] && dotsGradient.enabled) ? {
-                    type: dotsGradient.type,
+                color: dotsColor,
+                type: dotsType,
+                gradient: dotsGradient.enabled ? {
+                    type: dotsGradient.type || 'linear',
                     rotation: (dotsGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: dotsGradient.color1 }, { offset: 1, color: dotsGradient.color2 }]
                 } : undefined
@@ -278,30 +286,30 @@ export default function QRCodePage() {
             backgroundOptions: {
                 color: bgColor,
                 gradient: bgGradient.enabled ? {
-                    type: bgGradient.type,
+                    type: bgGradient.type || 'linear',
                     rotation: (bgGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: bgGradient.color1 }, { offset: 1, color: bgGradient.color2 }]
                 } : undefined
             },
             cornersSquareOptions: {
-                color: EYE_SHAPE_PATHS[cornerType] ? 'transparent' : cornerColor,
-                type: EYE_SHAPE_PATHS[cornerType] ? undefined : (getSafeDotType(cornerType) === 'square' ? 'square' : 'extra-rounded'),
-                gradient: (!EYE_SHAPE_PATHS[cornerType] && cornerGradient.enabled) ? {
-                    type: cornerGradient.type,
+                color: cornerColor,
+                type: cornerType,
+                gradient: cornerGradient.enabled ? {
+                    type: cornerGradient.type || 'linear',
                     rotation: (cornerGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: cornerGradient.color1 }, { offset: 1, color: cornerGradient.color2 }]
                 } : undefined
             },
             cornersDotOptions: {
-                color: EYE_SHAPE_PATHS[cornerDotType] ? 'transparent' : cornerDotColor,
-                type: EYE_SHAPE_PATHS[cornerDotType] ? undefined : 'dot',
-                gradient: (!EYE_SHAPE_PATHS[cornerDotType] && cornerDotGradient.enabled) ? {
-                    type: cornerDotGradient.type,
+                color: cornerDotColor,
+                type: cornerDotType,
+                gradient: cornerDotGradient.enabled ? {
+                    type: cornerDotGradient.type || 'linear',
                     rotation: (cornerDotGradient.rotation * Math.PI) / 180,
                     colorStops: [{ offset: 0, color: cornerDotGradient.color1 }, { offset: 1, color: cornerDotGradient.color2 }]
                 } : undefined
             },
-            image: logo
+            image: logo || undefined
         };
     }
 
@@ -577,60 +585,23 @@ export default function QRCodePage() {
     }
 
     const dotsTypes = [
-        { id: 'square', name: 'Square', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteSquare}`}></div> },
-        { id: 'mosaic', name: 'Mosaic', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteMosaic}`}></div> },
-        { id: 'dot', name: 'Dot', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteDot}`}></div> },
-        { id: 'circle', name: 'Circle', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircle}`}></div> },
-        { id: 'circle-zebra', name: 'Circle Zebra', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircleZebra}`}></div> },
-        { id: 'circle-zebra-vertical', name: 'Zebra Vertical', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircleZebraVertical}`}></div> },
-        { id: 'circular', name: 'Circular', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteCircular}`}></div> },
-        { id: 'edge-cut', name: 'Edge Cut', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteEdgeCut}`}></div> },
-        { id: 'edge-cut-smooth', name: 'Edge Cut Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteEdgeCutSmooth}`}></div> },
-        { id: 'japanese', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteJapnese}`}></div> },
-        { id: 'leaf', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteLeaf}`}></div> },
-        { id: 'pointed', name: 'Pointed', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointed}`}></div> },
-        { id: 'pointed-edge-cut', name: 'Pointed Edge', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedEdgeCut}`}></div> },
-        { id: 'pointed-in', name: 'Pointed In', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedIn}`}></div> },
-        { id: 'pointed-in-smooth', name: 'Pointed Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedInSmooth}`}></div> },
-        { id: 'pointed-smooth', name: 'Pointed Smooth 2', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spritePointedSmooth}`}></div> },
-        { id: 'round', name: 'Round', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRound}`}></div> },
-        { id: 'rounded-in', name: 'Rounded In', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedIn}`}></div> },
-        { id: 'rounded-in-smooth', name: 'Rounded Smooth', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedInSmooth}`}></div> },
-        { id: 'rounded-pointed', name: 'Rounded Pointed', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteRoundedPointed}`}></div> },
-        { id: 'star', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteStar}`}></div> },
-        { id: 'diamond', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteBody} ${styles.spriteDiamond}`}></div> }
+        { id: 'square', name: 'Square', icon: <ShapePreview path={SQUARE_BODY_PATH} /> },
+        { id: 'dots', name: 'Dots', icon: <ShapePreview path={BODY_SHAPE_PATHS['dot']} /> },
+        { id: 'rounded', name: 'Rounded', icon: <ShapePreview path={BODY_SHAPE_PATHS['round']} /> },
+        { id: 'extra-rounded', name: 'Extra Rounded', icon: <ShapePreview path={BODY_SHAPE_PATHS['extra-rounded'] || BODY_SHAPE_PATHS['round']} /> },
+        { id: 'classy', name: 'Classy', icon: <ShapePreview path="M 0.5 0.5 C 0.5 0.25 0.25 0.25 0.25 0.5 C 0.25 0.75 0.5 0.75 0.5 0.5 M 0.5 0.5 C 0.5 0.75 0.75 0.75 0.75 0.5 C 0.75 0.25 0.5 0.25 0.5 0.5" /> },
+        { id: 'classy-rounded', name: 'Classy Rounded', icon: <ShapePreview path="M 0.5 0.5 C 0.5 0.2 0.2 0.2 0.2 0.5 C 0.2 0.8 0.5 0.8 0.5 0.5 M 0.5 0.5 C 0.5 0.8 0.8 0.8 0.8 0.5 C 0.8 0.2 0.5 0.2 0.5 0.5" /> }
     ];
 
     const cornerTypes = [
-        { id: 'frame0', name: 'Simple', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame0}`}></div> },
-        { id: 'frame1', name: 'Rounded', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame1}`}></div> },
-        { id: 'frame2', name: 'Circle', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame2}`}></div> },
-        { id: 'frame3', name: 'Rounded In', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame3}`}></div> },
-        { id: 'frame4', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame4}`}></div> },
-        { id: 'frame5', name: 'Edge Cut', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame5}`}></div> },
-        { id: 'frame6', name: 'Shield', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame6}`}></div> },
-        { id: 'frame7', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame7}`}></div> },
-        { id: 'frame8', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame8}`}></div> },
-        { id: 'frame9', name: 'Rotated', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame9}`}></div> },
-        { id: 'frame10', name: 'Hook', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame10}`}></div> },
-        { id: 'frame11', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame11}`}></div> },
-        { id: 'frame12', name: 'Bubble', icon: <div className={`${styles.sprite} ${styles.spriteFrame} ${styles.spriteFrame12}`}></div> }
+        { id: 'square', name: 'Square', icon: <ShapePreview path={EYE_SHAPE_PATHS['frame0'].frame} viewBox="0 0 7 7" /> },
+        { id: 'dot', name: 'Dot', icon: <ShapePreview path={EYE_SHAPE_PATHS['frame2'].frame} viewBox="0 0 7 7" /> },
+        { id: 'extra-rounded', name: 'Extra Rounded', icon: <ShapePreview path={EYE_SHAPE_PATHS['frame3'].frame} viewBox="0 0 7 7" /> }
     ];
 
     const cornerDotTypes = [
-        { id: 'ball0', name: 'Square', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall0}`}></div> },
-        { id: 'ball1', name: 'Dot', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall1}`}></div> },
-        { id: 'ball2', name: 'Rounded', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall2}`}></div> },
-        { id: 'ball3', name: 'Extra Rounded', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall3}`}></div> },
-        { id: 'ball4', name: 'Leaf', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall4}`}></div> },
-        { id: 'ball5', name: 'Shield', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall5}`}></div> },
-        { id: 'ball6', name: 'Star', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall6}`}></div> },
-        { id: 'ball7', name: 'Diamond', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall7}`}></div> },
-        { id: 'ball8', name: 'Hexagon', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall8}`}></div> },
-        { id: 'ball9', name: 'Flower', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall9}`}></div> },
-        { id: 'ball10', name: 'Liquid', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall10}`}></div> },
-        { id: 'ball11', name: 'Japanese', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall11}`}></div> },
-        { id: 'ball12', name: 'Heart', icon: <div className={`${styles.sprite} ${styles.spriteBall} ${styles.spriteBall12}`}></div> }
+        { id: 'square', name: 'Square', icon: <ShapePreview path={EYE_SHAPE_PATHS['ball0'].ball} viewBox="0 0 7 7" /> },
+        { id: 'dot', name: 'Dot', icon: <ShapePreview path={EYE_SHAPE_PATHS['ball1'].ball} viewBox="0 0 7 7" /> }
     ];
 
     const toggleSection = (section) => {
@@ -639,10 +610,10 @@ export default function QRCodePage() {
 
     const presetLogos = [
         { name: 'none', icon: <Eraser size={20} />, value: null },
-        { name: 'paypal', icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="#003087"><path d="M20.067 6.947c.496 3.111-.75 5.885-3.001 8.261-2.25 2.375-5.228 3.593-8.156 3.593H6.072c-.415 0-.75-.335-.75-.75s.335-.75.75-.75h2.838c2.427 0 4.908-1.011 6.772-2.977 1.864-1.966 2.895-4.252 2.484-6.827-.411-2.574-1.996-4.66-4.348-5.723C11.468.71 8.878.508 6.5.508H2.433c-.415 0-.75.335-.75.75L.014 22.75c-.012.189.049.373.17.514a.75.75 0 0 0 .58.244h4.331c.415 0 .75-.335.75-.75L6.96 6.947c.188-1.173.914-2.126 1.954-2.597 1.04-.47 2.195-.558 3.253-.248 1.058.31 1.895.938 2.35 1.77.455.83.565 1.778.311 2.668-.254.89-.86 1.637-1.638 2.016a.751.751 0 0 0 .614 1.366c1.373-.672 2.373-1.936 2.768-3.32.395-1.383.255-2.836-.395-4.019s-1.841-2.016-3.238-2.31c-1.397-.294-2.859-.143-4.004.421-1.144.563-1.992 1.545-2.292 2.646L4.178 22.008h2.09l.365-2.275h2.277c2.25 0 4.61-.937 6.452-2.715s2.887-3.957 2.455-6.666c-.198-1.24-.717-2.316-1.47-3.155z" /></svg>, value: 'https://cdn-icons-png.flaticon.com/512/174/174861.png' },
-        { name: 'youtube', icon: <Youtube color="#FF0000" size={20} />, value: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png' },
-        { name: 'instagram', icon: <svg viewBox="0 0 24 24" width="20" height="20"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stopColor="#f09433" /><stop offset="25%" stopColor="#e6683c" /><stop offset="50%" stopColor="#dc2743" /><stop offset="75%" stopColor="#cc2366" /><stop offset="100%" stopColor="#bc1888" /></linearGradient></defs><path fill="url(#ig-grad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>, value: 'https://cdn-icons-png.flaticon.com/512/174/174855.png' },
-        { name: 'tiktok', icon: <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.59-1.01-.01 2.62-.01 5.24-.02 7.86-.01 3.01-1.31 6.15-4.41 7.42-3.1 1.25-7.1.34-8.8-2.65-1.55-2.45-1.35-6.16 1.05-8.2 1.34-1.15 3.14-1.51 4.86-1.28.01 1.63.01 3.27.01 4.91-.71-.21-1.53-.18-2.18.23-.9.56-1.07 1.72-.61 2.6.48.91 1.65 1.33 2.59.88.84-.4.99-1.39.99-2.23.01-4.71.01-9.41.02-14.12z" /></svg>, value: 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png' }
+        { name: 'paypal', icon: <img src="https://cdn-icons-png.flaticon.com/512/174/174861.png" alt="paypal" width="24" height="24" />, value: 'https://cdn-icons-png.flaticon.com/512/174/174861.png' },
+        { name: 'youtube', icon: <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="youtube" width="24" height="24" />, value: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png' },
+        { name: 'instagram', icon: <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="instagram" width="24" height="24" />, value: 'https://cdn-icons-png.flaticon.com/512/174/174855.png' },
+        { name: 'tiktok', icon: <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="tiktok" width="24" height="24" />, value: 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png' }
     ]
 
     return (
@@ -663,25 +634,6 @@ export default function QRCodePage() {
 
                 <div className={styles.workspace}>
                     <div className={styles.grid}>
-                        {/* Left: Preview */}
-                        <div className={styles.previewSection}>
-                            <div className={`neu-card no-hover ${styles.qrCard}`}>
-                                <div className={styles.qrWrapper} ref={qrRef}></div>
-                                <div className={styles.previewActions}>
-                                    <div className={styles.downloadGroup}>
-                                        <button onClick={() => downloadQR('png')} className={styles.btnPrimary}>
-                                            <Download size={18} /> PNG
-                                        </button>
-                                        <button onClick={() => downloadQR('svg')} className={styles.btnSecondary}>
-                                            <Download size={18} /> SVG
-                                        </button>
-                                    </div>
-                                    <button onClick={copyURL} className={styles.btnGhost}>
-                                        {copied ? <Check size={18} /> : <Copy size={18} />} {copied ? 'Tersalin' : 'Salin Data'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                         {/* Right: Controls */}
                         <div className={styles.controlsSection}>
@@ -972,8 +924,21 @@ export default function QRCodePage() {
                                                             {dotsGradient.enabled && (
                                                                 <div className={styles.gradientControls}>
                                                                     <div className={styles.fieldsGrid}>
-                                                                        <input type="color" value={dotsGradient.color1} onChange={(e) => setDotsGradient({ ...dotsGradient, color1: e.target.value })} />
-                                                                        <input type="color" value={dotsGradient.color2} onChange={(e) => setDotsGradient({ ...dotsGradient, color2: e.target.value })} />
+                                                                        <div className={styles.inputGroupSmall}>
+                                                                            <label>Tipe</label>
+                                                                            <select value={dotsGradient.type} onChange={(e) => setDotsGradient({ ...dotsGradient, type: e.target.value })}>
+                                                                                <option value="linear">Linier</option>
+                                                                                <option value="radial">Radial</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div className={styles.inputGroupSmall}>
+                                                                            <label>Warna 1</label>
+                                                                            <input type="color" value={dotsGradient.color1} onChange={(e) => setDotsGradient({ ...dotsGradient, color1: e.target.value })} />
+                                                                        </div>
+                                                                        <div className={styles.inputGroupSmall}>
+                                                                            <label>Warna 2</label>
+                                                                            <input type="color" value={dotsGradient.color2} onChange={(e) => setDotsGradient({ ...dotsGradient, color2: e.target.value })} />
+                                                                        </div>
                                                                     </div>
                                                                     <div className={styles.inputGroupSmall}>
                                                                         <label>Rotasi: {dotsGradient.rotation}°</label>
@@ -1020,9 +985,24 @@ export default function QRCodePage() {
                                                                     <label htmlFor="frame-grad">Gradient pada Bingkai</label>
                                                                 </div>
                                                                 {cornerGradient.enabled && (
-                                                                    <div className={styles.fieldsGrid}>
-                                                                        <input type="color" value={cornerGradient.color1} onChange={(e) => setCornerGradient({ ...cornerGradient, color1: e.target.value })} />
-                                                                        <input type="color" value={cornerGradient.color2} onChange={(e) => setCornerGradient({ ...cornerGradient, color2: e.target.value })} />
+                                                                    <div className={styles.gradientControls}>
+                                                                        <div className={styles.fieldsGrid}>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Tipe</label>
+                                                                                <select value={cornerGradient.type} onChange={(e) => setCornerGradient({ ...cornerGradient, type: e.target.value })}>
+                                                                                    <option value="linear">Linier</option>
+                                                                                    <option value="radial">Radial</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Warna 1</label>
+                                                                                <input type="color" value={cornerGradient.color1} onChange={(e) => setCornerGradient({ ...cornerGradient, color1: e.target.value })} />
+                                                                            </div>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Warna 2</label>
+                                                                                <input type="color" value={cornerGradient.color2} onChange={(e) => setCornerGradient({ ...cornerGradient, color2: e.target.value })} />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 )}
                                                             </div>
@@ -1054,9 +1034,24 @@ export default function QRCodePage() {
                                                                     <label htmlFor="ball-grad">Gradient pada Titik Mata</label>
                                                                 </div>
                                                                 {cornerDotGradient.enabled && (
-                                                                    <div className={styles.fieldsGrid}>
-                                                                        <input type="color" value={cornerDotGradient.color1} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color1: e.target.value })} />
-                                                                        <input type="color" value={cornerDotGradient.color2} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color2: e.target.value })} />
+                                                                    <div className={styles.gradientControls}>
+                                                                        <div className={styles.fieldsGrid}>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Tipe</label>
+                                                                                <select value={cornerDotGradient.type} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, type: e.target.value })}>
+                                                                                    <option value="linear">Linier</option>
+                                                                                    <option value="radial">Radial</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Warna 1</label>
+                                                                                <input type="color" value={cornerDotGradient.color1} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color1: e.target.value })} />
+                                                                            </div>
+                                                                            <div className={styles.inputGroupSmall}>
+                                                                                <label>Warna 2</label>
+                                                                                <input type="color" value={cornerDotGradient.color2} onChange={(e) => setCornerDotGradient({ ...cornerDotGradient, color2: e.target.value })} />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 )}
                                                             </div>
@@ -1155,6 +1150,28 @@ export default function QRCodePage() {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                        </div>
+                        {/* Right: Preview (Sticky) */}
+                        <div className={styles.previewSection}>
+                            <div className={`neu-card no-hover ${styles.qrCard}`}>
+                                <div className={styles.qrWrapper} ref={qrRef}></div>
+                                <div className={styles.previewActions}>
+                                    <div className={styles.downloadGroup}>
+                                        <button onClick={() => downloadQR('png')} className={styles.btnPrimary}>
+                                            <Download size={18} /> PNG
+                                        </button>
+                                        <button onClick={() => downloadQR('svg')} className={styles.btnSecondary}>
+                                            <Download size={18} /> SVG
+                                        </button>
+                                        <button onClick={() => downloadQR('webp')} className={styles.btnSecondary}>
+                                            <Download size={18} /> WEBP
+                                        </button>
+                                    </div>
+                                    <button onClick={copyURL} className={styles.btnGhost}>
+                                        {copied ? <Check size={18} /> : <Copy size={18} />} {copied ? 'Tersalin' : 'Salin Data'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

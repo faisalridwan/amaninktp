@@ -43,37 +43,40 @@
 }
 
 .workspace {
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto 60px;
     animation: fadeIn 0.4s ease-out;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 30px;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
     align-items: start;
 }
 
 .previewSection {
     position: sticky;
     top: 100px;
+    z-index: 10;
 }
 
 .qrCard {
-    padding: 30px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     background: var(--bg-secondary);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
 }
 
 .qrWrapper {
     background: white;
-    padding: 15px;
+    padding: 20px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -655,320 +658,7 @@
 }
 
 /* Shape Icons */
-/* Shape Icons - Sprite System */
-.sprite {
-    display: inline-block;
-    background-image: url('/spritesheet.png');
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
 
-/* Body Shapes (90x80) */
-.spriteBody {
-    width: 90px;
-    height: 80px;
-    transform: scale(0.55);
-    /* Scale down for switcher */
-    transform-origin: center;
-}
-
-.spriteMosaic {
-    background-position: -5px -455px;
-}
-
-.spriteDot {
-    background-position: -105px -215px;
-}
-
-.spriteCircle {
-    background-position: -125px -125px;
-}
-
-.spriteSquare {
-    background-position: -505px -455px;
-}
-
-.spriteCircleZebra {
-    background-position: -225px -125px;
-}
-
-.spriteCircleZebraVertical {
-    background-position: -325px -125px;
-}
-
-.spriteCircular {
-    background-position: -425px -125px;
-}
-
-.spriteDiamond {
-    background-position: -5px -215px;
-}
-
-.spriteEdgeCut {
-    background-position: -205px -215px;
-}
-
-.spriteEdgeCutSmooth {
-    background-position: -305px -215px;
-}
-
-.spriteJapnese {
-    background-position: -185px -365px;
-}
-
-.spriteLeaf {
-    background-position: -485px -365px;
-}
-
-.spritePointed {
-    background-position: -105px -455px;
-}
-
-.spritePointedEdgeCut {
-    background-position: -205px -455px;
-}
-
-.spritePointedIn {
-    background-position: -305px -455px;
-}
-
-.spritePointedInSmooth {
-    background-position: -405px -455px;
-}
-
-.spritePointedSmooth {
-    background-position: -545px -5px;
-}
-
-.spriteRound {
-    background-position: -585px -95px;
-}
-
-.spriteRoundedIn {
-    background-position: -585px -185px;
-}
-
-.spriteRoundedInSmooth {
-    background-position: -585px -275px;
-}
-
-.spriteRoundedPointed {
-    background-position: -585px -365px;
-}
-
-.spriteStar {
-    background-position: -5px -545px;
-}
-
-/* Eye Frames (50x50) */
-.spriteFrame {
-    width: 50px;
-    height: 50px;
-    transform: scale(0.9);
-    /* Scale down slightly for switcher */
-    transform-origin: center;
-}
-
-.spriteFrame0 {
-    background-position: -525px -125px;
-}
-
-.spriteFrame1 {
-    background-position: -525px -185px;
-}
-
-.spriteFrame2 {
-    background-position: -245px -305px;
-}
-
-.spriteFrame3 {
-    background-position: -305px -305px;
-}
-
-.spriteFrame4 {
-    background-position: -365px -305px;
-}
-
-.spriteFrame5 {
-    background-position: -425px -305px;
-}
-
-.spriteFrame6 {
-    background-position: -485px -305px;
-}
-
-.spriteFrame7 {
-    background-position: -5px -365px;
-}
-
-.spriteFrame8 {
-    background-position: -65px -365px;
-}
-
-.spriteFrame9 {
-    background-position: -125px -365px;
-}
-
-.spriteFrame10 {
-    background-position: -405px -245px;
-}
-
-.spriteFrame11 {
-    background-position: -465px -245px;
-}
-
-.spriteFrame12 {
-    background-position: -525px -245px;
-}
-
-.spriteFrame13 {
-    background-position: -5px -305px;
-}
-
-.spriteFrame14 {
-    background-position: -65px -305px;
-}
-
-.spriteFrame15 {
-    background-position: -125px -305px;
-}
-
-.spriteFrame16 {
-    background-position: -185px -305px;
-}
-
-/* Eye Balls (50x50) */
-.spriteBall {
-    width: 50px;
-    height: 50px;
-    transform: scale(0.9);
-    /* Scale down slightly for switcher */
-    transform-origin: center;
-}
-
-.spriteBall0 {
-    background-position: -5px -5px;
-}
-
-.spriteBall1 {
-    background-position: -65px -5px;
-}
-
-.spriteBall2 {
-    background-position: -185px -65px;
-}
-
-.spriteBall3 {
-    background-position: -245px -65px;
-}
-
-.spriteBall4 {
-    background-position: -305px -65px;
-}
-
-.spriteBall5 {
-    background-position: -365px -65px;
-}
-
-.spriteBall6 {
-    background-position: -425px -65px;
-}
-
-.spriteBall7 {
-    background-position: -485px -65px;
-}
-
-.spriteBall8 {
-    background-position: -5px -125px;
-}
-
-.spriteBall9 {
-    background-position: -65px -125px;
-}
-
-.spriteBall10 {
-    background-position: -125px -5px;
-}
-
-.spriteBall11 {
-    background-position: -185px -5px;
-}
-
-.spriteBall12 {
-    background-position: -245px -5px;
-}
-
-.spriteBall13 {
-    background-position: -305px -5px;
-}
-
-.spriteBall14 {
-    background-position: -365px -5px;
-}
-
-.spriteBall15 {
-    background-position: -425px -5px;
-}
-
-.spriteBall16 {
-    background-position: -485px -5px;
-}
-
-.spriteBall17 {
-    background-position: -5px -65px;
-}
-
-.spriteBall18 {
-    background-position: -65px -65px;
-}
-
-.spriteBall19 {
-    background-position: -125px -65px;
-}
-
-.ballFlower {
-    width: 10px;
-    height: 10px;
-    background: currentColor;
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px white inset;
-}
-
-.ballLiquid {
-    width: 10px;
-    height: 10px;
-    background: currentColor;
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-}
-
-.ballClassy {
-    width: 11px;
-    height: 11px;
-    background: currentColor;
-    border-radius: 6px 1px 6px 1px;
-}
-
-.ballClassyRounded {
-    width: 11px;
-    height: 11px;
-    background: currentColor;
-    border-radius: 8px 3px 8px 3px;
-}
-
-/* Location Picker Styles */
-.frameJapanese {
-    width: 20px;
-    height: 20px;
-    background: currentColor;
-    clip-path: path('M 10 0 L 13 3 C 17.5 3 20 5.5 20 10 C 20 14.5 17.5 17 13 17 L 10 20 L 7 17 C 2.5 17 0 14.5 0 10 C 0 5.5 2.5 3 7 3 L 10 0 Z M 10 4 L 8 6 C 5 6 3.5 7.5 3.5 10 C 3.5 12.5 5 14 8 14 L 10 16 L 12 14 C 15 14 16.5 12.5 16.5 10 C 16.5 7.5 15 6 12 6 L 10 4 Z');
-}
-
-.ballJapanese {
-    width: 10px;
-    height: 10px;
-    background: currentColor;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-}
 
 .locationControls {
     display: flex;
