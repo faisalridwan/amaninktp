@@ -260,15 +260,20 @@ export default function MockupGeneratorPage() {
                             >
                                 {!image ? (
                                     <div
-                                        className={`${styles.dropzone} ${isDragging ? styles.dropzoneActive : ''}`}
+                                        className={`${styles.uploadArea} ${isDragging ? styles.uploadAreaActive : ''}`}
                                         onDragOver={handleDragOver}
                                         onDragLeave={handleDragLeave}
                                         onDrop={handleDrop}
                                         onClick={() => document.getElementById('image-upload').click()}
                                     >
-                                        <Upload size={48} className={styles.dropIcon} />
-                                        <h3 className={styles.dropText}>Klik atau Drag screenshot</h3>
-                                        <p className={styles.dropSubtext}>JPG, PNG, WebP</p>
+                                        <div className={styles.iconCircle}>
+                                            <ImageIcon size={40} strokeWidth={1.5} />
+                                        </div>
+                                        <h3 className={styles.uploadTitle}>Upload Screenshot</h3>
+                                        <p className={styles.uploadSubtitle}>Drag & drop atau klik untuk memilih</p>
+                                        <div className={styles.supportedTypes}>
+                                            <span>JPG</span><span>PNG</span><span>WEBP</span>
+                                        </div>
                                         <input type="file" id="image-upload" accept="image/*" onChange={handleFileSelect} hidden />
                                     </div>
                                 ) : (
