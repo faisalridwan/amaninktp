@@ -7,6 +7,9 @@ import {
     Smartphone as PhoneIcon, ChevronDown, ChevronUp
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 // --- Device Definitions ---
@@ -665,6 +668,11 @@ export default function MockupGeneratorPage() {
                                         className={styles.downloadBtn}
                                         onClick={downloadMockup}
                                         disabled={!image}
+                                        style={{
+                                            backgroundColor: frameColor && frameColor !== 'transparent' ? frameColor : 'var(--primary-dark)',
+                                            color: 'white',
+                                            textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                                        }}
                                     >
                                         <Download size={20} /> Download PNG
                                     </button>
@@ -682,7 +690,11 @@ export default function MockupGeneratorPage() {
                         </div>
                     </div>
                 </div>
+
+                <TrustSection />
+                <GuideSection toolId="mockup-generator" />
             </main>
+            <Footer />
         </>
     )
 }
