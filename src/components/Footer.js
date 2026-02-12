@@ -31,7 +31,6 @@ export default function Footer() {
         { href: '/merge', label: 'Gabung Dokumen', icon: FileStack },
         { href: '/nik-parser', label: 'Cek NIK', icon: User },
         { href: '/qrcode', label: 'QR Generator', icon: QrCode },
-
         { href: '/split', label: 'Split Dokumen', icon: ScissorsLineDashed },
         { href: '/rearrange', label: 'Rearrange Dokumen', icon: Move },
         { href: '/rotate', label: 'Rotate Dokumen', icon: RotateCw },
@@ -41,7 +40,6 @@ export default function Footer() {
         { href: '/color-picker', label: 'Color Picker', icon: Palette },
         { href: '/exif-remover', label: 'Hapus EXIF', icon: Trash2 },
         { href: '/ip-check', label: 'Cek IP', icon: Globe },
-
         { href: '/password-generator', label: 'Password Generator', icon: Shield },
         { href: '/encrypt', label: 'File Encryptor', icon: Lock },
     ]

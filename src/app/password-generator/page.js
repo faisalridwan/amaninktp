@@ -5,6 +5,9 @@ import {
     Copy, RefreshCw, Shield, Check, Lock, Settings, History
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function PasswordGeneratorPage() {
@@ -217,8 +220,11 @@ export default function PasswordGeneratorPage() {
                             </div>
                         </div>
                     )}
+                    <TrustSection />
+                    <GuideSection toolId="password-generator" />
                 </div>
             </main>
+            <Footer />
         </>
     )
 }

@@ -5,15 +5,17 @@ export default function GuideSection({
     title = "Bingung Caranya?",
     description = "Lihat panduan lengkap penggunaan tools ini.",
     linkHref = "/guide",
+    toolId = null,
     btnText = "Panduan Lengkap",
     btnColor = "primary" // primary, green
 }) {
+    const finalHref = toolId ? `/guide#${toolId}` : linkHref;
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>{title}</h2>
             <p className={styles.description}>{description}</p>
 
-            <Link href={linkHref} className={`${styles.btn} ${styles[btnColor]}`}>
+            <Link href={finalHref} className={`${styles.btn} ${styles[btnColor]}`}>
                 {btnText}
             </Link>
 

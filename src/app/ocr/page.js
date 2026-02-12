@@ -7,6 +7,9 @@ import {
     Image as ImageIcon, FileText, ChevronRight, Languages
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function OCRPage() {
@@ -236,7 +239,10 @@ export default function OCRPage() {
                         )}
                     </div>
                 </div>
+                <TrustSection />
+                <GuideSection toolId="ocr" />
             </main>
+            <Footer />
         </>
     )
 }

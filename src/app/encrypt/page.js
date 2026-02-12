@@ -5,6 +5,9 @@ import {
     Shield, Lock, Unlock, FileText, X, Eye, EyeOff, Key, Upload, Download, Check
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function EncryptPage() {
@@ -260,8 +263,11 @@ export default function EncryptPage() {
                             </div>
                         )}
                     </div>
+                    <TrustSection />
+                    <GuideSection toolId="encrypt" />
                 </div>
             </main>
+            <Footer />
         </>
     )
 }

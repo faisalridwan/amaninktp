@@ -5,6 +5,9 @@ import {
     Globe, Smartphone, Monitor, MapPin, Cpu, Wifi, Copy, Check, Shield
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function IPCheckPage() {
@@ -142,8 +145,11 @@ export default function IPCheckPage() {
                             </>
                         )}
                     </div>
+                    <TrustSection />
+                    <GuideSection toolId="ip-check" />
                 </div>
             </main>
+            <Footer />
         </>
     )
 }

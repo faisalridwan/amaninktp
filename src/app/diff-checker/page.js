@@ -6,6 +6,9 @@ import {
 } from 'lucide-react'
 import * as Diff from 'diff'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function DiffCheckerPage() {
@@ -108,8 +111,11 @@ export default function DiffCheckerPage() {
                             </div>
                         </div>
                     )}
+                    <TrustSection />
+                    <GuideSection toolId="diff-checker" />
                 </div>
             </main>
+            <Footer />
         </>
     )
 }

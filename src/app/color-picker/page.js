@@ -5,6 +5,9 @@ import {
     Pipette, Upload, Copy, Check, MousePointer2, Palette, Shield, Trash2
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function ColorPickerPage() {
@@ -250,7 +253,10 @@ export default function ColorPickerPage() {
                         </div>
                     </div>
                 </div>
+                <TrustSection />
+                <GuideSection toolId="color-picker" />
             </main>
+            <Footer />
         </>
     )
 }

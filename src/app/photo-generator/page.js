@@ -547,7 +547,7 @@ export default function PhotoGeneratorPage() {
                         </div>
                     )}
                     <TrustSection />
-                    <GuideSection linkHref="/guide#photo-generator" />
+                    <GuideSection toolId="photo-generator" />
                 </div>
             </main>
             <Footer />
