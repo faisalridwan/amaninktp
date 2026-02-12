@@ -13,12 +13,14 @@ import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 // --- Device Definitions ---
+// Dimensions based on real specs (approximate pixels)
 const DEVICES = {
     iphone15: {
         id: 'iphone15',
         name: 'iPhone 15 Pro',
         type: 'phone',
-        aspectRatio: 9 / 19.5,
+        width: 1179,
+        height: 2556,
         cornerRadius: 50,
         bezel: 12,
         frameColor: '#53504C', // Natural Titanium
@@ -28,7 +30,8 @@ const DEVICES = {
         id: 'iphone14',
         name: 'iPhone 14',
         type: 'phone',
-        aspectRatio: 9 / 19.5,
+        width: 1170,
+        height: 2532,
         cornerRadius: 40,
         bezel: 14,
         frameColor: '#1c1c1e',
@@ -38,7 +41,8 @@ const DEVICES = {
         id: 'pixel8',
         name: 'Pixel 8 Pro',
         type: 'phone',
-        aspectRatio: 9 / 20,
+        width: 1344,
+        height: 2992,
         cornerRadius: 28,
         bezel: 10,
         frameColor: '#3c4043',
@@ -48,7 +52,8 @@ const DEVICES = {
         id: 's24ultra',
         name: 'Galaxy S24 Ultra',
         type: 'phone',
-        aspectRatio: 9 / 19.5,
+        width: 1440,
+        height: 3120,
         cornerRadius: 4, // Sharp corners
         bezel: 8,
         frameColor: '#2C2C2C',
@@ -58,7 +63,8 @@ const DEVICES = {
         id: 'ipad',
         name: 'iPad Pro',
         type: 'tablet',
-        aspectRatio: 3 / 4,
+        width: 2048,
+        height: 2732,
         cornerRadius: 24,
         bezel: 20,
         frameColor: '#282828',
@@ -68,7 +74,8 @@ const DEVICES = {
         id: 'macbook',
         name: 'MacBook Pro',
         type: 'laptop',
-        aspectRatio: 16 / 10,
+        width: 3024,
+        height: 1964,
         cornerRadius: 16,
         bezel: 16, // Screen bezel
         frameColor: '#000000', // Screen border is black
@@ -78,7 +85,8 @@ const DEVICES = {
         id: 'browser',
         name: 'Safari Browser',
         type: 'browser',
-        aspectRatio: 16 / 9, // dynamic
+        // Dynamic stats
+        aspectRatio: 16 / 9,
         cornerRadius: 12,
         bezel: 0,
         frameColor: '#1e1e1e', // Dark mode header
@@ -88,6 +96,7 @@ const DEVICES = {
         id: 'simple',
         name: 'Simple Frame',
         type: 'simple',
+        // Dynamic
         aspectRatio: null,
         cornerRadius: 12,
         bezel: 0,
@@ -108,6 +117,9 @@ export default function MockupGeneratorPage() {
 
     // Scale / Resolution
     const [scale, setScale] = useState(2) // 1x, 2x, 3x, 4x
+
+    // Fit Mode: 'cover' (Crop to fill) or 'contain' (Fit whole image)
+    const [fitMode, setFitMode] = useState('cover')
 
     // Shadow
     const [shadowBlur, setShadowBlur] = useState(40)
@@ -159,7 +171,7 @@ export default function MockupGeneratorPage() {
         if (image) {
             drawMockup()
         }
-    }, [image, selectedDevice, bgColor, padding, borderRadius, shadowBlur, shadowOpacity, shadowOffsetY, frameColor, scale])
+    }, [image, selectedDevice, bgColor, padding, borderRadius, shadowBlur, shadowOpacity, shadowOffsetY, frameColor, scale, fitMode])
 
     const drawMockup = () => {
         const canvas = canvasRef.current
@@ -167,66 +179,59 @@ export default function MockupGeneratorPage() {
         if (!canvas || !ctx || !image) return
 
         const device = DEVICES[selectedDevice]
-        // Use user selected scale
+        // Use user selected scale. For retina devices like iPhone, 1x here means their logical resolution? 
+        // Actually typical approach: Base dimensions are high res (e.g. 1179px width), so scale=1 is already high res.
+        // User scale adds multiplier on top of that. 
+        // Let's treat DEVICES dimensions as the "Base 1x" canvas units.
         const pixelRatio = scale
 
         // 1. Calculate Content Size & Canvas Size
-        // Base max width for 1x
-        const BASE_WIDTH = 1200
-        let contentW = image.width
-        let contentH = image.height
+        let screenW, screenH
+        let frameW, frameH, screenX, screenY
 
-        // Constrain width if too large
-        if (contentW > BASE_WIDTH) {
-            contentH = contentH * (BASE_WIDTH / contentW)
-            contentW = BASE_WIDTH
+        if (device.width && device.height) {
+            // FIXED Dimensions (Phone/Tablet/Laptop)
+            screenW = device.width * pixelRatio
+            screenH = device.height * pixelRatio
+        } else if (device.type === 'browser') {
+            const BASE_WIDTH = 1920 // Full HD Base
+            screenW = BASE_WIDTH * pixelRatio
+            screenH = (BASE_WIDTH / device.aspectRatio) * pixelRatio
+        } else {
+            // Simple / Dynamic based on Image
+            const BASE_WIDTH = 1200
+            let contentW = image.width
+            let contentH = image.height
+            if (contentW > BASE_WIDTH) {
+                contentH = contentH * (BASE_WIDTH / contentW)
+                contentW = BASE_WIDTH
+            }
+            screenW = contentW * pixelRatio
+            screenH = contentH * pixelRatio
         }
 
-        // Scale up dimensions
-        contentW *= pixelRatio
-        contentH *= pixelRatio
-
-        let frameW, frameH, screenX, screenY, screenW, screenH
-
-        // Calculate geometry
+        // Calculate Frame Dimensions
         if (device.type === 'phone' || device.type === 'tablet') {
-            screenW = contentW
-            screenH = contentH
-            // Allow adaptable height for scrolling screenshots
-
             frameW = screenW + (device.bezel * pixelRatio * 2)
             frameH = screenH + (device.bezel * pixelRatio * 2)
             screenX = device.bezel * pixelRatio
             screenY = device.bezel * pixelRatio
-
         } else if (device.type === 'laptop') {
-            const headerH = 0
-            // We draw image as screen
-            screenW = contentW
-            screenH = contentH
-
-            // Screen Bezel
             const topBezel = device.bezel * pixelRatio
             const sideBezel = device.bezel * pixelRatio
             const bottomBezel = device.bezel * 1.5 * pixelRatio
 
             frameW = screenW + (sideBezel * 2)
             frameH = screenH + topBezel + bottomBezel
-
             screenX = sideBezel
             screenY = topBezel
-
         } else if (device.type === 'browser') {
             const headerH = 40 * pixelRatio
-            screenW = contentW
-            screenH = contentH
             frameW = screenW
             frameH = screenH + headerH
             screenX = 0
             screenY = headerH
         } else { // simple
-            screenW = contentW
-            screenH = contentH
             frameW = screenW
             frameH = screenH
             screenX = 0
@@ -237,24 +242,17 @@ export default function MockupGeneratorPage() {
         const totalW = frameW + (viewPadding * 2)
         const totalH = frameH + (viewPadding * 2)
 
-        // Lower Base (Keyboard) for Laptop
         let baseH = 0
         if (device.type === 'laptop') {
             baseH = 16 * pixelRatio
         }
 
         canvas.width = totalW
-        canvas.height = totalH + (baseH * 2) // Extra space for laptop base
+        canvas.height = totalH + (baseH * 2)
 
         // 2. Background
-        // Check if gradient or solid
         if (bgColor === 'transparent') {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-        } else if (bgColor.includes('gradient')) {
-            // Simple parsing for demo (needs better color picker for gradients)
-            // Fallback to solid for now until UI ready
-            ctx.fillStyle = bgColor
-            ctx.fillRect(0, 0, canvas.width, canvas.height)
         } else {
             ctx.fillStyle = bgColor
             ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -263,7 +261,7 @@ export default function MockupGeneratorPage() {
         // Translate to Frame Start
         ctx.translate(viewPadding, viewPadding)
 
-        // 3. Draw Shadow (Behind Frame)
+        // 3. Draw Shadow
         const cornerRadius = device.cornerRadius * pixelRatio
 
         ctx.save()
@@ -272,28 +270,20 @@ export default function MockupGeneratorPage() {
             ctx.shadowBlur = parseInt(shadowBlur) * pixelRatio
             ctx.shadowOffsetY = parseInt(shadowOffsetY) * pixelRatio
 
-            // Draw a shape to cast shadow
             ctx.fillStyle = frameColor || device.frameColor
-
-            if (device.type === 'browser' || device.type === 'laptop' || device.type === 'simple') {
-                roundRect(ctx, 0, 0, frameW, frameH, cornerRadius)
-                ctx.fill()
-            } else {
-                roundRect(ctx, 0, 0, frameW, frameH, cornerRadius)
-                ctx.fill()
-            }
+            roundRect(ctx, 0, 0, frameW, frameH, cornerRadius)
+            ctx.fill()
         }
         ctx.restore()
 
         // 4. Draw Device Frame
-        // Main Body
         ctx.fillStyle = frameColor || device.frameColor
         if (device.type === 'laptop') {
             // Screen Body
             roundRect(ctx, 0, 0, frameW, frameH, cornerRadius)
             ctx.fill()
 
-            // Base (Keyboard area projection)
+            // Base
             const baseDepth = 12 * pixelRatio
             const baseX = -20 * pixelRatio
             const baseWNew = frameW + (40 * pixelRatio)
@@ -302,17 +292,14 @@ export default function MockupGeneratorPage() {
             ctx.fillStyle = adjustColor(frameColor || device.frameColor, -20)
 
             ctx.beginPath()
-            ctx.moveTo(0, frameH - hingeH) // Hinge left
-            ctx.lineTo(frameW, frameH - hingeH) // Hinge right
+            ctx.moveTo(0, frameH - hingeH)
+            ctx.lineTo(frameW, frameH - hingeH)
             ctx.lineTo(baseX + baseWNew, frameH + baseDepth)
             ctx.lineTo(baseX, frameH + baseDepth)
             ctx.fill()
 
-            // Base Front
             ctx.fillStyle = adjustColor(frameColor || device.frameColor, -40)
             ctx.fillRect(baseX, frameH + baseDepth, baseWNew, 4 * pixelRatio)
-
-            // Reset for Screen
             ctx.fillStyle = frameColor || device.frameColor
 
         } else {
@@ -320,52 +307,75 @@ export default function MockupGeneratorPage() {
             ctx.fill()
         }
 
-        // 5. Side Buttons (Phones)
+        // 5. Side Buttons
         if (device.features.sideButtons) {
-            ctx.fillStyle = adjustColor(frameColor || device.frameColor, -20)
-            // Simple representation if needed, usually mostly visible from front
-            // drawing omitted for cleaner vector look unless requested
+            // Simplified side buttons logic if needed
         }
 
         // 6. Draw Content (Screen)
         ctx.save()
-
-        // Define Screen Path for Clipping
         ctx.beginPath()
+
         if (device.type === 'browser') {
             const headerH = 40 * pixelRatio
-            // Header
-            ctx.fillStyle = '#1e1e1e' // Fixed header color
-            // Clip top
+            ctx.fillStyle = '#1e1e1e'
             roundRect(ctx, 0, 0, frameW, headerH, cornerRadius, true, false)
             ctx.fill()
-
-            // Buttons
             drawTrafficLights(ctx, 20 * pixelRatio, 20 * pixelRatio, pixelRatio)
-
-            // Content Clip
             roundRect(ctx, 0, headerH, screenW, screenH, cornerRadius, false, true)
             ctx.clip()
-
-            ctx.drawImage(image, 0, headerH, screenW, screenH)
-
         } else if (device.type === 'simple') {
             const r = parseInt(borderRadius) * pixelRatio
             roundRect(ctx, 0, 0, screenW, screenH, r)
             ctx.clip()
-            ctx.drawImage(image, 0, 0, screenW, screenH)
         } else {
-            // Phone/Tablet/Laptop Screen Area
-            // Inner Radius calculation
             const innerRadius = Math.max(0, cornerRadius - (device.bezel * pixelRatio) + 2)
-
             roundRect(ctx, screenX, screenY, screenW, screenH, innerRadius)
             ctx.clip()
-            ctx.drawImage(image, screenX, screenY, screenW, screenH)
         }
+
+        // Draw Image - Object Fit Logic
+        // Destination Rect: screenX, screenY, screenW, screenH
+        // Source Image: image.width, image.height
+
+        let sX = 0, sY = 0, sW = image.width, sH = image.height
+
+        if (fitMode === 'cover') {
+            // Scale crop
+            const scaleW = screenW / image.width
+            const scaleH = screenH / image.height
+            const scale = Math.max(scaleW, scaleH)
+
+            const w = screenW / scale
+            const h = screenH / scale
+
+            sX = (image.width - w) / 2
+            sY = (image.height - h) / 2
+            sW = w
+            sH = h
+
+            ctx.drawImage(image, sX, sY, sW, sH, screenX, screenY, screenW, screenH)
+        } else {
+            // Contain
+            // Fill background black for letterboxing
+            ctx.fillStyle = '#000'
+            ctx.fillRect(screenX, screenY, screenW, screenH)
+
+            const scaleW = screenW / image.width
+            const scaleH = screenH / image.height
+            const scale = Math.min(scaleW, scaleH)
+
+            const dW = image.width * scale
+            const dH = image.height * scale
+            const dX = screenX + (screenW - dW) / 2
+            const dY = screenY + (screenH - dH) / 2
+
+            ctx.drawImage(image, 0, 0, image.width, image.height, dX, dY, dW, dH)
+        }
+
         ctx.restore()
 
-        // 7. Post-Pro Features (Notch, Dynamic Island, Reflections)
+        // 7. Post-Pro Features
         const cx = frameW / 2
         if (device.features.dynamicIsland) {
             drawDynamicIsland(ctx, cx, (device.bezel * pixelRatio) + (10 * pixelRatio), pixelRatio)
@@ -375,14 +385,12 @@ export default function MockupGeneratorPage() {
             drawPunchHole(ctx, cx, (device.bezel * pixelRatio) + (15 * pixelRatio), pixelRatio)
         }
 
-        // 8. Gloss/Reflection (Subtle)
+        // 8. Gloss
         if (device.type === 'phone' || device.type === 'tablet') {
-            // Diagonal Gradient
             const grad = ctx.createLinearGradient(0, 0, frameW, frameH)
             grad.addColorStop(0, 'rgba(255,255,255,0.05)')
             grad.addColorStop(0.5, 'rgba(255,255,255,0)')
             grad.addColorStop(1, 'rgba(255,255,255,0.02)')
-
             ctx.fillStyle = grad
             ctx.beginPath()
             roundRect(ctx, 0, 0, frameW, frameH, cornerRadius)
@@ -554,6 +562,26 @@ export default function MockupGeneratorPage() {
                                             className={styles.slider}
                                         />
                                     </div>
+
+                                    {(DEVICES[selectedDevice].width) && (
+                                        <div className={styles.controlGroup}>
+                                            <label className={styles.label}>Mode Gambar</label>
+                                            <div className={styles.scaleButtons}>
+                                                <button
+                                                    className={`${styles.scaleBtn} ${fitMode === 'cover' ? styles.scaleBtnActive : ''}`}
+                                                    onClick={() => setFitMode('cover')}
+                                                >
+                                                    Penuh (Crop)
+                                                </button>
+                                                <button
+                                                    className={`${styles.scaleBtn} ${fitMode === 'contain' ? styles.scaleBtnActive : ''}`}
+                                                    onClick={() => setFitMode('contain')}
+                                                >
+                                                    Fit (Utuh)
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {selectedDevice === 'simple' && (
                                         <div className={styles.controlGroup}>
