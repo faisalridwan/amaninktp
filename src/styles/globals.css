@@ -802,6 +802,11 @@ input[type="color"]::-webkit-color-swatch {
         --font-size-3xl: 1.75rem;
     }
 
+    h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
+        display: block;
+        margin-top: 4px;
+    }
+
     .neu-card {
         padding: var(--space-lg);
     }

@@ -829,7 +829,7 @@ export default function SignaturePage() {
                                     ))}
                                 </div>
                                 <div className={styles.widthControl}>
-                                    <span>{lineWidth}px</span>
+                                    <span>Lebar Pencil: {lineWidth}px</span>
                                     <input
                                         type="range"
                                         min="1"
