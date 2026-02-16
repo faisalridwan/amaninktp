@@ -1,7 +1,6 @@
 import { Poppins } from 'next/font/google'
 import '@/styles/globals.css'
 import Script from 'next/script'
-import GoogleAnalytics from '@/components/GoogleAnalytics'
 import ConsentModal from '@/components/ConsentModal'
 import JsonLd from '@/components/JsonLd'
 import { ThemeProvider } from '@/context/ThemeContext'
@@ -68,8 +67,19 @@ export default function RootLayout({ children }) {
                         crossOrigin="anonymous"
                         strategy="afterInteractive"
                     />
+                    <Script
+                        src="https://www.googletagmanager.com/gtag/js?id=G-YN17XSBEMY"
+                        strategy="afterInteractive"
+                    />
+                    <Script id="google-analytics" strategy="afterInteractive">
+                        {`
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', 'G-YN17XSBEMY');
+                        `}
+                    </Script>
                     <JsonLd />
-                    <GoogleAnalytics />
                     <ConsentModal />
                     {children}
                 </ThemeProvider>
