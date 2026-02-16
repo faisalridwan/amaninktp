@@ -841,7 +841,7 @@ export default function SignaturePage() {
                                 </div>
                             </div>
                             <div className={styles.controlsRight}>
-                                <div className={styles.widthControl} style={{ marginRight: 8, borderRight: '1px solid #eee', paddingRight: 8 }}>
+                                <div className={styles.heightControl}>
                                     <span>Tinggi: {canvasHeight}</span>
                                     <input
                                         type="range"

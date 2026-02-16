@@ -110,13 +110,10 @@
     position: absolute;
     bottom: calc(100% + 10px);
     left: 0;
-    background: var(--bg-primary);
-    border: 1px solid rgba(168, 197, 240, 0.4);
     border-radius: 16px;
     padding: 16px;
     width: 320px;
     /* Reduced width since simpler text */
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
     display: none;
     grid-template-columns: 1fr;
     /* Single column for cleaner list */
@@ -399,15 +396,13 @@
 }
 
 :global([data-theme="dark"]) .dropdownBtn {
-    background: var(--bg-secondary);
-    border-color: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
 }
 
 :global([data-theme="dark"]) .dropdownMenu {
-    background: var(--bg-secondary);
+
     border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+
 }
 
 :global([data-theme="dark"]) .menuItem:hover {
