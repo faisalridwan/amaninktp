@@ -5,7 +5,7 @@
 }
 
 .heroTitle {
-    font-size: 2.5rem;
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
@@ -71,7 +71,7 @@
 }
 
 .ipAddress {
-    font-size: 3.5rem;
+    font-size: var(--font-size-5xl);
     font-weight: 800;
     color: var(--primary-dark);
     font-family: monospace;
@@ -172,9 +172,5 @@
 @media (max-width: 600px) {
     .infoGrid {
         grid-template-columns: 1fr;
-    }
-
-    .ipAddress {
-        font-size: 2.5rem;
     }
 }

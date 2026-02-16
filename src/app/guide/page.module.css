@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    font-size: 32px;
+    font-size: var(--font-size-4xl);
     font-weight: 700;
     color: var(--text-primary);
     margin: 0 0 12px;
@@ -393,10 +393,6 @@
 }
 
 @media (max-width: 600px) {
-    .heroTitle {
-        font-size: 26px;
-    }
-
     .guidesGrid {
         grid-template-columns: 1fr;
     }

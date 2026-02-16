@@ -10,7 +10,7 @@
 }
 
 .heroTitle {
-    font-size: 2.5rem;
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
@@ -36,7 +36,7 @@
 }
 
 .title {
-    font-size: 2.5rem;
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 1rem;

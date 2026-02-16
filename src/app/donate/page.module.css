@@ -10,9 +10,9 @@
 }
 
 .heroTitle {
-    font-size: 42px;
+    font-size: var(--font-size-4xl);
     font-weight: 700;
-    color: #1E293B;
+    color: var(--text-primary);
     margin-bottom: 16px;
 }
 

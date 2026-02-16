@@ -11,7 +11,7 @@
 }
 
 .header h1 {
-    font-size: 36px;
+    font-size: var(--font-size-4xl);
     color: var(--text-primary);
     margin-bottom: 8px;
     display: flex;
@@ -584,10 +584,6 @@
         padding: 15px;
     }
 
-    .header h1 {
-        font-size: 28px;
-    }
-
     .uploadArea {
         padding: 50px 25px;
         margin: 20px auto;
@@ -682,10 +678,6 @@
 }
 
 @media (max-width: 480px) {
-    .header h1 {
-        font-size: 24px;
-    }
-
     .uploadArea {
         padding: 40px 20px;
     }

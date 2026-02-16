@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    font-size: 36px;
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     color: var(--text-primary);
     margin-bottom: 12px;
@@ -137,8 +137,6 @@
 
 @media (max-width: 640px) {
     .heroTitle {
-        font-size: 24px;
-        /* Smaller font for mobile */
         gap: 8px;
     }
 
