@@ -802,6 +802,12 @@ input[type="color"]::-webkit-color-swatch {
         --font-size-3xl: 1.75rem;
     }
 
+    h1, h2, h3, h4, h5, h6 {
+        flex-wrap: wrap;
+        line-height: 1.2;
+        justify-content: center;
+    }
+
     h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
         display: inline-block;
         white-space: nowrap;
