@@ -86,10 +86,8 @@ export default function SpeedTestPage() {
         }
     }
 
-    // Fast.com discovery helpers
     const fetchFastUrls = async () => {
         try {
-            // 1. Get token from Fast.com app JS via AllOrigins proxy
             const proxy = 'https://api.allorigins.win/get?url='
             const appUrl = encodeURIComponent('https://fast.com/app-a.js')
             const appRes = await fetch(`${proxy}${appUrl}`)
@@ -99,7 +97,7 @@ export default function SpeedTestPage() {
             if (!tokenMatch) throw new Error('Token not found')
             const token = tokenMatch[1]
 
-            // 2. Get server targets
+            // Match branchard/fast-speedtest-api endpoint
             const authUrl = encodeURIComponent(`https://api.fast.com/netflix/speedtest/v2?https=true&token=${token}&urlCount=5`)
             const authRes = await fetch(`${proxy}${authUrl}`)
             const authData = await authRes.json()
@@ -107,7 +105,7 @@ export default function SpeedTestPage() {
             
             return targets.map(t => t.url)
         } catch (e) {
-            console.error('Fast.com discovery failed, using fallback', e)
+            console.error('Fast.com discovery failed', e)
             return [
                 'https://upload.wikimedia.org/wikipedia/commons/3/3a/A_vivid_sunset_on_the_Pacific_Ocean._(5_MB).jpg',
                 'https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Earth_at_Night_-_View_from_Space_Panorama.jpg'
@@ -115,53 +113,65 @@ export default function SpeedTestPage() {
         }
     }
 
+    const average = (arr) => {
+        const filtered = arr.filter(e => e !== null)
+        if (filtered.length === 0) return 0
+        return filtered.reduce((a, b) => a + b) / filtered.length
+    }
+
     const measureDownload = async () => {
-        const totalDuration = 15000 // Fast.com style longer test for stability
+        const duration = 15000 
+        const bufferSize = 8
+        const maxCheckInterval = 200
+        const interval = Math.min(duration / bufferSize, maxCheckInterval)
+        
         const startTime = performance.now()
-        let snapshots = []
-        let activeStreams = new Map()
-        let cumulativeBytes = 0
+        let bytesSinceLastCheck = 0
+        let activeStreamsProgress = new Map()
+        let lastProgressPerStream = new Map()
 
         const resources = await fetchFastUrls()
 
         return new Promise((resolve) => {
             let running = true
             const maxParallel = 4
+            const recents = new Array(bufferSize).fill(null)
+            let recentsIdx = 0
 
-            const updateSpeed = () => {
-                if (!running) return
+            const updateSpeed = setInterval(() => {
+                if (!running) {
+                    clearInterval(updateSpeed)
+                    return
+                }
+
                 const now = performance.now()
                 const elapsed = (now - startTime) / 1000
 
-                let currentActive = 0
-                activeStreams.forEach(bytes => currentActive += bytes)
-                const totalLoaded = cumulativeBytes + currentActive
-
-                snapshots.push({ time: now, bytes: totalLoaded })
-                const windowSize = 1000 
-                snapshots = snapshots.filter(s => now - s.time <= windowSize)
-
-                if (snapshots.length > 1) {
-                    const first = snapshots[0]
-                    const last = snapshots[snapshots.length - 1]
-                    const timeDiff = (last.time - first.time) / 1000
-                    const byteDiff = last.bytes - first.bytes
-                    
-                    if (timeDiff > 100 / 1000) { // at least 100ms diff
-                        const mbps = (byteDiff * 8 / 1000000) / timeDiff
-                        setDownloadSpeed(parseFloat(mbps.toFixed(1)))
-                        setGaugeValue(mbps)
-                    }
-                }
+                // GitHub Flow logic:
+                // recents[i] = bytes / (interval / 1000)
+                // but we need to track bytes from progress events
                 
+                // Calculate speed in this specific interval
+                const bytesInThisInterval = bytesSinceLastCheck
+                bytesSinceLastCheck = 0 // Reset for next interval
+
+                const bps = bytesInThisInterval / (interval / 1000)
+                const mbps = (bps * 8) / 1000000
+
+                recents[recentsIdx] = mbps
+                recentsIdx = (recentsIdx + 1) % bufferSize
+
+                const avgMbps = average(recents)
+                setDownloadSpeed(parseFloat(avgMbps.toFixed(1)))
+                setGaugeValue(avgMbps)
                 setProgress(Math.min((elapsed / 15) * 100, 100))
+
                 if (elapsed >= 15) {
                     running = false
+                    clearInterval(updateSpeed)
                     resolve()
-                } else {
-                    setTimeout(updateSpeed, 100)
                 }
-            }
+            }, interval)
 
             const startRequest = (id) => {
                 if (!running) return
@@ -170,105 +180,100 @@ export default function SpeedTestPage() {
                 
                 xhr.open('GET', `${url}&t=${Date.now()}`, true)
                 xhr.responseType = 'blob'
+                
+                let lastLoaded = 0
                 xhr.onprogress = (event) => {
-                    if (running) activeStreams.set(id, event.loaded)
-                }
-                xhr.onload = () => {
                     if (running) {
-                        cumulativeBytes += activeStreams.get(id) || 0
-                        activeStreams.set(id, 0)
-                        startRequest(id)
+                        const delta = event.loaded - lastLoaded
+                        bytesSinceLastCheck += delta
+                        lastLoaded = event.loaded
                     }
                 }
-                xhr.onerror = () => {
+                xhr.onload = xhr.onerror = () => {
                     if (running) {
-                        activeStreams.set(id, 0)
                         startRequest(id)
                     }
                 }
                 xhr.send()
             }
 
-            updateSpeed()
             for (let i = 0; i < maxParallel; i++) {
                 startRequest(i)
             }
         })
     }
 
+    // Mirroring for upload as well for consistency
     const measureUpload = async () => {
-        const totalDuration = 10000
+        const duration = 10000
+        const bufferSize = 8
+        const maxCheckInterval = 200
+        const interval = Math.min(duration / bufferSize, maxCheckInterval)
+        
         const startTime = performance.now()
-        let snapshots = []
-        let cumulativeUploaded = 0
-        let activeUploads = new Map()
+        let bytesSinceLastCheck = 0
 
         return new Promise((resolve) => {
             let running = true
+            const recents = new Array(bufferSize).fill(null)
+            let recentsIdx = 0
 
-            const updateSpeed = () => {
-                if (!running) return
+            const updateSpeed = setInterval(() => {
+                if (!running) {
+                    clearInterval(updateSpeed)
+                    return
+                }
+
                 const now = performance.now()
                 const elapsed = (now - startTime) / 1000
 
-                let currentActive = 0
-                activeUploads.forEach(bytes => currentActive += bytes)
-                const totalTotal = cumulativeUploaded + currentActive
+                const bytesInThisInterval = bytesSinceLastCheck
+                bytesSinceLastCheck = 0
 
-                snapshots.push({ time: now, bytes: totalTotal })
-                snapshots = snapshots.filter(s => now - s.time <= 1000)
+                const bps = bytesInThisInterval / (interval / 1000)
+                const mbps = (bps * 8) / 1000000
 
-                if (snapshots.length > 1) {
-                    const first = snapshots[0]
-                    const last = snapshots[snapshots.length - 1]
-                    const timeDiff = (last.time - first.time) / 1000
-                    const byteDiff = last.bytes - first.bytes
-                    
-                    if (timeDiff > 0) {
-                        const mbps = (byteDiff * 8 / 1000000) / timeDiff
-                        setUploadSpeed(parseFloat(mbps.toFixed(1)))
-                        setGaugeValue(mbps)
-                    }
-                }
+                recents[recentsIdx] = mbps
+                recentsIdx = (recentsIdx + 1) % bufferSize
 
+                const avgMbps = average(recents)
+                setUploadSpeed(parseFloat(avgMbps.toFixed(1)))
+                setGaugeValue(avgMbps)
                 setProgress(Math.min((elapsed / 10) * 100, 100))
+
                 if (elapsed >= 10) {
                     running = false
+                    clearInterval(updateSpeed)
                     resolve()
-                } else {
-                    setTimeout(updateSpeed, 100)
                 }
-            }
+            }, interval)
 
-            const sendData = (id) => {
+            const sendData = () => {
                 if (!running) return
-                const size = 1024 * 1024 // 1MB chunks
+                const size = 1024 * 1024
                 const blob = new Blob([new Uint8Array(size).map(() => Math.floor(Math.random() * 255))])
                 const xhr = new XMLHttpRequest()
                 
                 xhr.open('POST', `https://speed.cloudflare.com/__up?t=${Date.now()}`, true)
+                
+                let lastLoaded = 0
                 xhr.upload.onprogress = (event) => {
-                    if (running) activeUploads.set(id, event.loaded)
-                }
-                xhr.onload = () => {
                     if (running) {
-                        cumulativeUploaded += size
-                        activeUploads.set(id, 0)
-                        sendData(id)
+                        const delta = event.loaded - lastLoaded
+                        bytesSinceLastCheck += delta
+                        lastLoaded = event.loaded
                     }
                 }
-                xhr.onerror = () => {
+                xhr.onload = xhr.onerror = () => {
                     if (running) {
-                        activeUploads.set(id, 0)
-                        sendData(id)
+                        sendData()
                     }
                 }
                 xhr.send(blob)
             }
 
-            updateSpeed()
             for (let i = 0; i < 2; i++) {
-                sendData(i)
+                sendData()
             }
         })
     }
