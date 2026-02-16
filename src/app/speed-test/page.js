@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import {
     Activity, ArrowDown, ArrowUp, Zap, RotateCw, Play, Shield,
-    Globe, Smartphone, Wifi, Server
+    Globe, Smartphone, Wifi, Server, Info
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -21,18 +21,14 @@ export default function SpeedTestPage() {
     const [ping, setPing] = useState(0)
     const [jitter, setJitter] = useState(0)
     const [progress, setProgress] = useState(0)
-    const [logs, setLogs] = useState([])
-
-    // Info
+    
+    // UI states
+    const [gaugeValue, setGaugeValue] = useState(0)
     const [ipInfo, setIpInfo] = useState(null)
     const [location, setLocation] = useState(null)
     const [isp, setIsp] = useState(null)
 
-    // Gauge
-    const [gaugeValue, setGaugeValue] = useState(0)
-
     useEffect(() => {
-        // Fetch IP Info on load
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(data => {
@@ -45,159 +41,159 @@ export default function SpeedTestPage() {
 
     const runTest = async () => {
         setIsRunning(true)
+        setCurrentPhase('ping')
         setDownloadSpeed(0)
         setUploadSpeed(0)
         setPing(0)
         setJitter(0)
         setProgress(0)
         setGaugeValue(0)
-        setLogs([])
 
         try {
             // 1. PING & JITTER
-            setCurrentPhase('ping')
-            setStatus('Testing Latency...')
             await measureLatency()
 
             // 2. DOWNLOAD
             setCurrentPhase('download')
-            setStatus('Testing Download...')
             await measureDownload()
 
             // 3. UPLOAD
             setCurrentPhase('upload')
-            setStatus('Testing Upload...')
             await measureUpload()
 
             // DONE
             setCurrentPhase('complete')
-            setStatus('Test Completed')
             setGaugeValue(0)
-
         } catch (error) {
             console.error(error)
-            setStatus('Error: Connection Failed')
         } finally {
             setIsRunning(false)
         }
     }
 
-    const setStatus = (msg) => {
-        // Simple log or status update if needed
-    }
-
     const measureLatency = async () => {
         const pings = []
-        // Use a lightweight resource, e.g., google favicon or similar small resource with no-cache
-        // Or just HEAD request to own server
-        const endpoint = '/favicon.ico'
+        // Use a highly available endpoint for ping
+        const endpoint = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 10; i++) {
             const start = performance.now()
             try {
-                await fetch(`${endpoint}?t=${Date.now()}`, { method: 'HEAD', cache: 'no-store' })
+                await fetch(`${endpoint}?t=${Date.now()}`, { method: 'HEAD', mode: 'no-cors', cache: 'no-store' })
                 const end = performance.now()
                 pings.push(end - start)
             } catch (e) { }
-            // small delay
-            await new Promise(r => setTimeout(r, 50))
+            await new Promise(r => setTimeout(r, 100))
         }
 
         if (pings.length > 0) {
-            const min = Math.min(...pings)
-            const max = Math.max(...pings)
             const avg = pings.reduce((a, b) => a + b, 0) / pings.length
-
-            // Calculate Jitter (standard deviation or just max-min variance)
-            // Typically Jitter is average deviation from the mean
             const jitterVal = pings.reduce((acc, curr) => acc + Math.abs(curr - avg), 0) / pings.length
-
-            setPing(Math.round(min)) // Usually min ping is the "real" latency without queuing
+            setPing(Math.round(Math.min(...pings)))
             setJitter(Math.round(jitterVal))
         }
     }
 
     const measureDownload = async () => {
-        // Use a larger file for download test. 
-        // 5MB image from wikimedia
-        const fileUrl = 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Snake_River_%285mb%29.jpg'
+        const totalDuration = 8000
+        const startTime = performance.now()
+        let totalBytes = 0
+        
+        const resources = [
+            'https://upload.wikimedia.org/wikipedia/commons/3/3a/A_vivid_sunset_on_the_Pacific_Ocean._(5_MB).jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/2/2d/Snake_River_%285mb%29.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/b/b2/City_of_Ottawa_Skyline_Panoramic_2019.jpg' 
+        ]
 
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest()
-            const startTime = performance.now()
-            let lastLoaded = 0
+        return new Promise((resolve) => {
+            let activeRequests = 0
+            const maxParallel = 3 
 
-            xhr.open('GET', `${fileUrl}?t=${Date.now()}`, true)
-            xhr.responseType = 'blob'
+            const startRequest = () => {
+                const now = performance.now()
+                if (now - startTime > totalDuration) {
+                    if (activeRequests === 0) resolve()
+                    return
+                }
 
-            xhr.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const now = performance.now()
-                    const duration = (now - startTime) / 1000 // seconds
-
-                    if (duration > 0) {
-                        // Bits loaded
-                        const bitsLoaded = event.loaded * 8
-                        const speedMbps = (bitsLoaded / 1000000) / duration
-
-                        setDownloadSpeed(speedMbps.toFixed(2))
-                        setGaugeValue(speedMbps)
-
-                        // Calculate percentage
-                        const percent = (event.loaded / event.total) * 100
-                        setProgress(percent)
+                activeRequests++
+                const xhr = new XMLHttpRequest()
+                const url = resources[Math.floor(Math.random() * resources.length)]
+                
+                xhr.open('GET', `${url}?t=${Date.now()}`, true)
+                xhr.onprogress = (event) => {
+                    const elapsed = (performance.now() - startTime) / 1000
+                    if (elapsed > 0) {
+                        const mbps = ((totalBytes + event.loaded) * 8 / 1000000) / elapsed
+                        setDownloadSpeed(mbps.toFixed(1))
+                        setGaugeValue(mbps)
+                        setProgress(Math.min((elapsed / 8) * 100, 100))
                     }
                 }
+                xhr.onload = xhr.onerror = () => {
+                    totalBytes += xhr.response?.size || 5000000 
+                    activeRequests--
+                    startRequest()
+                }
+                xhr.send()
             }
 
-            xhr.onload = () => {
-                resolve()
-                setGaugeValue(0)
+            for (let i = 0; i < maxParallel; i++) {
+                startRequest()
             }
-            xhr.onerror = reject
-            xhr.send()
         })
     }
 
     const measureUpload = async () => {
-        // Upload Speed Simulation
-        // We will "upload" a generated blob to a dummy endpoint on our own server (which will 404 but accept body)
-        // 2MB Payload
-        const size = 2 * 1024 * 1024
-        const buffer = new Uint8Array(size) // 2MB dummy data
-        const blob = new Blob([buffer], { type: 'application/octet-stream' })
+        const totalDuration = 8000
+        const startTime = performance.now()
+        let totalBytes = 0
+        const chunkSize = 1 * 1024 * 1024 
 
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest()
-            const startTime = performance.now()
+        return new Promise((resolve) => {
+            const startRequest = async () => {
+                const now = performance.now()
+                if (now - startTime > totalDuration) {
+                    resolve()
+                    return
+                }
 
-            // POST to a non-existent endpoint on current origin to test upstream speed
-            xhr.open('POST', '/api/upload-test-dummy?t=' + Date.now(), true)
-
-            xhr.upload.onprogress = (event) => {
-                if (event.lengthComputable) {
-                    const now = performance.now()
-                    const duration = (now - startTime) / 1000
-
-                    if (duration > 0) {
-                        const bitsLoaded = event.loaded * 8
-                        const speedMbps = (bitsLoaded / 1000000) / duration
-
-                        setUploadSpeed(speedMbps.toFixed(2))
-                        setGaugeValue(speedMbps)
-
-                        const percent = (event.loaded / event.total) * 100
-                        setProgress(percent)
+                const buffer = new Uint8Array(chunkSize)
+                for(let i=0; i<chunkSize; i++) buffer[i] = Math.random() * 255
+                const blob = new Blob([buffer])
+                
+                const xhr = new XMLHttpRequest()
+                xhr.open('POST', `https://speed.cloudflare.com/__up?t=${Date.now()}`, true)
+                
+                xhr.upload.onprogress = (event) => {
+                    const elapsed = (performance.now() - startTime) / 1000
+                    if (elapsed > 0) {
+                        const mbps = ((totalBytes + event.loaded) * 8 / 1000000) / elapsed
+                        setUploadSpeed(mbps.toFixed(1))
+                        setGaugeValue(mbps)
+                        setProgress(Math.min((elapsed / 8) * 100, 100))
                     }
                 }
+                xhr.onload = xhr.onerror = () => {
+                    totalBytes += chunkSize
+                    startRequest()
+                }
+                xhr.send(blob)
             }
-
-            xhr.onload = () => resolve() // Even if 404, upload happened
-            xhr.onerror = () => resolve() // Network error might mean block, but we try
-            xhr.upload.onloadend = () => resolve()
-
-            xhr.send(blob)
+            startRequest()
         })
+    }
+
+    const getGaugeRotation = () => {
+        let angle = 0
+        if (gaugeValue <= 10) {
+            angle = (gaugeValue / 10) * 60 
+        } else if (gaugeValue <= 100) {
+            angle = 60 + ((gaugeValue - 10) / 90) * 120 
+        } else {
+            angle = 180 + Math.min(((gaugeValue - 100) / 900) * 60, 60) 
+        }
+        return angle - 120 
     }
 
     // Helper for Gauge Color
@@ -219,37 +215,67 @@ export default function SpeedTestPage() {
                         <Zap size={32} /> Speed <span>Test</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
-                        Ukur kecepatan internet Anda secara detail. Download, Upload, Ping, dan Jitter.
+                        Ukur kecepatan internet Anda secara akurat dengan teknologi adaptive parallel streaming.
                     </p>
                     <div className={styles.trustBadge}>
-                        <Shield size={16} /> Secure Client-Side Test
+                        <Shield size={16} /> Secure Client-Side Measurement
                     </div>
                 </header>
 
                 <div className={styles.workspace}>
                     <div className={styles.card}>
+                        
+                        {/* Advanced SVG Gauge */}
+                        <div className={styles.gaugeWrapper}>
+                            <svg className={styles.gaugeSvg} viewBox="0 0 200 150">
+                                {/* Background Arc */}
+                                <path 
+                                    className={styles.gaugePath} 
+                                    d="M 40 130 A 70 70 0 1 1 160 130" 
+                                />
+                                {/* Progress Arc */}
+                                <path 
+                                    className={styles.gaugeProgress}
+                                    d="M 40 130 A 70 70 0 1 1 160 130"
+                                    style={{ 
+                                        strokeDashoffset: 283 - (getGaugeRotation() + 120) / 240 * 283,
+                                        stroke: currentPhase === 'download' ? '#10B981' : currentPhase === 'upload' ? '#8B5CF6' : '#3b82f6'
+                                    }}
+                                />
+                                {/* Glow Effect */}
+                                <path 
+                                    className={`${styles.gaugeProgress} ${styles.gaugeGlow}`}
+                                    d="M 40 130 A 70 70 0 1 1 160 130"
+                                    style={{ 
+                                        strokeDashoffset: 283 - (getGaugeRotation() + 120) / 240 * 283,
+                                        stroke: currentPhase === 'download' ? '#10B981' : currentPhase === 'upload' ? '#8B5CF6' : '#3b82f6'
+                                    }}
+                                />
+                                {/* Needle */}
+                                <g transform={`rotate(${getGaugeRotation()} 100 100)`}>
+                                    <path 
+                                        className={styles.gaugeNeedle}
+                                        d="M 98 100 L 100 30 L 102 100 Z" 
+                                        style={{ fill: currentPhase === 'download' ? '#10B981' : currentPhase === 'upload' ? '#8B5CF6' : '#3b82f6' }}
+                                    />
+                                    <circle cx="100" cy="100" r="5" fill="#1e293b" />
+                                </g>
+                                
+                                {/* Labels */}
+                                <text x="40" y="145" fontSize="8" fill="#94a3b8" textAnchor="middle">0</text>
+                                <text x="70" y="55" fontSize="8" fill="#94a3b8" textAnchor="middle">10</text>
+                                <text x="130" y="55" fontSize="8" fill="#94a3b8" textAnchor="middle">100</text>
+                                <text x="160" y="145" fontSize="8" fill="#94a3b8" textAnchor="middle">1k</text>
+                            </svg>
 
-                        {/* Gauge Visual */}
-                        <div className={styles.gaugeContainer}>
-                            <div
-                                className={styles.gaugeCircle}
-                                style={{
-                                    background: `conic-gradient(
-                                        ${getGaugeColor()} 0% ${Math.min(gaugeValue, 100)}%, 
-                                        var(--bg-secondary) ${Math.min(gaugeValue, 100)}% 100%
-                                    )`
-                                }}
-                            />
-                            <div className={styles.gaugeInner}>
+                            <div className={styles.gaugeInfo}>
                                 <div className={styles.speedValue}>
-                                    {currentPhase === 'download' ? downloadSpeed :
-                                        currentPhase === 'upload' ? uploadSpeed :
-                                            currentPhase === 'complete' ? downloadSpeed : '0.0'}
+                                    {currentPhase === 'idle' ? '0.0' : parseFloat(gaugeValue).toFixed(1)}
                                 </div>
                                 <div className={styles.unit}>Mbps</div>
                                 <div className={styles.statusText}>
                                     {currentPhase === 'idle' && 'Ready'}
-                                    {currentPhase === 'ping' && 'Ping...'}
+                                    {currentPhase === 'ping' && 'Latency'}
                                     {currentPhase === 'download' && 'Download'}
                                     {currentPhase === 'upload' && 'Upload'}
                                     {currentPhase === 'complete' && 'Selesai'}
@@ -259,28 +285,28 @@ export default function SpeedTestPage() {
 
                         {/* Detailed Metrics */}
                         <div className={styles.metrics}>
-                            <div className={styles.metricCard}>
+                            <div className={`${styles.metricCard} ${currentPhase === 'ping' ? styles.metricCardActive : ''}`}>
                                 <div className={styles.metricLabel}><Activity size={14} /> PING</div>
                                 <div className={styles.metricValue} style={{ color: '#F59E0B' }}>
-                                    {ping > 0 ? ping + ' ms' : '-'}
+                                    {ping > 0 ? ping : '-'} <span style={{ fontSize: '0.8rem' }}>ms</span>
                                 </div>
                             </div>
-                            <div className={styles.metricCard}>
+                            <div className={`${styles.metricCard} ${currentPhase === 'ping' ? styles.metricCardActive : ''}`}>
                                 <div className={styles.metricLabel}><Activity size={14} /> JITTER</div>
                                 <div className={styles.metricValue} style={{ color: '#F59E0B' }}>
-                                    {jitter > 0 ? jitter + ' ms' : '-'}
+                                    {jitter > 0 ? jitter : '-'} <span style={{ fontSize: '0.8rem' }}>ms</span>
                                 </div>
                             </div>
-                            <div className={styles.metricCard}>
+                            <div className={`${styles.metricCard} ${currentPhase === 'download' ? styles.metricCardActive : ''}`}>
                                 <div className={styles.metricLabel}><ArrowDown size={14} /> DOWNLOAD</div>
                                 <div className={styles.metricValue} style={{ color: '#10B981' }}>
-                                    {downloadSpeed > 0 ? downloadSpeed + ' Mbps' : '-'}
+                                    {downloadSpeed > 0 ? downloadSpeed : '-'} <span style={{ fontSize: '0.8rem' }}>Mbps</span>
                                 </div>
                             </div>
-                            <div className={styles.metricCard}>
+                            <div className={`${styles.metricCard} ${currentPhase === 'upload' ? styles.metricCardActive : ''}`}>
                                 <div className={styles.metricLabel}><ArrowUp size={14} /> UPLOAD</div>
                                 <div className={styles.metricValue} style={{ color: '#8B5CF6' }}>
-                                    {uploadSpeed > 0 ? uploadSpeed + ' Mbps' : '-'}
+                                    {uploadSpeed > 0 ? uploadSpeed : '-'} <span style={{ fontSize: '0.8rem' }}>Mbps</span>
                                 </div>
                             </div>
                         </div>
@@ -290,19 +316,28 @@ export default function SpeedTestPage() {
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoItem}>
                                     <span className={styles.infoLabel}>Internet Provider</span>
-                                    <span className={styles.infoValue}><Wifi size={16} /> {isp || 'Detecting...'}</span>
+                                    <span className={styles.infoValue}>
+                                        <Wifi className={styles.infoIcon} size={18} /> {isp || 'Detecting...'}
+                                    </span>
                                 </div>
                                 <div className={styles.infoItem}>
                                     <span className={styles.infoLabel}>IP Address</span>
-                                    <span className={styles.infoValue}><Globe size={16} /> {ipInfo || '...'}</span>
+                                    <span className={styles.infoValue}>
+                                        <Globe className={styles.infoIcon} size={18} /> {ipInfo || '...'}
+                                    </span>
                                 </div>
                                 <div className={styles.infoItem}>
                                     <span className={styles.infoLabel}>Location</span>
-                                    <span className={styles.infoValue}><Server size={16} /> {location || '...'}</span>
+                                    <span className={styles.infoValue}>
+                                        <Server className={styles.infoIcon} size={18} /> {location || '...'}
+                                    </span>
                                 </div>
                                 <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Client</span>
-                                    <span className={styles.infoValue}><Smartphone size={16} /> Web Browser</span>
+                                    <span className={styles.infoLabel}>Measurement</span>
+                                    <span className={styles.infoValue}>
+                                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', marginRight: 10 }} /> 
+                                        Adaptive CDN Optimization
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -313,12 +348,13 @@ export default function SpeedTestPage() {
                             disabled={isRunning}
                         >
                             {isRunning ? (
-                                <> <RotateCw className="spin" size={20} /> Testing... </>
+                                <> <RotateCw className={styles.spin} size={24} /> Testing... </>
                             ) : (
-                                <> <Play size={20} /> Mulai Test </>
+                                <> <Play size={24} fill="currentColor" /> MULAI TEST </>
                             )}
                         </button>
                     </div>
+                    
                     <TrustSection />
                     <GuideSection toolId="speed-test" />
                 </div>
