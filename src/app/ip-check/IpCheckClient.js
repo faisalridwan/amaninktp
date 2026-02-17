@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import {
-    Globe, Smartphone, Monitor, MapPin, Cpu, Wifi, Copy, Check, Shield
+    Globe, Smartphone, Monitor, MapPin, Cpu, Wifi, Copy, Check, Shield, 
+    Clock, Map, Flag, Hash, DollarSign, Languages as LanguagesIcon, Server
 } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -20,42 +21,13 @@ export default function IPCheckPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Try ipapi.co (Rich Data)
-                const res = await fetch('https://ipapi.co/json/')
-                if (!res.ok) throw new Error('ipapi.co failed')
+                const res = await fetch('https://freeipapi.com/api/json')
+                if (!res.ok) throw new Error('Failed to fetch IP data')
                 const data = await res.json()
                 setIpData(data)
             } catch (err) {
-                console.warn('ipapi.co failed, trying ipwho.is...')
-                try {
-                    // 2. Try ipwho.is (Rich Data Fallback)
-                    const res2 = await fetch('https://ipwho.is/')
-                    if (!res2.ok) throw new Error('ipwho.is failed')
-                    const data2 = await res2.json()
-                    
-                    if (!data2.success) throw new Error('ipwho.is returned error')
-
-                    setIpData({
-                        ip: data2.ip,
-                        city: data2.city,
-                        region: data2.region,
-                        country_name: data2.country,
-                        org: data2.connection?.isp || data2.connection?.org,
-                        asn: data2.connection?.asn
-                    })
-                } catch (err2) {
-                    console.warn('ipwho.is failed, trying ipify...')
-                    try {
-                        // 3. Try ipify (Minimal Data Fallback)
-                        const res3 = await fetch('https://api.ipify.org?format=json')
-                        if (!res3.ok) throw new Error('ipify failed')
-                        const data3 = await res3.json()
-                        setIpData({ ip: data3.ip })
-                    } catch (err3) {
-                        console.error('All IP APIs failed', err3)
-                        setError('Gagal memuat data IP. Pastikan koneksi aman dan tidak ada AdBlocker yang memblokir akses ke API IP publik.')
-                    }
-                }
+                console.error(err)
+                setError('Gagal memuat data IP. Silakan coba lagi nanti.')
             } finally {
                 setLoading(false)
             }
@@ -87,8 +59,8 @@ export default function IPCheckPage() {
     }, [])
 
     const copyIP = () => {
-        if (ipData?.ip) {
-            navigator.clipboard.writeText(ipData.ip)
+        if (ipData?.ipAddress) {
+            navigator.clipboard.writeText(ipData.ipAddress)
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         }
@@ -119,8 +91,8 @@ export default function IPCheckPage() {
                         {!loading && ipData && (
                             <>
                                 <div className={styles.ipDisplay}>
-                                    <div className={styles.ipLabel}>Public IP Address</div>
-                                    <div className={styles.ipAddress}>{ipData.ip}</div>
+                                    <div className={styles.ipLabel}>Public IP Address ({ipData.ipVersion === 4 ? 'IPv4' : 'IPv6'})</div>
+                                    <div className={styles.ipAddress}>{ipData.ipAddress}</div>
                                     <button className={styles.copyBtn} onClick={copyIP}>
                                         {copied ? <Check size={16} /> : <Copy size={16} />}
                                         {copied ? 'Disalin' : 'Salin IP'}
@@ -128,18 +100,69 @@ export default function IPCheckPage() {
                                 </div>
 
                                 <div className={styles.infoGrid}>
+                                    {/* Location */}
                                     <div className={styles.infoCard}>
                                         <div className={styles.cardIcon}><MapPin size={24} /></div>
                                         <div className={styles.cardLabel}>Lokasi</div>
                                         <div className={styles.cardValue}>
-                                            {ipData.city || '-'}, {ipData.region || '-'}, {ipData.country_name || '-'}
+                                            {ipData.cityName}, {ipData.regionName} {ipData.zipCode}
                                         </div>
                                     </div>
                                     <div className={styles.infoCard}>
-                                        <div className={styles.cardIcon}><Wifi size={24} /></div>
-                                        <div className={styles.cardLabel}>ISP / Provider</div>
-                                        <div className={styles.cardValue}>{ipData.org || ipData.asn || '-'}</div>
+                                        <div className={styles.cardIcon}><Flag size={24} /></div>
+                                        <div className={styles.cardLabel}>Negara</div>
+                                        <div className={styles.cardValue}>
+                                            {ipData.countryName} ({ipData.countryCode})
+                                        </div>
                                     </div>
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><Map size={24} /></div>
+                                        <div className={styles.cardLabel}>Koordinat</div>
+                                        <div className={styles.cardValue}>
+                                            {ipData.latitude}, {ipData.longitude}
+                                        </div>
+                                    </div>
+
+                                    {/* Network */}
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><Server size={24} /></div>
+                                        <div className={styles.cardLabel}>ASN / Org</div>
+                                        <div className={styles.cardValue}>
+                                            AS{ipData.asn} {ipData.asnOrganization}
+                                        </div>
+                                    </div>
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><Shield size={24} /></div>
+                                        <div className={styles.cardLabel}>Proxy / VPN</div>
+                                        <div className={styles.cardValue} style={{ color: ipData.isProxy ? '#ef4444' : '#22c55e', fontWeight: 'bold' }}>
+                                            {ipData.isProxy ? 'Terdeteksi' : 'Aman (Tidak Terdeteksi)'}
+                                        </div>
+                                    </div>
+
+                                    {/* Regional */}
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><Clock size={24} /></div>
+                                        <div className={styles.cardLabel}>Zona Waktu</div>
+                                        <div className={styles.cardValue}>
+                                            {ipData.timeZones ? ipData.timeZones.join(', ') : '-'}
+                                        </div>
+                                    </div>
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><DollarSign size={24} /></div>
+                                        <div className={styles.cardLabel}>Mata Uang</div>
+                                        <div className={styles.cardValue}>
+                                            {ipData.currencies ? ipData.currencies.join(', ') : '-'}
+                                        </div>
+                                    </div>
+                                    <div className={styles.infoCard}>
+                                        <div className={styles.cardIcon}><LanguagesIcon size={24} /></div>
+                                        <div className={styles.cardLabel}>Bahasa</div>
+                                        <div className={styles.cardValue}>
+                                            {ipData.languages ? ipData.languages.join(', ') : '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Device Info (Client Side) */}
                                     <div className={styles.infoCard}>
                                         <div className={styles.cardIcon}><Monitor size={24} /></div>
                                         <div className={styles.cardLabel}>Sistem Operasi</div>
@@ -152,15 +175,8 @@ export default function IPCheckPage() {
                                     </div>
                                     <div className={styles.infoCard}>
                                         <div className={styles.cardIcon}><Smartphone size={24} /></div>
-                                        <div className={styles.cardLabel}>Resolusi Layar</div>
+                                        <div className={styles.cardLabel}>Screen</div>
                                         <div className={styles.cardValue}>{deviceInfo?.screen}</div>
-                                    </div>
-                                    <div className={styles.infoCard}>
-                                        <div className={styles.cardIcon}><Cpu size={24} /></div>
-                                        <div className={styles.cardLabel}>User Agent</div>
-                                        <div className={styles.cardValue} style={{ fontSize: '0.8rem', wordBreak: 'break-all' }}>
-                                            {deviceInfo?.userAgent.substring(0, 50)}...
-                                        </div>
                                     </div>
                                 </div>
                             </>
