@@ -21,37 +21,40 @@ export default function IPCheckPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Try freeipapi.com (Direct URL to avoid redirect loop/CORS issues)
-                const res = await fetch('https://free.freeipapi.com/api/json')
+                // 1. Try ip-api.com (Primary - Requested by user)
+                // Note: This is HTTP only for free tier. May fail on HTTPS sites (Mixed Content).
+                // We request specific fields including currency and timezone.
+                const res = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,query')
                 
                 if (res.ok) {
                     const data = await res.json()
-                    setIpData({
-                        ipAddress: data.ipAddress,
-                        ipVersion: data.ipVersion,
-                        cityName: data.cityName,
-                        regionName: data.regionName,
-                        zipCode: data.zipCode,
-                        countryName: data.countryName,
-                        countryCode: data.countryCode,
-                        latitude: data.latitude,
-                        longitude: data.longitude,
-                        asn: data.asn,
-                        asnOrganization: data.asnOrganization,
-                        isProxy: data.isProxy,
-                        timeZones: data.timeZones,
-                        currencies: data.currencies,
-                        languages: data.languages
-                    })
-                    return // Exit if successful
-                } else {
-                     console.warn(`freeipapi failed: ${res.status}, trying ipapi.co...`)
+                    if (data.status === 'success') {
+                        setIpData({
+                            ipAddress: data.query,
+                            ipVersion: 4, // ip-api.com free is IPv4 only usually
+                            cityName: data.city,
+                            regionName: data.regionName,
+                            zipCode: data.zip,
+                            countryName: data.country,
+                            countryCode: data.countryCode,
+                            latitude: data.lat,
+                            longitude: data.lon,
+                            asn: data.as, // e.g., "AS1234 ISP Name"
+                            asnOrganization: data.org || data.isp,
+                            isProxy: false, // Not provided by free ip-api
+                            timeZones: [data.timezone],
+                            currencies: [data.currency],
+                            languages: ['en'] // Not provided
+                        })
+                        return // Exit if successful
+                    }
                 }
+                 console.warn(`ip-api.com failed or status not success`)
             } catch (err) {
-                 console.warn('freeipapi error:', err)
+                 console.warn('ip-api.com error (likely Mixed Content on HTTPS):', err)
             }
 
-            // 2. Fallback: ipapi.co
+            // 2. Fallback: ipapi.co (HTTPS supported)
             try {
                 const res = await fetch('https://ipapi.co/json/')
                 if (res.ok) {
@@ -66,7 +69,7 @@ export default function IPCheckPage() {
                         countryCode: data.country_code,
                         latitude: data.latitude,
                         longitude: data.longitude,
-                        asn: data.asn?.replace('AS', ''),
+                        asn: data.asn,
                         asnOrganization: data.org,
                         isProxy: false, 
                         timeZones: [data.timezone],
