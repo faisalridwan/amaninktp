@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://amanindata.qreatip.com/sitemap.xml
