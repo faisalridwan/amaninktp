@@ -83,34 +83,64 @@ export default function SpeedTestPage() {
             const jitterVal = pings.reduce((acc, curr) => acc + Math.abs(curr - avg), 0) / pings.length
             setPing(Math.round(Math.min(...pings)))
             setJitter(Math.round(jitterVal))
-        }
     }
 
+    // Fast.com discovery helpers with robust fallback
     const fetchFastUrls = async () => {
-        try {
-            const proxy = 'https://api.allorigins.win/get?url='
+        const proxies = [
+            'https://api.allorigins.win/get?url=',
+            'https://corsproxy.io/?',
+            'https://cors.lol/?url='
+        ]
+
+        const tryDiscovery = async (proxy) => {
             const appUrl = encodeURIComponent('https://fast.com/app-a.js')
             const appRes = await fetch(`${proxy}${appUrl}`)
-            const appData = await appRes.json()
-            const tokenMatch = appData.contents.match(/token:"([^"]+)"/)
             
+            let appContent = ''
+            if (proxy.includes('allorigins')) {
+                const data = await appRes.json()
+                appContent = data.contents
+            } else {
+                appContent = await appRes.text()
+            }
+
+            const tokenMatch = appContent.match(/token:"([^"]+)"/)
             if (!tokenMatch) throw new Error('Token not found')
             const token = tokenMatch[1]
 
-            // Match branchard/fast-speedtest-api endpoint
             const authUrl = encodeURIComponent(`https://api.fast.com/netflix/speedtest/v2?https=true&token=${token}&urlCount=5`)
             const authRes = await fetch(`${proxy}${authUrl}`)
-            const authData = await authRes.json()
-            const targets = JSON.parse(authData.contents).targets
             
+            let authContent = ''
+            if (proxy.includes('allorigins')) {
+                const data = await authRes.json()
+                authContent = data.contents
+            } else {
+                authContent = await authRes.text()
+            }
+
+            const targets = JSON.parse(authContent).targets
             return targets.map(t => t.url)
-        } catch (e) {
-            console.error('Fast.com discovery failed', e)
-            return [
-                'https://upload.wikimedia.org/wikipedia/commons/3/3a/A_vivid_sunset_on_the_Pacific_Ocean._(5_MB).jpg',
-                'https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Earth_at_Night_-_View_from_Space_Panorama.jpg'
-            ]
         }
+
+        for (const proxy of proxies) {
+            try {
+                console.log(`Attempting discovery via ${proxy}`)
+                return await tryDiscovery(proxy)
+            } catch (e) {
+                console.warn(`Discovery failed for ${proxy}, trying next...`, e)
+            }
+        }
+
+        // Final Fallback: Reliable high-bandwidth CDN resources
+        console.error('All Fast.com discovery methods failed. Using fallback CDN resources.')
+        return [
+            'https://upload.wikimedia.org/wikipedia/commons/3/3a/A_vivid_sunset_on_the_Pacific_Ocean._(5_MB).jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/e/ea/The_Earth_at_Night_-_View_from_Space_Panorama.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/b/b2/City_of_Ottawa_Skyline_Panoramic_2019.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/b/b6/F-15C_Eagle_Sand_and_Sky.jpg'
+        ]
     }
 
     const average = (arr) => {
@@ -177,8 +207,9 @@ export default function SpeedTestPage() {
                 if (!running) return
                 const xhr = new XMLHttpRequest()
                 const url = resources[Math.floor(Math.random() * resources.length)]
+                const finalUrl = url.includes('?') ? `${url}&t=${Date.now()}` : `${url}?t=${Date.now()}`
                 
-                xhr.open('GET', `${url}&t=${Date.now()}`, true)
+                xhr.open('GET', finalUrl, true)
                 xhr.responseType = 'blob'
                 
                 let lastLoaded = 0
@@ -438,4 +469,5 @@ export default function SpeedTestPage() {
             <Footer />
         </>
     )
+}
 }
