@@ -31,7 +31,7 @@ export default function WordCounterClient() {
         <div className={styles.container}>
             <Navbar />
             <main className={styles.main}>
-                <h1 className={styles.heroTitle}>📝 Word Counter<span>Online</span></h1>
+                <h1 className={styles.heroTitle}>📝 Word Counter <span>Online</span></h1>
                 <p className={styles.description}>
                     Hitung jumlah kata, karakter, dan estimasi waktu baca secara real-time.
                 </p>
