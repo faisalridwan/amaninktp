@@ -7,7 +7,7 @@ import {
     FileImage, PenTool, BookOpen, Shield, Info, Heart, Menu, X, Minimize2,
     EyeOff, User, Camera, ChevronDown, FileStack, Grid, Scissors, QrCode,
     Move, RotateCw, ScissorsLineDashed, Lock, Globe, RefreshCw, Trash2,
-    Palette, Smartphone, FileDiff, Zap, ScanText
+    Palette, Smartphone, FileDiff, Zap, ScanText, Sigma, FileEdit, ListOrdered, Fingerprint, Braces
 } from 'lucide-react'
 import styles from './Navbar.module.css'
 import ThemeToggle from './ThemeToggle'
@@ -44,7 +44,13 @@ export default function Navbar() {
         { href: '/color-picker', label: 'Color Picker', icon: Palette, desc: 'Ambil kode warna dari gambar.' },
         { href: '/exif-remover', label: 'Hapus EXIF', icon: Trash2, desc: 'Hapus metadata lokasi & kamera dari foto.' },
         { href: '/diff-checker', label: 'Diff Checker', icon: FileDiff, desc: 'Bandingkan perbedaan dua teks.' },
-        { href: '/ip-check', label: 'Cek IP Saya', icon: Globe, desc: 'Lihat public IP & info perangkat.' }
+        { href: '/ip-check', label: 'Cek IP Saya', icon: Globe, desc: 'Lihat public IP & info perangkat.' },
+        { href: '/latex-editor', label: 'LaTeX Editor', icon: Sigma, desc: 'Tulis rumus matematika & export gambar.' },
+        { href: '/bulk-renamer', label: 'Bulk Renamer', icon: FileEdit, desc: 'Rename banyak file sekaligus.' },
+        { href: '/pdf-page-number', label: 'PDF Numberer', icon: ListOrdered, desc: 'Tambah nomor halaman PDF otomatis.' },
+        { href: '/css-gradient', label: 'CSS Gradient', icon: Palette, desc: 'Buat & copy kode gradasi warna CSS.' },
+        { href: '/hash-generator', label: 'Hash Generator', icon: Fingerprint, desc: 'Generate MD5/SHA checksum.' },
+        { href: '/json-formatter', label: 'JSON Formatter', icon: Braces, desc: 'Format, validate, & minify JSON.' }
     ]
 
     // Info/Footer Items in Dropdown

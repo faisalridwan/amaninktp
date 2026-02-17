@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2, Scissors, ScissorsLineDashed, Move, RotateCw, Lock, RefreshCw, Smartphone, Palette, Trash2, FileDiff, Zap, Globe, Type } from 'lucide-react'
+import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2, Scissors, ScissorsLineDashed, Move, RotateCw, Lock, RefreshCw, Smartphone, Palette, Trash2, FileDiff, Zap, Globe, Type, Sigma, FileEdit, ListOrdered, Fingerprint, Braces } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -408,6 +408,96 @@ export default function GuidePage() {
         }
     ]
 
+    const latexSteps = [
+        {
+            title: 'Tulis LaTeX',
+            desc: <>Masukkan kode LaTeX pada kolom input. Preview rumus akan muncul secara otomatis di sebelah kanan.</>
+        },
+        {
+            title: 'Kustomisasi',
+            desc: <>Rumus akan dirender menggunakan KaTeX yang presisi. Pastikan sintaks LaTeX Anda benar.</>
+        },
+        {
+            title: 'Download',
+            desc: <>Klik tombol <strong>Download PNG</strong> untuk menyimpan rumus sebagai gambar transparan berkualitas tinggi.</>
+        }
+    ]
+
+    const renamerSteps = [
+        {
+            title: 'Upload File',
+            desc: <>Upload banyak file sekaligus yang ingin Anda ganti namanya.</>
+        },
+        {
+            title: 'Atur Pola',
+            desc: <>Tentukan <strong>Prefix</strong> (awalan), <strong>Suffix</strong> (akhiran), atau ganti teks tertentu. Anda juga bisa mengaktifkan penomoran otomatis.</>
+        },
+        {
+            title: 'Proses & Download',
+            desc: <>Lihat preview nama baru. Jika sudah sesuai, klik tombol <strong>Download All (ZIP)</strong> untuk mengunduh semua file yang sudah direname.</>
+        }
+    ]
+
+    const pdfNumberSteps = [
+        {
+            title: 'Upload PDF',
+            desc: <>Upload file PDF yang ingin Anda beri nomor halaman.</>
+        },
+        {
+            title: 'Atur Posisi',
+            desc: <>Pilih posisi nomor halaman (e.g. Bawah Tengah, Atas Kanan) dan atur ukuran font.</>
+        },
+        {
+            title: 'Proses',
+            desc: <>Klik tombol <strong>Proses & Download</strong>. Nomor halaman akan ditambahkan secara otomatis ke setiap halaman dokumen.</>
+        }
+    ]
+
+    const gradientSteps = [
+        {
+            title: 'Pilih Warna',
+            desc: <>Tambahkan atau kurangi titik warna (color stop) dan atur warnanya menggunakan color picker.</>
+        },
+        {
+            title: 'Atur Arah/Tipe',
+            desc: <>Pilih tipe gradasi (Linear/Radial) dan atur sudut kemiringannya.</>
+        },
+        {
+            title: 'Salin Kode',
+            desc: <>Salin kode CSS yang dihasilkan untuk digunakan langsung pada project website Anda.</>
+        }
+    ]
+
+    const hashSteps = [
+        {
+            title: 'Pilih Input',
+            desc: <>Pilih tab <strong>Text Input</strong> untuk teks, atau <strong>File Input</strong> untuk file.</>
+        },
+        {
+            title: 'Generate Checksum',
+            desc: <>Ketik teks atau upload file. Sistem akan otomatis menghitung hash MD5, SHA-1, SHA-256, dan SHA-512.</>
+        },
+        {
+            title: 'Verifikasi',
+            desc: <>Bandingkan kode hash yang muncul dengan hash asli untuk memverifikasi integritas file.</>
+        }
+    ]
+
+    const jsonSteps = [
+        {
+            title: 'Paste JSON',
+            desc: <>Tempelkan kode JSON Anda (yang mungkin berantakan) ke kolom Input.</>
+        },
+        {
+            title: 'Format / Minify',
+            desc: <>Klik <strong>Format (2/4)</strong> untuk merapikan, atau <strong>Minify</strong> untuk memadatkan kode.</>
+        },
+        {
+            title: 'Validasi',
+            desc: <>Jika format JSON salah, sistem akan menampilkan pesan error. Jika benar, Anda bisa menyalin hasilnya.</>
+        }
+    ]
+
     return (
         <>
             <Navbar />
@@ -523,6 +613,36 @@ export default function GuidePage() {
                                 <li>
                                     <a href="#ip-check">
                                         <Globe size={16} /> Cek IP
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#latex-editor">
+                                        <Sigma size={16} /> LaTeX Editor
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#bulk-renamer">
+                                        <FileEdit size={16} /> Bulk Renamer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#pdf-page-number">
+                                        <ListOrdered size={16} /> PDF Numberer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#css-gradient">
+                                        <Palette size={16} /> CSS Gradient
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#hash-generator">
+                                        <Fingerprint size={16} /> Hash Gen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#json-formatter">
+                                        <Braces size={16} /> JSON Fmt
                                     </a>
                                 </li>
                                 <li>
@@ -971,7 +1091,7 @@ export default function GuidePage() {
                             <div id="ip-check" className={`neu-card no-hover ${styles.guideCard}`}>
                                 <div className={styles.cardHeader}>
                                     <Globe size={24} className={styles.iconBlue} />
-                                    <h2>Panduan Cek IP</h2>
+                                    <h2 id="ip-check">Panduan Cek IP Saya</h2>
                                 </div>
                                 <div className={styles.stepList}>
                                     {ipCheckSteps.map((step, index) => (
@@ -986,6 +1106,138 @@ export default function GuidePage() {
                                 </div>
                                 <div className={styles.cardFooter}>
                                     <a href="/ip-check" className={`${styles.actionBtn} ${styles.btnAlt}`}>Cek IP Saya</a>
+                                </div>
+                            </div>
+
+                            {/* LaTeX Guide */}
+                            <div id="latex-editor" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Sigma size={24} className={styles.iconBlue} />
+                                    <h2 id="latex-editor">Panduan LaTeX Editor</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {latexSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/latex-editor" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka LaTeX Editor</a>
+                                </div>
+                            </div>
+
+                            {/* Bulk Renamer Guide */}
+                            <div id="bulk-renamer" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <FileEdit size={24} className={styles.iconBlue} />
+                                    <h2 id="bulk-renamer">Panduan Bulk Renamer</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {renamerSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/bulk-renamer" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka Bulk Renamer</a>
+                                </div>
+                            </div>
+
+                            {/* PDF Numberer Guide */}
+                            <div id="pdf-page-number" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <ListOrdered size={24} className={styles.iconBlue} />
+                                    <h2 id="pdf-page-number">Panduan PDF Numberer</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {pdfNumberSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/pdf-page-number" className={`${styles.actionBtn} ${styles.btnAlt}`}>Beri Nomor PDF</a>
+                                </div>
+                            </div>
+
+                            {/* CSS Gradient Guide */}
+                            <div id="css-gradient" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Palette size={24} className={styles.iconBlue} />
+                                    <h2 id="css-gradient">Panduan CSS Gradient</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {gradientSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/css-gradient" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buat Gradient</a>
+                                </div>
+                            </div>
+
+                            {/* Hash Generator Guide */}
+                            <div id="hash-generator" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Fingerprint size={24} className={styles.iconBlue} />
+                                    <h2 id="hash-generator">Panduan Hash Generator</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {hashSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/hash-generator" className={`${styles.actionBtn} ${styles.btnAlt}`}>Generate Hash</a>
+                                </div>
+                            </div>
+
+                            {/* JSON Formatter Guide */}
+                            <div id="json-formatter" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Braces size={24} className={styles.iconBlue} />
+                                    <h2 id="json-formatter">Panduan JSON Formatter</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    {jsonSteps.map((step, index) => (
+                                        <div key={index} className={styles.stepItem}>
+                                            <div className={styles.stepNumber}>{index + 1}</div>
+                                            <div className={styles.stepContent}>
+                                                <h3>{step.title}</h3>
+                                                <p>{step.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/json-formatter" className={`${styles.actionBtn} ${styles.btnAlt}`}>Format JSON</a>
                                 </div>
                             </div>
                         </div>

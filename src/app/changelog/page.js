@@ -1,12 +1,86 @@
 'use client'
 
-import { History, GitBranch, Sparkles, Shield, Monitor, Smartphone, Globe, Heart, Minimize2, EyeOff, Scissors, Layout, QrCode, ScissorsLineDashed, Move, RotateCw } from 'lucide-react'
+import { History, GitBranch, Sparkles, Shield, Monitor, Smartphone, Globe, Heart, Minimize2, EyeOff, Scissors, Layout, QrCode, ScissorsLineDashed, Move, RotateCw, Sigma, FileEdit, ListOrdered, Braces, Fingerprint, Palette, Trash2, FileDiff, Type, RefreshCw, FileStack, Search, Lock } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 export default function ChangelogPage() {
     const changelog = [
+        {
+            version: '1.9.1',
+            date: '17 Februari 2026',
+            title: 'Creative & Developer Tools',
+            description: 'Memperkenalkan 6 tools baru untuk produktivitas developer dan konten kreator, serta perbaikan UI dan integrasi KaTeX.',
+            changes: [
+                { icon: Sigma, text: 'LaTeX Editor: Tulis rumus matematika kompleks dan export menjadi gambar PNG/SVG transparan dengan KaTeX.' },
+                { icon: FileEdit, text: 'Bulk Renamer: Ganti nama banyak file sekaligus dengan pola prefix, suffix, dan penomoran otomatis.' },
+                { icon: ListOrdered, text: 'PDF Page Numberer: Tambahkan nomor halaman pada dokumen PDF dengan posisi dan font yang dapat dikustomisasi.' },
+                { icon: Palette, text: 'CSS Gradient Generator: Buat gradasi warna CSS linear/radial yang indah secara visual.' },
+                { icon: Braces, text: 'JSON Formatter: Format, validasi, dan minify data JSON dengan highlight syntax error.' },
+                { icon: Fingerprint, text: 'Hash Generator: Cek integritas file dengan checksum MD5, SHA-1, SHA-256, dan SHA-512.' },
+                { icon: Monitor, text: 'UI Update: Standardisasi desain Hero Section untuk semua halaman tool.' }
+            ]
+        },
+        {
+            version: '1.8.0',
+            date: '16 Februari 2026',
+            title: 'Network & Privacy Tools',
+            description: 'Penambahan alat untuk jaringan dan privasi metadata foto.',
+            changes: [
+                { icon: Globe, text: 'IP Check: Lihat informasi detail Public IP, ISP, dan Lokasi Anda.' },
+                { icon: Trash2, text: 'Exif Remover: Hapus metadata lokasi GPS dan info kamera sensitif dari foto sebelum diupload ke sosmed.' }
+            ]
+        },
+        {
+            version: '1.7.0',
+            date: '15 Februari 2026',
+            title: 'Visual Tools Update',
+            description: 'Fitur baru untuk desainer dan developer web.',
+            changes: [
+                { icon: Palette, text: 'Color Picker: Ambil sampel warna dari gambar/layar (EyeDropper API) dan dapatkan kode HEX/RGB.' },
+                { icon: FileDiff, text: 'Diff Checker: Bandingkan perbedaan antara dua teks kode atau dokumen secara side-by-side.' }
+            ]
+        },
+        {
+            version: '1.6.0',
+            date: '14 Februari 2026',
+            title: 'Device Mockup Generator',
+            description: 'Membuat presentasi desain aplikasi lebih profesional.',
+            changes: [
+                { icon: Smartphone, text: 'Device Mockup: Bingkai screenshot aplikasi ke dalam frame HP (iPhone/Android) atau Laptop yang realistik.' }
+            ]
+        },
+        {
+            version: '1.5.0',
+            date: '13 Februari 2026',
+            title: 'Conversion Tools',
+            description: 'Konversi format gambar dan ekstraksi teks dengan AI.',
+            changes: [
+                { icon: Type, text: 'OCR (Image to Text): Ekstrak tulisan dari gambar scan dokumen atau foto papan tulis.' },
+                { icon: RefreshCw, text: 'Image Converter: Ubah format modern web (HEIC, WebP) menjadi format standar (JPG, PNG) agar kompatibel.' }
+            ]
+        },
+        {
+            version: '1.4.0',
+            date: '12 Februari 2026',
+            title: 'Security Suite',
+            description: 'Peningkatan fitur keamanan data pribadi.',
+            changes: [
+                { icon: Shield, text: 'Password Generator: Buat password acak yang kuat dengan kustomisasi karakter.' },
+                { icon: Lock, text: 'File Encryptor: Amankan file rahasia dengan enkripsi AES-GCM standar militer.' }
+            ]
+        },
+        {
+            version: '1.3.0',
+            date: '11 Februari 2026',
+            title: 'Document Processing Update',
+            description: 'Fitur penggabungan dan analisis dokumen kependudukan.',
+            changes: [
+                { icon: FileStack, text: 'Merge PDF: Gabungkan banyak file PDF dan Gambar menjadi satu dokumen utuh.' },
+                { icon: Search, text: 'NIK Parser: Cek informasi daerah, tanggal lahir, dan jenis kelamin dari nomor KTP (tanpa koneksi database pemerintah).' }
+            ]
+        },
         {
             version: '1.2.0',
             date: '10 Februari 2026',

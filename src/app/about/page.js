@@ -2,7 +2,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FileImage, Shield, CreditCard, Users, FileText, Building, File, Upload, Crop, Type, Palette, Download, Move, RotateCcw, PenTool, Eraser, Lock, Server, Zap, Trash2, Heart, Code, Camera, Scissors, FileStack, EyeOff, User, Minimize2, CheckCircle, Smartphone, Globe, QrCode, RotateCw, ScissorsLineDashed, RefreshCw, FileDiff } from 'lucide-react'
+import { FileImage, Shield, CreditCard, Users, FileText, Building, File, Upload, Crop, Type, Palette, Download, Move, RotateCcw, PenTool, Eraser, Lock, Server, Zap, Trash2, Heart, Code, Camera, Scissors, FileStack, EyeOff, User, Minimize2, CheckCircle, Smartphone, Globe, QrCode, RotateCw, ScissorsLineDashed, RefreshCw, FileDiff, Sigma, FileEdit, ListOrdered, Fingerprint, Braces } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import styles from './page.module.css'
@@ -11,7 +11,7 @@ export default function AboutPage() {
     const stats = [
         { value: '100%', label: 'Gratis Selamanya' },
         { value: '0', label: 'Data Disimpan' },
-        { value: '20+', label: 'Tools Produktif' },
+        { value: '27+', label: 'Tools Produktif' },
     ]
 
     const tools = [
@@ -140,6 +140,42 @@ export default function AboutPage() {
             title: 'Rotate Dokumen',
             desc: 'Putar halaman PDF yang miring atau terbalik secara permanen & aman.',
             href: '/rotate'
+        },
+        {
+            icon: Sigma,
+            title: 'LaTeX Editor',
+            desc: 'Tulis rumus matematika kompleks dan export menjadi gambar PNG/SVG transparan.',
+            href: '/latex-editor'
+        },
+        {
+            icon: FileEdit,
+            title: 'Bulk Renamer',
+            desc: 'Ganti nama banyak file sekaligus dengan pola prefix, suffix, dan penomoran.',
+            href: '/bulk-renamer'
+        },
+        {
+            icon: ListOrdered,
+            title: 'PDF Page Numberer',
+            desc: 'Tambahkan nomor halaman otomatis pada dokumen PDF dengan posisi kustom.',
+            href: '/pdf-page-number'
+        },
+        {
+            icon: Palette,
+            title: 'CSS Gradient Generator',
+            desc: 'Buat gradasi warna CSS yang indah secara visual dan salin kodenya.',
+            href: '/css-gradient'
+        },
+        {
+            icon: Fingerprint,
+            title: 'Hash Generator',
+            desc: 'Generate checksum MD5, SHA-1, SHA-256 untuk verifikasi integritas file/teks.',
+            href: '/hash-generator'
+        },
+        {
+            icon: Braces,
+            title: 'JSON Formatter',
+            desc: 'Format, validasi, dan minify data JSON Anda agar mudah dibaca.',
+            href: '/json-formatter'
         }
     ]
 
@@ -201,7 +237,7 @@ export default function AboutPage() {
                 {/* All Tools Section */}
                 <section className={styles.featureSection}>
                     <h2 className={styles.sectionTitle}>
-                        <Zap size={24} /> 21 Tools dalam 1 Aplikasi - <span>Amanin Data</span>
+                        <Zap size={24} /> 27 Tools dalam 1 Aplikasi - <span>Amanin Data</span>
                     </h2>
                     <p className={styles.sectionDesc}>
                         Tidak perlu install banyak aplikasi. Semua kebutuhan dokumen digital Anda ada di sini.

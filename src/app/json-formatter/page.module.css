@@ -1,0 +1,152 @@
+
+.container {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    min-height: 100vh;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.heroTitle {
+    font-size: var(--font-size-4xl);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.heroSubtitle {
+    color: var(--text-muted);
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 0 auto;
+    max-width: 1200px;
+    height: 70vh;
+}
+
+@media (max-width: 768px) {
+    .workspace {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+.pane {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+[data-theme='dark'] .pane {
+    background: #1e1e1e;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+.paneHeader {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7fafc;
+}
+
+[data-theme='dark'] .paneHeader {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.paneTitle {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme='dark'] .paneTitle {
+    color: #a0aec0;
+}
+
+.paneControls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.editor {
+    flex: 1;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    resize: none;
+    font-family: 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    outline: none;
+    background: #fff;
+    color: #2d3748;
+}
+
+[data-theme='dark'] .editor {
+    background: #1a202c;
+    color: #e2e8f0;
+}
+
+.btnAction {
+    background: #edf2f7;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+[data-theme='dark'] .btnAction {
+    background: #4a5568;
+    color: #e2e8f0;
+}
+
+.btnAction:hover {
+    background: #e2e8f0;
+}
+
+[data-theme='dark'] .btnAction:hover {
+    background: #2d3748;
+}
+
+.btnPrimary {
+    background: #3182ce;
+    color: white;
+}
+
+.btnPrimary:hover {
+    background: #2c5282;
+}
+
+.errorMsg {
+    color: #e53e3e;
+    font-size: 0.9rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

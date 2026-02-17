@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User, Scissors, QrCode, Move, RotateCw, ScissorsLineDashed, ChevronUp, Grid, Lock, RefreshCw, Smartphone, FileDiff, Zap, Palette, Trash2, Globe, Camera } from 'lucide-react'
+import { FileImage, PenTool, BookOpen, Info, HelpCircle, FileStack, Shield, Library, Mail, Heart, FileText, Github, GitBranch, Minimize2, EyeOff, User, Scissors, QrCode, Move, RotateCw, ScissorsLineDashed, ChevronUp, Grid, Lock, RefreshCw, Smartphone, FileDiff, Zap, Palette, Trash2, Globe, Camera, Sigma, FileEdit, ListOrdered, Fingerprint, Braces } from 'lucide-react'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -41,6 +41,12 @@ export default function Footer() {
         { href: '/ip-check', label: 'Cek IP', icon: Globe },
         { href: '/password-generator', label: 'Password Generator', icon: Shield },
         { href: '/encrypt', label: 'File Encryptor', icon: Lock },
+        { href: '/latex-editor', label: 'LaTeX Editor', icon: Sigma },
+        { href: '/bulk-renamer', label: 'Bulk Renamer', icon: FileEdit },
+        { href: '/pdf-page-number', label: 'PDF Numberer', icon: ListOrdered },
+        { href: '/css-gradient', label: 'CSS Gradient', icon: Palette },
+        { href: '/hash-generator', label: 'Hash Generator', icon: Fingerprint },
+        { href: '/json-formatter', label: 'JSON Formatter', icon: Braces },
     ]
 
     return (
