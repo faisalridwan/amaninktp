@@ -21,13 +21,96 @@ export default function IPCheckPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // 1. Try freeipapi.com (Primary - Rich Data)
+                // Note: Using https to ensure secure connection and avoid mixed content
                 const res = await fetch('https://freeipapi.com/api/json')
-                if (!res.ok) throw new Error('Failed to fetch IP data')
-                const data = await res.json()
-                setIpData(data)
+                
+                if (res.ok) {
+                    const data = await res.json()
+                    setIpData(data)
+                    return // Exit if successful
+                } else {
+                    console.warn('freeipapi.com failed, trying ipapi.co...')
+                }
             } catch (err) {
-                console.error(err)
-                setError('Gagal memuat data IP. Silakan coba lagi nanti.')
+                 console.warn('freeipapi.com error:', err)
+            }
+
+            // 2. Fallback: ipapi.co
+            try {
+                const res = await fetch('https://ipapi.co/json/')
+                if (res.ok) {
+                    const data = await res.json()
+                    // Normalize data structure to match freeipapi as much as possible
+                    setIpData({
+                        ipAddress: data.ip,
+                        ipVersion: data.version === 'IPv6' ? 6 : 4,
+                        cityName: data.city,
+                        regionName: data.region,
+                        zipCode: data.postal,
+                        countryName: data.country_name,
+                        countryCode: data.country_code,
+                        latitude: data.latitude,
+                        longitude: data.longitude,
+                        asn: data.asn?.replace('AS', ''),
+                        asnOrganization: data.org,
+                        isProxy: false, // ipapi.co doesn't provide this in free tier easily
+                        timeZones: [data.timezone],
+                        currencies: [data.currency],
+                        languages: [data.languages ? data.languages.split(',')[0] : 'en']
+                    })
+                    return
+                }
+            } catch (err) {
+                 console.warn('ipapi.co error:', err)
+            }
+
+           // 3. Fallback: ipwho.is
+           try {
+                const res = await fetch('https://ipwho.is/')
+                if (res.ok) {
+                    const data = await res.json()
+                    if (data.success) {
+                         setIpData({
+                            ipAddress: data.ip,
+                            ipVersion: 4, // ipwho.is usually IPv4
+                            cityName: data.city,
+                            regionName: data.region,
+                            zipCode: data.postal,
+                            countryName: data.country,
+                            countryCode: data.country_code,
+                            latitude: data.latitude,
+                            longitude: data.longitude,
+                            asn: data.connection?.asn,
+                            asnOrganization: data.connection?.org,
+                            isProxy: false,
+                            timeZones: [data.timezone?.id],
+                            currencies: [data.currency?.code],
+                            languages: ['en']
+                        })
+                        return
+                    }
+                }
+           } catch (err) {
+                 console.warn('ipwho.is error:', err)
+           }
+
+            // 4. Final Fallback: ipify (Minimal)
+            try {
+                const res = await fetch('https://api.ipify.org?format=json')
+                if (res.ok) {
+                    const data = await res.json()
+                    setIpData({ 
+                        ipAddress: data.ip,
+                        cityName: '-', regionName: '-', countryName: '-', 
+                        ipVersion: 4 
+                    })
+                } else {
+                    throw new Error('All IP APIs failed')
+                }
+            } catch (err) {
+                console.error('Final fallback failed', err)
+                setError('Gagal memuat data IP. Pastikan koneksi aman dan tidak ada AdBlocker.')
             } finally {
                 setLoading(false)
             }
