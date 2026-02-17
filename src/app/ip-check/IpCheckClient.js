@@ -20,20 +20,41 @@ export default function IPCheckPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Get IP Data
+                // 1. Try ipapi.co (Rich Data)
                 const res = await fetch('https://ipapi.co/json/')
-                if (!res.ok) throw new Error('Failed to fetch IP data')
+                if (!res.ok) throw new Error('ipapi.co failed')
                 const data = await res.json()
                 setIpData(data)
             } catch (err) {
-                console.error(err)
-                // Fallback if ipapi.co fails (e.g. adblocker)
+                console.warn('ipapi.co failed, trying ipwho.is...')
                 try {
-                    const res2 = await fetch('https://api.ipify.org?format=json')
+                    // 2. Try ipwho.is (Rich Data Fallback)
+                    const res2 = await fetch('https://ipwho.is/')
+                    if (!res2.ok) throw new Error('ipwho.is failed')
                     const data2 = await res2.json()
-                    setIpData({ ip: data2.ip })
+                    
+                    if (!data2.success) throw new Error('ipwho.is returned error')
+
+                    setIpData({
+                        ip: data2.ip,
+                        city: data2.city,
+                        region: data2.region,
+                        country_name: data2.country,
+                        org: data2.connection?.isp || data2.connection?.org,
+                        asn: data2.connection?.asn
+                    })
                 } catch (err2) {
-                    setError('Gagal memuat data IP. Pastikan tidak ada AdBlocker.')
+                    console.warn('ipwho.is failed, trying ipify...')
+                    try {
+                        // 3. Try ipify (Minimal Data Fallback)
+                        const res3 = await fetch('https://api.ipify.org?format=json')
+                        if (!res3.ok) throw new Error('ipify failed')
+                        const data3 = await res3.json()
+                        setIpData({ ip: data3.ip })
+                    } catch (err3) {
+                        console.error('All IP APIs failed', err3)
+                        setError('Gagal memuat data IP. Pastikan koneksi aman dan tidak ada AdBlocker yang memblokir akses ke API IP publik.')
+                    }
                 }
             } finally {
                 setLoading(false)
