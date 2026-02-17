@@ -1,10 +1,14 @@
 .footer {
-    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    margin-top: 120px;
-    /* Increased from space-2xl to detach from content */
-    border-top: 1px solid rgba(168, 197, 240, 0.4);
+    background: linear-gradient(180deg, var(--bg-primary) 0%, #f7fafc 100%);
+    margin-top: 80px;
+    border-top: 1px solid #e2e8f0;
     position: relative;
-    /* For z-index context if needed */
+    padding-top: 60px;
+}
+
+[data-theme='dark'] .footer {
+    background: linear-gradient(180deg, var(--bg-primary) 0%, #111827 100%);
+    border-top: 1px solid #2d3748;
 }
 
 .footerContent {
@@ -240,8 +244,16 @@
     background: var(--bg-secondary);
     border-radius: 24px;
     padding: 48px;
-    box-shadow: 8px 8px 24px rgba(174, 186, 202, 0.15), -8px -8px 24px rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme='dark'] .ctaContainer {
+    background: #1f2937; /* Darker than bg-secondary */
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    border: 1px solid #374151;
 }
 
 .ctaText h2 {
