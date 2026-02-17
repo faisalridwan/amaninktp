@@ -13,8 +13,6 @@ export function ThemeProvider({ children }) {
         const stored = localStorage.getItem('theme')
         if (stored) {
             setTheme(stored)
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTheme('dark')
         }
     }, [])
 
