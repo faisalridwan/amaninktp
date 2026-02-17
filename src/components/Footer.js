@@ -36,7 +36,6 @@ export default function Footer() {
         { href: '/rotate', label: 'Rotate Dokumen', icon: RotateCw },
         { href: '/mockup-generator', label: 'Device Mockup', icon: Smartphone },
         { href: '/diff-checker', label: 'Diff Checker', icon: FileDiff },
-        { href: '/speed-test', label: 'Speed Test', icon: Zap },
         { href: '/color-picker', label: 'Color Picker', icon: Palette },
         { href: '/exif-remover', label: 'Hapus EXIF', icon: Trash2 },
         { href: '/ip-check', label: 'Cek IP', icon: Globe },

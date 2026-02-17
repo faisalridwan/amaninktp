@@ -44,7 +44,6 @@ export default function Navbar() {
         { href: '/color-picker', label: 'Color Picker', icon: Palette, desc: 'Ambil kode warna dari gambar.' },
         { href: '/exif-remover', label: 'Hapus EXIF', icon: Trash2, desc: 'Hapus metadata lokasi & kamera dari foto.' },
         { href: '/diff-checker', label: 'Diff Checker', icon: FileDiff, desc: 'Bandingkan perbedaan dua teks.' },
-        { href: '/speed-test', label: 'Speed Test', icon: Zap, desc: 'Cek kecepatan internet & ping.' },
         { href: '/ip-check', label: 'Cek IP Saya', icon: Globe, desc: 'Lihat public IP & info perangkat.' }
     ]
 

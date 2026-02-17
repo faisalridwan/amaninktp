@@ -392,20 +392,6 @@ export default function GuidePage() {
         }
     ]
 
-    const speedTestSteps = [
-        {
-            title: 'Mulai Test',
-            desc: <>Klik tombol <strong>"Mulai Test"</strong>. Pastikan tidak ada download besar yang sedang berjalan di background.</>
-        },
-        {
-            title: 'Tunggu Proses',
-            desc: <>Sistem akan mengukur <strong>Ping (Latency)</strong> dan kecepatan <strong>Download</strong> Anda menggunakan server terdekat.</>
-        },
-        {
-            title: 'Hasil Akurat',
-            desc: <>Lihat hasil kecepatan internet real-time Anda. Tes ini ringan dan tidak menghabiskan banyak kuota data.</>
-        }
-    ]
 
     const ipCheckSteps = [
         {
@@ -532,11 +518,6 @@ export default function GuidePage() {
                                 <li>
                                     <a href="#diff-checker">
                                         <FileDiff size={16} /> Diff Checker
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#speed-test">
-                                        <Zap size={16} /> Speed Test
                                     </a>
                                 </li>
                                 <li>
@@ -985,27 +966,6 @@ export default function GuidePage() {
                                 </div>
                             </div>
 
-                            {/* Speed Test Guide */}
-                            <div id="speed-test" className={`neu-card no-hover ${styles.guideCard}`}>
-                                <div className={styles.cardHeader}>
-                                    <Zap size={24} className={styles.iconBlue} />
-                                    <h2 id="speed-test">Panduan Internet Speed Test</h2>
-                                </div>
-                                <div className={styles.stepList}>
-                                    {speedTestSteps.map((step, index) => (
-                                        <div key={index} className={styles.stepItem}>
-                                            <div className={styles.stepNumber}>{index + 1}</div>
-                                            <div className={styles.stepContent}>
-                                                <h3>{step.title}</h3>
-                                                <p>{step.desc}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className={styles.cardFooter}>
-                                    <a href="/speed-test" className={`${styles.actionBtn} ${styles.btnAlt}`}>Mulai Speed Test</a>
-                                </div>
-                            </div>
 
                             {/* IP Check Guide */}
                             <div id="ip-check" className={`neu-card no-hover ${styles.guideCard}`}>

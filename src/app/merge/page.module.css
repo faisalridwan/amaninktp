@@ -761,7 +761,7 @@
 }
 
 .sectionTitle {
-    font-size: 2rem;
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     margin-bottom: 2rem;
     color: var(--text-primary);

@@ -1,14 +1,14 @@
 .hero {
     text-align: center;
-    padding: 3rem 1rem;
-    margin-bottom: 2rem;
+    padding: 2rem 1rem 1rem;
+    margin-bottom: 0;
 }
 
 .heroTitle {
     font-size: var(--font-size-4xl);
     font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,238 +16,313 @@
 }
 
 .heroTitle span {
-    color: var(--primary-dark);
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
+    font-size: 0.95rem;
+    color: #94a3b8;
     max-width: 600px;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1rem;
 }
 
 .trustBadge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
-    background: var(--bg-secondary);
+    padding: 6px 14px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    font-size: 0.9rem;
-    color: var(--primary-dark);
+    font-size: 0.8rem;
+    color: #38bdf8;
     font-weight: 500;
-    box-shadow: var(--shadow-inset-light), var(--shadow-inset-dark);
 }
 
 .workspace {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-bottom: 4rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    box-shadow: var(--shadow-dark), var(--shadow-light);
+    background: #0f172a;
+    border-radius: 24px;
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
-}
-
-/* Gauge Styles */
-.gaugeWrapper {
+    gap: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     position: relative;
-    width: 320px;
-    height: 240px;
+    overflow: hidden;
+}
+
+/* Header Metrics (Download/Upload) */
+.headerMetrics {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    margin: 0 auto;
-}
-
-.gaugeSvg {
+    justify-content: center;
+    gap: 4rem;
     width: 100%;
-    height: auto;
+    margin-bottom: 1rem;
 }
 
-.gaugePath {
-    fill: none;
-    stroke: var(--bg-secondary);
-    stroke-width: 10;
-    stroke-linecap: round;
-}
-
-.gaugeProgress {
-    fill: none;
-    stroke: var(--primary-dark);
-    stroke-width: 10;
-    stroke-linecap: round;
-    stroke-dasharray: 283; /* Approx 3/4 of circle */
-    stroke-dashoffset: 283;
-    transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
-}
-
-.gaugeNeedle {
-    fill: var(--primary-dark);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: 100px 100px;
-}
-
-.gaugeGlow {
-    filter: blur(8px);
-    opacity: 0.3;
-}
-
-.gaugeInfo {
-    position: absolute;
-    bottom: 20px;
-    text-align: center;
-}
-
-.speedValue {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-}
-
-.unit {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.statusText {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: var(--primary-dark);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* Metrics Grid */
-.metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    width: 100%;
-}
-
-.metricCard {
-    background: var(--bg-primary);
-    padding: 1.25rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-dark), var(--shadow-light);
+.mainMetric {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    min-width: 120px;
-    transition: transform 0.2s ease;
+    position: relative;
 }
 
-.metricCardActive {
-    border: 2px solid var(--primary-dark);
-    transform: translateY(-4px);
+.mainMetricActive::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
 }
 
-.metricLabel {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
+.downloadMetricActive::after { background: #22d3ee; }
+.uploadMetricActive::after { background: #a78bfa; }
+
+.mainMetricLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+}
+
+.mainMetricLabel span {
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.downloadIcon { color: #22d3ee; }
+.uploadIcon { color: #94a3b8; }
+
+/* Sub Metrics (Ping/Jitter) */
+.subMetrics {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    width: 100%;
+}
+
+.subMetric {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.subMetricLabel {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.subMetricLabel span {
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+.subMetricValue {
     display: flex;
     align-items: center;
     gap: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
 }
 
-.metricValue {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    font-variant-numeric: tabular-nums;
-}
+.pingIcon { color: #f59e0b; }
+.jitterIcon { color: #10b981; }
 
-/* Info Section */
-.infoSection {
-    width: 100%;
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    box-shadow: var(--shadow-inset-dark), var(--shadow-inset-dark);
-}
-
-.infoGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-}
-
-.infoItem {
+/* Gauge Styles */
+.gaugeWrapper {
+    position: relative;
+    width: 360px;
+    height: 300px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.gaugeSvg {
+    width: 100%;
+    height: 100%;
+}
+
+.gaugeTrack {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 12;
+    stroke-linecap: round;
+}
+
+.gaugeProgress {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gaugeGlow {
+    filter: blur(12px);
+    opacity: 0.4;
+}
+
+.gaugeNeedle {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: 100px 100px;
+}
+
+.needleBody {
+    fill: rgba(255, 255, 255, 0.1);
+}
+
+.needleCore {
+    fill: #fff;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.gaugeLabels text {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    transition: fill 0.3s;
+}
+
+.gaugeCenter {
+    position: absolute;
+    bottom: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.currentSpeed {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    font-family: 'Inter', sans-serif;
+}
+
+.currentUnit {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
     gap: 6px;
 }
 
-.infoLabel {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
+/* Info Grid */
+.networkInfo {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.infoValue {
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    font-weight: 700;
+.infoBlock {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.infoIconWrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.infoIcon {
-    color: var(--primary-dark);
+.infoText {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.infoSubtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 2px;
 }
 
 /* Button */
 .startButton {
-    padding: 18px 60px;
-    border-radius: 50px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
     border: none;
     font-weight: 800;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
     color: #fff;
-    background: linear-gradient(135deg, var(--primary-dark), #3b82f6);
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    position: relative;
+    overflow: hidden;
 }
 
 .startButton:hover:not(:disabled) {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
 }
 
 .startButton:disabled {
-    opacity: 0.7;
+    opacity: 0.5;
     cursor: not-allowed;
-    background: var(--bg-secondary);
-    color: var(--text-muted);
+    background: #1e293b;
 }
 
 .spin {
-    animation: spin 1.5s linear infinite;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -256,25 +331,29 @@
 }
 
 @media (max-width: 900px) {
-    .metrics {
-        grid-template-columns: repeat(2, 1fr);
+    .workspace {
+        padding: 0 1rem;
     }
 }
 
 @media (max-width: 600px) {
-    .metrics {
-        grid-template-columns: 1fr;
+    .headerMetrics {
+        gap: 2rem;
     }
-    
-    .infoGrid {
-        grid-template-columns: 1fr;
+    .subMetrics {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
-
+    .networkInfo {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
     .gaugeWrapper {
-        width: 280px;
+        width: 300px;
+        height: 260px;
     }
-
-    .speedValue {
-        font-size: 2.75rem;
+    .currentSpeed {
+        font-size: 3rem;
     }
 }

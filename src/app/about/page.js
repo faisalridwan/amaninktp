@@ -11,7 +11,7 @@ export default function AboutPage() {
     const stats = [
         { value: '100%', label: 'Gratis Selamanya' },
         { value: '0', label: 'Data Disimpan' },
-        { value: '12+', label: 'Tools Produktif' },
+        { value: '20+', label: 'Tools Produktif' },
     ]
 
     const tools = [
@@ -68,12 +68,6 @@ export default function AboutPage() {
             title: 'Diff Checker',
             desc: 'Bandingkan perbedaan antara dua teks secara visual side-by-side.',
             href: '/diff-checker'
-        },
-        {
-            icon: Zap,
-            title: 'Speed Test',
-            desc: 'Ukur kecepatan internet dan latency Anda tanpa server pihak ketiga.',
-            href: '/speed-test'
         },
         {
             icon: Globe,
@@ -207,7 +201,7 @@ export default function AboutPage() {
                 {/* All Tools Section */}
                 <section className={styles.featureSection}>
                     <h2 className={styles.sectionTitle}>
-                        <Zap size={24} /> 20 Tools dalam 1 Aplikasi - <span>Amanin Data</span>
+                        <Zap size={24} /> 21 Tools dalam 1 Aplikasi - <span>Amanin Data</span>
                     </h2>
                     <p className={styles.sectionDesc}>
                         Tidak perlu install banyak aplikasi. Semua kebutuhan dokumen digital Anda ada di sini.
