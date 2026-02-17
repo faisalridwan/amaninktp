@@ -112,10 +112,8 @@ export default function SplitPDFPage() {
             <Navbar />
 
             <main className="container">
-                <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}>
+                <header className={styles.hero}>             
                     <h1 className={styles.heroTitle}>✂️ Pisahkan PDF <span>Per Halaman</span></h1>
-                    </h1>
                     <p className={styles.heroSubtitle}>
                         Pisahkan halaman PDF menjadi dokumen baru secara instan dan aman di browser Anda.
                     </p>

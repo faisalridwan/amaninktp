@@ -2,7 +2,7 @@
 import HomeClient from './HomeClient'
 
 export const metadata = {
-    title: 'Amanin Data - Watermark KTP, Tanda Tangan Digital & Edit PDF Aman', // Specific title for Home
+    title: 'Amanin Data - Watermark Dokumen, Tanda Tangan Digital & Edit PDF Aman', // Specific title for Home
     description: 'Platform privasi digital #1 di Indonesia. Edit PDF, Watermark Dokumen, Tanda Tangan Digital, Hapus Background, dan Kompres Foto secara aman. 100% diproses di browser (Client-Side) tanpa upload ke server.',
     keywords: 'watermark ktp, tanda tangan digital, edit pdf, hapus background, kompres pdf, kompres foto, sensor data, redact pdf, amanin data, privasi data, client-side, tanpa upload, gratis',
     alternates: {

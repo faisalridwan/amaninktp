@@ -19,6 +19,10 @@
     margin: 0 0 12px;
 }
 
+.heroTitle span {
+    color: var(--primary-dark);
+}
+
 .heroTitle svg {
     color: var(--primary-dark);
 }

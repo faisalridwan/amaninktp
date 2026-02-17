@@ -16,11 +16,21 @@
     padding: 40px 0 16px;
 }
 
+
+.pageHeader span {
+    color: var(--primary-dark);
+}
+
+
 .pageHeader h1 {
     font-size: var(--font-size-4xl);
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .pageHeader>p {

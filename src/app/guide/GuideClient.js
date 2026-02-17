@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2, Scissors, ScissorsLineDashed, Move, RotateCw, Lock, RefreshCw, Smartphone, Palette, Trash2, FileDiff, Zap, Globe, Type, Sigma, FileEdit, ListOrdered, Fingerprint, Braces } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import OtherToolsSection from '@/components/OtherToolsSection'
 import styles from './page.module.css'
 
 export default function GuidePage() {
@@ -1302,6 +1303,8 @@ export default function GuidePage() {
                         ))}
                     </div>
                 </section>
+
+                <OtherToolsSection />
             </main>
 
             <Footer />

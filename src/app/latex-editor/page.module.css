@@ -166,7 +166,9 @@
     justify-content: center;
     gap: 12px;
 }
-
+.heroTitle span {
+    color: var(--primary-dark);
+}
 [data-theme='dark'] .heroTitle {
     color: #f7fafc;
 }

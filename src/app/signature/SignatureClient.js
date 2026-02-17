@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GuideSection from '@/components/GuideSection'
 import TrustSection from '@/components/TrustSection'
+import OtherToolsSection from '@/components/OtherToolsSection'
 import styles from './page.module.css'
 
 export default function SignaturePage() {
@@ -1123,6 +1124,9 @@ export default function SignaturePage() {
                 </section>
 
                 <TrustSection />
+                
+                <OtherToolsSection />
+
                 {/* Cara Pakai / How To Use */}
                 <GuideSection
                     linkHref="/guide#signature"
