@@ -11,6 +11,12 @@ const poppins = Poppins({
     variable: '--font-poppins',
 })
 
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+}
+
 export const metadata = {
     metadataBase: new URL('https://amanindata.qreatip.com'),
     title: {
@@ -29,11 +35,7 @@ export const metadata = {
         telephone: false,
     },
     referrer: 'origin-when-cross-origin',
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        maximumScale: 5,
-    },
+    // viewport moved to separate export
     robots: {
         index: true,
         follow: true,
