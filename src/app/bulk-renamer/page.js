@@ -77,7 +77,7 @@ export default function BulkRenamerPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}>🏷️ Bulk File Renamer</h1>
+                        <h1 className={styles.heroTitle}>🏷️ Rename File <span>Massal</span></h1>
                         <p className={styles.heroSubtitle}>
                             Ganti nama banyak file sekaligus dengan pola prefix, suffix, atau penomoran otomatis.
                         </p>

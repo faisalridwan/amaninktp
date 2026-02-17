@@ -20,7 +20,7 @@ export default function ContactPage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}><Mail size={32} /> Hubungi Kami</h1>
+                    <h1 className={styles.heroTitle}>📧 Hubungi <span>Kami</span></h1>
                     <p className={styles.heroSubtitle}>Saran, masukan, atau kolaborasi? Kami siap mendengar.</p>
                 </header>
 

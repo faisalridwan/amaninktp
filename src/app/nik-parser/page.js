@@ -127,7 +127,7 @@ export default function NikParserPage() {
             <Navbar />
             <main className="container">
                 <div className={styles.hero}>
-                    <h1 className={styles.heroTitle}>🔍 Cek NIK <span>Parser</span></h1>
+                    <h1 className={styles.heroTitle}>🆔 Cek & Parse <span>NIK</span></h1>
                     <p className={styles.heroSubtitle}>Cek daerah, tanggal lahir, dan usia dari NIK KTP Anda. Detail & Akurat.</p>
 
                 </div>

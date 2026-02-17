@@ -115,7 +115,7 @@ export default function ImageConverterPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <RefreshCw size={32} /> Image <span>Converter</span>
+                         🖼️ Image <span>Converter</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ubah format gambar (HEIC, WebP, PNG, JPG) dengan mudah & cepat.

@@ -61,7 +61,7 @@ export default function CssGradientPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}>🎨 CSS Gradient Generator</h1>
+                        <h1 className={styles.heroTitle}>🌈 Generator Gradasi <span>CSS</span></h1>
                         <p className={styles.heroSubtitle}>
                             Buat gradasi warna CSS modern yang indah secara visual dan salin kodenya.
                         </p>

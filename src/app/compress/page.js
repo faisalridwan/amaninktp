@@ -311,7 +311,7 @@ export default function ImageCompressor() {
             <div className={styles.container}>
 
                 <div className={styles.header}>
-                    <h1>⚡ Kompres <span>File</span></h1>
+                    <h1 className={styles.heroTitle}>🗜️ Kompres PDF & <span>Foto</span></h1>
                     <p>Kecilkan ukuran Foto atau PDF secara instan tanpa upload ke server.</p>
 
                 </div>

@@ -65,7 +65,7 @@ export default function JsonFormatterPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}><Braces size={32} /> JSON Formatter</h1>
+                        <h1 className={styles.heroTitle}>📋 JSON Formatter <span>& Validator</span></h1>
                         <p className={styles.heroSubtitle}>
                             Validasi, format, dan minify data JSON Anda dengan mudah.
                         </p>

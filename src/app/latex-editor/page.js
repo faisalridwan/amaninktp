@@ -60,7 +60,7 @@ export default function LatexEditorPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}>📐 LaTeX Equation Editor</h1>
+                        <h1 className={styles.heroTitle}>♾️ LaTeX Equation <span>Editor</span></h1>
                         <p className={styles.heroSubtitle}>
                             Tulis rumus matematika kompleks dan simpan sebagai gambar transparan berkualitas tinggi.
                         </p>

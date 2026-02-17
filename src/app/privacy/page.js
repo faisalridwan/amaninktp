@@ -13,7 +13,7 @@ export default function PrivacyPage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1><Shield size={32} /> Kebijakan Privasi</h1>
+                    <h1 className={styles.heroTitle}>🛡️ Kebijakan <span>Privasi</span></h1>
                     <p>Terakhir diperbarui: 08 Februari 2026</p>
                 </header>
 

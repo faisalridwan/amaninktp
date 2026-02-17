@@ -856,7 +856,7 @@ export default function Home() {
             <main className="container">
                 {/* Hero */}
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}>📄 Watermark Dokumen <span>Online</span></h1>
+                    <h1 className={styles.heroTitle}>📄 Watermark KTP & Dokumen <span>Online</span></h1>
                     <p className={styles.heroSubtitle}>Lindungi dokumen identitas dengan watermark. 100% di browser.</p>
 
                 </header>

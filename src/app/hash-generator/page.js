@@ -66,7 +66,7 @@ export default function HashGeneratorPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}>🔐 Hash Generator</h1>
+                        <h1 className={styles.heroTitle}>#️⃣ Generator Hash <span>Kripto</span></h1>
                         <p className={styles.heroSubtitle}>
                             Generate MD5, SHA-1, SHA-256, dan SHA-512 checksum untuk teks atau file.
                         </p>

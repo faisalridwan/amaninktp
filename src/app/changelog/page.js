@@ -129,7 +129,7 @@ export default function ChangelogPage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}><History size={32} /> Riwayat Perubahan</h1>
+                    <h1 className={styles.heroTitle}>📜 Riwayat <span>Perubahan</span></h1>
                     <p className={styles.heroSubtitle}>
                         Ikuti perkembangan fitur dan pembaruan sistem Amanin Data.
                     </p>

@@ -174,7 +174,7 @@ export default function EncryptPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Lock size={32} /> File <span>Encryptor</span>
+                        🔐 Enkripsi File <span>Aman</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Amankan file rahasia dengan enkripsi AES-GCM (Military Grade).

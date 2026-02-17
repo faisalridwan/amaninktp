@@ -39,7 +39,7 @@ export default function DiffCheckerPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <FileDiff size={32} /> Text <span>Diff Checker</span>
+                        ⚖️ Bandingkan Teks <span>(Diff)</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Bandingkan dua teks dan lihat perbedaannya secara instan.

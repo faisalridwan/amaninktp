@@ -95,7 +95,7 @@ export default function ExifRemoverPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Trash2 size={32} /> Hapus <span>Metadata (EXIF)</span>
+                        📷 Hapus Data <span>EXIF</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Hapus informasi lokasi (GPS), jenis kamera, dan tanggal dari foto Anda.

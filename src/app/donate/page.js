@@ -153,7 +153,7 @@ export default function DonatePage() {
             <main className="container">
                 <div className={styles.donationPage}>
                     <header className={styles.hero}>
-                        <h1 className={styles.heroTitle}>Dukung <span>Amanin Data</span></h1>
+                        <h1 className={styles.heroTitle}>💖 Dukung <span>Amanin Data</span></h1>
                         <p className={styles.heroSubtitle}>
                             Bantu kami menjaga privasi dokumen tetap aman, gratis, dan open-source.
                         </p>

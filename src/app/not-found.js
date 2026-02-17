@@ -17,7 +17,7 @@ export default function NotFound() {
         }}>
             <AlertCircle size={64} color="#5B8DEF" style={{ marginBottom: '24px' }} />
             <h1 style={{ fontSize: '48px', fontWeight: '700', color: 'var(--text-primary)', margin: '0 0 16px' }}>
-                404
+                😕 404 - Halaman <span style={{ color: 'var(--primary-dark)' }}>Tidak Ditemukan</span>
             </h1>
             <h2 style={{ fontSize: '24px', color: 'var(--text-secondary)', margin: '0 0 24px', fontWeight: '500' }}>
                 Halaman Tidak Ditemukan

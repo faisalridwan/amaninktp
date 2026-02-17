@@ -127,7 +127,7 @@ export default function RearrangePDFPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        📄 Rearrange Dokumen<span> Digital</span>
+                    <h1 className={styles.heroTitle}>🔃 Urutkan Halaman <span>PDF</span></h1>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ubah urutan halaman PDF Anda dengan drag-and-drop visual yang mudah dan aman.

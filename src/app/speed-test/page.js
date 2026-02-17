@@ -333,7 +333,7 @@ export default function SpeedTestPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Zap size={28} /> Speed <span>Test</span>
+                        ⚡ Speed Test <span>Internet</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ukur kecepatan internet Anda secara akurat dengan teknologi Fast.com-style.

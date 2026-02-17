@@ -308,7 +308,7 @@ export default function PhotoGeneratorPage() {
             <main className={styles.container}>
                 <div className="container" style={{ maxWidth: '1200px' }}>
                     <div className={styles.hero} style={{ marginBottom: image ? '2rem' : '3rem', transition: 'all 0.3s' }}>
-                        <h1 className={styles.heroTitle} style={{ fontSize: image ? '1.8rem' : '2.5rem' }}>📸 Photo Generator <span>Online</span></h1>
+                        <h1 className={styles.heroTitle} style={{ fontSize: image ? '1.8rem' : '2.5rem' }}>📸 Buat Pas Foto <span>Otomatis</span></h1>
                         <p className={styles.heroSubtitle} style={{ display: image ? 'block' : 'block', fontSize: image ? '0.9rem' : '1.1rem', marginTop: '8px' }}>
                             Ubah ukuran, DPI, dan format foto dengan presisi tinggi.
                         </p>

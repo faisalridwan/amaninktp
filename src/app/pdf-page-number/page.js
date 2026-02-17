@@ -123,7 +123,7 @@ export default function PdfPageNumberPage() {
             <main className={styles.container}>
                 <div className="container">
                     <div className={styles.hero}>
-                        <h1 className={styles.heroTitle}>📄 PDF Page Numberer</h1>
+                        <h1 className={styles.heroTitle}>🔢 Nomor Halaman <span>PDF</span></h1>
                         <p className={styles.heroSubtitle}>
                             Tambahkan nomor halaman otomatis ke file PDF Anda.
                         </p>

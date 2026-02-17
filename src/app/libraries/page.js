@@ -88,7 +88,7 @@ export default function LibrariesPage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}><Library size={32} /> Perpustakaan</h1>
+                    <h1 className={styles.heroTitle}>📦 Pustaka & <span>Teknologi</span></h1>
                     <p className={styles.heroSubtitle}>
                         Amanin Data dibangun dengan teknologi open-source terbaik.
                     </p>

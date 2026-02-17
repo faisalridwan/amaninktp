@@ -686,7 +686,7 @@ export default function QRCodePage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <QrCode size={32} /> QR Code <span>Generator</span>
+                        📱 Generator QR Code <span>Pro</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Generator QR Code tercanggih & teraman. 100% Client-side tanpa simpan data.

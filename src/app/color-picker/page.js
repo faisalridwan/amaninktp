@@ -174,7 +174,7 @@ export default function ColorPickerPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Palette size={32} /> Color <span>Picker</span>
+                        🎨 Color Picker <span>Advanced</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ambil warna dari gambar atau layar dengan presisi.

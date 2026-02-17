@@ -504,7 +504,7 @@ export default function GuidePage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}><BookOpen size={32} /> Cara Pakai</h1>
+                    <h1 className={styles.heroTitle}>📘 Panduan & <span>Cara Pakai</span></h1>
                     <p className={styles.heroSubtitle}>Panduan lengkap mengamankan dokumen Anda dengan Amanin Data</p>
                 </header>
 

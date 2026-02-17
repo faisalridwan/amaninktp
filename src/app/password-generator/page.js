@@ -96,7 +96,7 @@ export default function PasswordGeneratorPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Lock size={32} /> Password <span>Generator</span>
+                        🔑 Password Generator <span>Kuat</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Buat password super kuat & aman secara instan. 100% Client-side.

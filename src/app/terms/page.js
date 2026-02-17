@@ -13,7 +13,7 @@ export default function TermsPage() {
 
             <main className="container">
                 <header className={styles.hero}>
-                    <h1><FileText size={32} /> Terms of Service</h1>
+                    <h1 className={styles.heroTitle}>⚖️ Syarat & <span>Ketentuan</span></h1>
                     <p>Terakhir diperbarui: 08 Februari 2026</p>
                 </header>
 

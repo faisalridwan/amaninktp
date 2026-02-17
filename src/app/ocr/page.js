@@ -112,7 +112,7 @@ export default function OCRPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <ScanText size={32} /> OCR <span>Image to Text</span>
+                        📝 Ekstrak Teks <span>(OCR)</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Ekstrak teks dari gambar secara instan. 100% Client-side privacy dengan Tesseract.js.

@@ -90,7 +90,7 @@ export default function RemoveBackgroundPage() {
 
             <main className={styles.container}>
                 <header className={styles.hero}>
-                    <h1 className={styles.heroTitle}>✂️ Hapus Background<span>dengan AI</span></h1>
+                    <h1 className={styles.heroTitle}>✂️ Hapus Background <span>Otomatis</span></h1>
                     <p className={styles.heroSubtitle}>Hapus latar belakang foto otomatis. 100% Gratis & Client-Side.</p>
                 </header>
 

@@ -125,7 +125,7 @@ export default function RotatePDFPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        🔄 Rotate Dokumen<span> Digital</span>
+                    <h1 className={styles.heroTitle}>🔄 Putar PDF <span>Permanen</span></h1>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Putar halaman PDF yang terbalik atau miring secara permanen dan aman di browser.

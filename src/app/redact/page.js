@@ -418,7 +418,7 @@ export default function RedactionTool() {
             <div className={styles.container}>
 
                 <div className={styles.header}>
-                    <h1>🙈 Sensor <span>Data</span></h1>
+                    <h1 className={styles.heroTitle}>🛡️ Sensor PDF & <span>Foto</span></h1>
                     <p>Tutupi data sensitif (NIK, Nama, Foto) dengan Black-out atau Blur.</p>
                 </div>
 

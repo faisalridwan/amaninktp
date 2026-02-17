@@ -79,7 +79,7 @@ export default function IPCheckPage() {
             <main className="container">
                 <header className={styles.hero}>
                     <h1 className={styles.heroTitle}>
-                        <Globe size={32} /> Cek <span>IP Saya</span>
+                        🌐 Cek Alamat <span>IP</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
                         Lihat alamat IP publik dan informasi perangkat yang Anda gunakan saat ini.
