@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import UploadArea from '@/components/UploadArea'
 import styles from './page.module.css'
 import { FileText, Download, Loader2, ArrowRight, RefreshCcw, File as FileIcon, ArrowLeftRight } from 'lucide-react'
@@ -261,6 +263,9 @@ export default function PdfToWordClient() {
                         </div>
                     )}
                 </div>
+
+                <TrustSection />
+                <GuideSection linkHref="/guide#pdf-word" />
             </main>
             <Footer />
         </div>

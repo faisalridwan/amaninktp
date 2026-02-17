@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { BookOpen, AlertTriangle, Lightbulb, MousePointer, Info, Shield, CheckCircle, ChevronDown, Camera, FileStack, Search, Eraser, Minimize2, Scissors, ScissorsLineDashed, Move, RotateCw, Lock, RefreshCw, Smartphone, Palette, Trash2, FileDiff, Zap, Globe, Type, Sigma, FileEdit, ListOrdered, Fingerprint, Braces } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import OtherToolsSection from '@/components/OtherToolsSection'
 import styles from './page.module.css'
 
 export default function GuidePage() {
@@ -1241,6 +1240,142 @@ export default function GuidePage() {
                                     <a href="/json-formatter" className={`${styles.actionBtn} ${styles.btnAlt}`}>Format JSON</a>
                                 </div>
                             </div>
+
+                             {/* Case Converter Guide */}
+                             <div id="case-converter" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Type size={24} className={styles.iconBlue} />
+                                    <h2 id="case-converter">Panduan Case Converter</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>1</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Masukkan Teks</h3>
+                                            <p>Ketik atau tempel teks yang ingin diubah formatnya ke dalam kolom teks.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>2</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Pilih Format</h3>
+                                            <p>Klik tombol format yang diinginkan (UPPERCASE, lowercase, Title Case, dll).</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>3</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Salin Hasil</h3>
+                                            <p>Klik tombol "Salin Teks" untuk menyalin hasil ke clipboard.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/case-converter" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka Case Converter</a>
+                                </div>
+                            </div>
+
+                            {/* Word Counter Guide */}
+                            <div id="word-counter" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Sigma size={24} className={styles.iconBlue} />
+                                    <h2 id="word-counter">Panduan Word Counter</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>1</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Mulai Mengetik</h3>
+                                            <p>Ketik atau tempel teks Anda. Statistik akan muncul secara real-time.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>2</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Lihat Statistik</h3>
+                                            <p>Lihat jumlah kata, karakter, kalimat, dan estimasi waktu baca.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>3</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Cek Limit Medsos</h3>
+                                            <p>Periksa apakah teks Anda memenuhi batas karakter untuk Facebook, Twitter/X, dan Google.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/word-counter" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka Word Counter</a>
+                                </div>
+                            </div>
+
+                            {/* PDF to Word Guide */}
+                            <div id="pdf-word" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <FileEdit size={24} className={styles.iconBlue} />
+                                    <h2 id="pdf-word">Panduan PDF to Word</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>1</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Pilih Mode</h3>
+                                            <p>Pilih tab "PDF to Word" atau "Word to PDF" sesuai kebutuhan.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>2</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Upload File</h3>
+                                            <p>Upload file PDF atau Word yang ingin dikonversi.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>3</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Konversi & Download</h3>
+                                            <p>Klik tombol konversi dan file hasil akan otomatis terdownload.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/pdf-word" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka PDF to Word</a>
+                                </div>
+                            </div>
+
+                            {/* PDF Security Guide */}
+                            <div id="pdf-security" className={`neu-card no-hover ${styles.guideCard}`}>
+                                <div className={styles.cardHeader}>
+                                    <Lock size={24} className={styles.iconBlue} />
+                                    <h2 id="pdf-security">Panduan PDF Security</h2>
+                                </div>
+                                <div className={styles.stepList}>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>1</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Pilih Fitur</h3>
+                                            <p>Pilih "Protect PDF" untuk mengunci atau "Unlock PDF" untuk membuka kunci.</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>2</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Upload & Password</h3>
+                                            <p>Upload file PDF dan masukkan password (untuk enkripsi atau dekripsi).</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.stepItem}>
+                                        <div className={styles.stepNumber}>3</div>
+                                        <div className={styles.stepContent}>
+                                            <h3>Proses File</h3>
+                                            <p>Klik tombol proses untuk mendapatkan file PDF yang telah diamankan atau dibuka.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardFooter}>
+                                    <a href="/pdf-security" className={`${styles.actionBtn} ${styles.btnAlt}`}>Buka PDF Security</a>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Tips Section */}
@@ -1303,8 +1438,6 @@ export default function GuidePage() {
                         ))}
                     </div>
                 </section>
-
-                <OtherToolsSection />
             </main>
 
             <Footer />

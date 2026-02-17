@@ -29,7 +29,7 @@
 }
 
 .heroTitle span {
-  color: var(--primary);
+  color: var(--primary-dark);
 }
 
 .description {

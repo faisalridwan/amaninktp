@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import UploadArea from '@/components/UploadArea'
 import styles from './page.module.css'
 import { Lock, Unlock, ArrowRight, RefreshCcw, Loader2, FileText, Check } from 'lucide-react'
@@ -212,6 +214,9 @@ export default function PdfSecurityClient() {
                         </div>
                     )}
                 </div>
+
+                <TrustSection />
+                <GuideSection linkHref="/guide#pdf-security" />
             </main>
             <Footer />
         </div>

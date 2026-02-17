@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 import { Copy, Trash2, Check } from 'lucide-react'
 
@@ -92,6 +94,9 @@ export default function CaseConverterClient() {
                         </button>
                     </div>
                 </div>
+
+                <TrustSection />
+                <GuideSection linkHref="/guide#case-converter" />
             </main>
             <Footer />
         </div>

@@ -4,6 +4,8 @@ import { useState, useMemo } from 'react'
 import { Facebook, Twitter } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import TrustSection from '@/components/TrustSection'
+import GuideSection from '@/components/GuideSection'
 import styles from './page.module.css'
 
 export default function WordCounterClient() {
@@ -118,6 +120,9 @@ export default function WordCounterClient() {
                         </div>
                     </div>
                 </div>
+
+                <TrustSection />
+                <GuideSection linkHref="/guide#word-counter" />
             </main>
             <Footer />
         </div>
